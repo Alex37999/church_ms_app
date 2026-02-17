@@ -24,7 +24,10 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            Text('Welcome back!', style: Theme.of(context).textTheme.headlineSmall),
+            Text(
+              'Welcome back!',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
             const SizedBox(height: 8),
             Text('Environment: ${appCtrl.env}'),
             const SizedBox(height: 20),
@@ -44,7 +47,10 @@ class HomePage extends StatelessWidget {
                         children: [
                           const Icon(Icons.account_balance_wallet_outlined),
                           const SizedBox(height: 8),
-                          Text('Title $i', style: Theme.of(context).textTheme.titleMedium),
+                          Text(
+                            'Title $i',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
                           const SizedBox(height: 4),
                           const Text('Subtitle'),
                         ],
@@ -68,9 +74,7 @@ class HomePage extends StatelessWidget {
       return Scaffold(
         appBar: AppBar(title: Text('ChurchMS (${appCtrl.env})')),
         body: IndexedStack(index: idx, children: pages),
-        bottomNavigationBar: AppBottomNavigationBar(
-          onTap: (i) {},
-        ),
+        bottomNavigationBar: AppBottomNavigationBar(onTap: (i) {}),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             // Navigate to add/create pages depending on current tab

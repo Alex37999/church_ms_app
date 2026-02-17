@@ -10,9 +10,7 @@ class ContributionAddPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          children: const [
-            Text('Add contribution form goes here.'),
-          ],
+          children: const [Text('Add contribution form goes here.')],
         ),
       ),
     );
