@@ -26,7 +26,7 @@ class ApiClient {
         onResponse: (response, handler) {
           handler.next(response);
         },
-        onError: (DioError e, handler) {
+        onError: (DioException e, handler) {
           handler.next(e);
         },
       ),
