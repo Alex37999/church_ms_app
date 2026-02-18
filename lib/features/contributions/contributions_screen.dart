@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../widgets/app_header.dart';
 import './controllers/contributions_controller.dart';
 
-class ContributionsScreen extends StatelessWidget {
+class ContributionsScreen extends GetView<ContributionsController> {
   ContributionsScreen({super.key});
 
   // Reactive UI state
@@ -12,7 +12,7 @@ class ContributionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ctrl = Get.put(ContributionsController());
+    final ctrl = controller;
 
     return Obx(
       () => ListView(
@@ -190,13 +190,11 @@ class ContributionsScreen extends StatelessWidget {
   }
 
   // Helper: return a filtered list based on selected filter
-  List _filteredContributions(ContributionsController ctrl) {
+  List<ContributionModel> _filteredContributions(ContributionsController ctrl) {
     final list = ctrl.contributions;
     final filter = _selectedFilter.value.toLowerCase();
     if (filter == 'all') return list;
-    return list
-        .where((c) => (c.type as String).toLowerCase() == filter)
-        .toList();
+    return list.where((c) => c.type.toLowerCase() == filter).toList();
   }
 
   // Helper: derive a stable id for a contribution

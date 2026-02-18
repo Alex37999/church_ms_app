@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../app/routes/app_pages.dart';
+import '../notification/controllers/notification_controller.dart';
 
 class AppHeader extends StatelessWidget {
   final double scale;
   final double horizontalPadding;
+  final bool showBackButton;
+  final VoidCallback? onBack;
 
-  const AppHeader({this.scale = 1.0, this.horizontalPadding = 16.0, super.key});
+  const AppHeader({
+    this.scale = 1.0,
+    this.horizontalPadding = 16.0,
+    this.showBackButton = false,
+    this.onBack,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final NotificationController? notificationCtrl =
+        Get.isRegistered<NotificationController>()
+        ? Get.find<NotificationController>()
+        : null;
+
     return SafeArea(
       bottom: false,
       child: Container(
@@ -25,6 +42,14 @@ class AppHeader extends StatelessWidget {
         ),
         child: Row(
           children: [
+            if (showBackButton) ...[
+              IconButton(
+                onPressed: onBack,
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                tooltip: 'Back',
+              ),
+              SizedBox(width: 4 * scale),
+            ],
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -57,27 +82,41 @@ class AppHeader extends StatelessWidget {
             Stack(
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (Get.currentRoute != Routes.NOTIFICATIONS) {
+                      Get.toNamed(Routes.NOTIFICATIONS);
+                    }
+                  },
                   icon: const Icon(
                     Icons.notifications_none,
                     color: Colors.white,
                   ),
                 ),
-                Positioned(
-                  right: 8,
-                  top: 6,
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: const BoxDecoration(
-                      color: Colors.green,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Text(
-                      '3',
-                      style: TextStyle(color: Colors.white, fontSize: 10),
-                    ),
-                  ),
-                ),
+                if (notificationCtrl != null)
+                  Obx(() {
+                    final unread = notificationCtrl.unreadCount.value;
+                    if (unread <= 0) return const SizedBox.shrink();
+
+                    return Positioned(
+                      right: 8,
+                      top: 6,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: const BoxDecoration(
+                          color: Colors.green,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Text(
+                          unread.toString(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
               ],
             ),
           ],

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 class NotificationController extends GetxController {
-  final RxList notifications = <NotificationModel>[].obs;
+  final RxList<NotificationModel> notifications = <NotificationModel>[].obs;
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
   final RxInt unreadCount = 0.obs;
@@ -16,29 +16,36 @@ class NotificationController extends GetxController {
     isLoading.value = true;
     try {
       // Initialize with sample data
-      notifications.value = [
+      notifications.assignAll([
         NotificationModel(
           id: '1',
-          title: 'Contribution Received',
-          message: 'Your contribution of KES 10,000 has been received.',
-          date: '2026-02-15',
+          title: 'Contribution Confirmed',
+          message: 'Your tithe of KES 10,000 has been recorded successfully',
+          date: '2 hours ago',
           isRead: false,
         ),
         NotificationModel(
           id: '2',
-          title: 'Receipt Ready',
-          message: 'Your monthly receipt is ready for download.',
-          date: '2026-02-10',
+          title: 'Event Reminder',
+          message: 'Youth Camp registration closes in 3 days',
+          date: '5 hours ago',
           isRead: false,
         ),
         NotificationModel(
           id: '3',
-          title: 'New Announcement',
-          message: 'Sunday Service Time has been changed.',
-          date: '2026-02-08',
+          title: 'Birthday Wishes',
+          message: 'Happy Birthday! May God bless you abundantly',
+          date: '1 day ago',
+          isRead: false,
+        ),
+        NotificationModel(
+          id: '4',
+          title: 'Receipt Available',
+          message: 'Your January receipt is ready to download',
+          date: '3 days ago',
           isRead: true,
         ),
-      ];
+      ]);
       updateUnreadCount();
       errorMessage.value = '';
     } catch (e) {
@@ -49,7 +56,7 @@ class NotificationController extends GetxController {
   }
 
   void updateUnreadCount() {
-    unreadCount.value = notifications.where((n) => !n.isRead).toList().length;
+    unreadCount.value = notifications.where((n) => !n.isRead).length;
   }
 
   void markAsRead(String notificationId) {

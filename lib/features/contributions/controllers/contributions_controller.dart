@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 class ContributionsController extends GetxController {
-  final RxList contributions = <ContributionModel>[].obs;
+  final RxList<ContributionModel> contributions = <ContributionModel>[].obs;
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
   final RxDouble totalContributions = 0.0.obs;
@@ -16,7 +16,7 @@ class ContributionsController extends GetxController {
     isLoading.value = true;
     try {
       // Initialize with sample data
-      contributions.value = [
+      contributions.assignAll([
         ContributionModel(
           id: '1',
           type: 'Tithe',
@@ -41,7 +41,7 @@ class ContributionsController extends GetxController {
           status: 'Completed',
           method: 'M-PESA',
         ),
-      ];
+      ]);
       calculateTotal();
       errorMessage.value = '';
     } catch (e) {

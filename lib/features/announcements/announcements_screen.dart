@@ -8,14 +8,7 @@ class AnnouncementsScreen extends GetView<AnnouncementsController> {
 
   @override
   Widget build(BuildContext context) {
-    // ensure controller is registered so its data is available to the view
-    final ctrl = Get.put(AnnouncementsController());
-    // Ensure data is loaded once after the first frame to avoid build-time races
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (ctrl.announcements.isEmpty && !ctrl.isLoading.value) {
-        ctrl.fetchAnnouncements();
-      }
-    });
+    final ctrl = controller;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF3F4F6),
@@ -43,6 +36,14 @@ class AnnouncementsScreen extends GetView<AnnouncementsController> {
 
                   if (ctrl.isLoading.value)
                     const Center(child: CircularProgressIndicator())
+                  else if (ctrl.errorMessage.value.isNotEmpty)
+                    Center(
+                      child: Text(
+                        ctrl.errorMessage.value,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.redAccent),
+                      ),
+                    )
                   else if (ctrl.announcements.isEmpty)
                     const Center(child: Text('No announcements available'))
                   else

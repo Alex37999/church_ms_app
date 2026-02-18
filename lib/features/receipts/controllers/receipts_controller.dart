@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 class ReceiptsController extends GetxController {
-  final RxList receipts = <ReceiptModel>[].obs;
+  final RxList<ReceiptModel> receipts = <ReceiptModel>[].obs;
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
 
@@ -15,7 +15,7 @@ class ReceiptsController extends GetxController {
     isLoading.value = true;
     try {
       // Initialize with sample data
-      receipts.value = [
+      receipts.assignAll([
         ReceiptModel(
           id: 'REC-004',
           month: 'February 2026',
@@ -48,7 +48,7 @@ class ReceiptsController extends GetxController {
           status: 'Available',
           contributionsCount: 1,
         ),
-      ];
+      ]);
       errorMessage.value = '';
     } catch (e) {
       errorMessage.value = 'Failed to fetch receipts: $e';

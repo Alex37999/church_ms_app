@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 class AnnouncementsController extends GetxController {
-  final RxList announcements = <AnnouncementModel>[].obs;
+  final RxList<AnnouncementModel> announcements = <AnnouncementModel>[].obs;
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
 
@@ -15,7 +15,7 @@ class AnnouncementsController extends GetxController {
     isLoading.value = true;
     try {
       // Initialize with sample data
-      announcements.value = [
+      announcements.assignAll([
         AnnouncementModel(
           title: 'Sunday Service Time Cha...',
           description:
@@ -48,7 +48,7 @@ class AnnouncementsController extends GetxController {
           date: '2026-02-01',
           isNew: false,
         ),
-      ];
+      ]);
       errorMessage.value = '';
     } catch (e) {
       errorMessage.value = 'Failed to fetch announcements: $e';

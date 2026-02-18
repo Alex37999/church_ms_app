@@ -8,8 +8,7 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
 
   @override
   Widget build(BuildContext context) {
-    // register controller to ensure data is available
-    final ctrl = Get.put(ReceiptsController());
+    final ctrl = controller;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF7F8FA),
@@ -37,6 +36,14 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
 
                   if (ctrl.isLoading.value)
                     const Center(child: CircularProgressIndicator())
+                  else if (ctrl.errorMessage.value.isNotEmpty)
+                    Center(
+                      child: Text(
+                        ctrl.errorMessage.value,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.redAccent),
+                      ),
+                    )
                   else if (ctrl.receipts.isEmpty)
                     const Center(child: Text('No receipts available'))
                   else
