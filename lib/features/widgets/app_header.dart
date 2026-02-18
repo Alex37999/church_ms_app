@@ -22,10 +22,6 @@ class AppHeader extends StatelessWidget {
             end: Alignment.bottomRight,
             colors: [Color(0xFF3B82F6), Color(0xFF60A5FA)],
           ),
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(18),
-            bottomRight: Radius.circular(18),
-          ),
         ),
         child: Row(
           children: [

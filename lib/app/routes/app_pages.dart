@@ -32,7 +32,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CONTRIBUTIONS,
-      page: () => const ContributionsScreen(),
+      page: () => ContributionsScreen(),
       binding: ContributionsBinding(),
     ),
     GetPage(

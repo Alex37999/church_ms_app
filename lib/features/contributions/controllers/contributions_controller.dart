@@ -23,6 +23,7 @@ class ContributionsController extends GetxController {
           amount: 10000,
           date: '2026-02-15',
           status: 'Completed',
+          method: 'M-PESA',
         ),
         ContributionModel(
           id: '2',
@@ -30,6 +31,7 @@ class ContributionsController extends GetxController {
           amount: 5000,
           date: '2026-02-10',
           status: 'Completed',
+          method: 'Bank Transfer',
         ),
         ContributionModel(
           id: '3',
@@ -37,6 +39,7 @@ class ContributionsController extends GetxController {
           amount: 20000,
           date: '2026-02-05',
           status: 'Completed',
+          method: 'M-PESA',
         ),
       ];
       calculateTotal();
@@ -67,6 +70,7 @@ class ContributionModel {
   final double amount;
   final String date;
   final String status;
+  final String method;
 
   ContributionModel({
     required this.id,
@@ -74,5 +78,6 @@ class ContributionModel {
     required this.amount,
     required this.date,
     required this.status,
+    this.method = 'M-PESA',
   });
 }

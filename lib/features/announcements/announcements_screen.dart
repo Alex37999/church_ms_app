@@ -8,44 +8,57 @@ class AnnouncementsScreen extends GetView<AnnouncementsController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          const AppHeader(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Announcements',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
+    // ensure controller is registered so its data is available to the view
+    final ctrl = Get.put(AnnouncementsController());
+    // Ensure data is loaded once after the first frame to avoid build-time races
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (ctrl.announcements.isEmpty && !ctrl.isLoading.value) {
+        ctrl.fetchAnnouncements();
+      }
+    });
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFF3F4F6),
+      body: Obx(
+        () => Column(
+          children: [
+            const AppHeader(),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                children: [
+                  const SizedBox(height: 20),
+                  Text(
+                    'Announcements',
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 4),
-                const Text(
-                  'Stay updated with church news',
-                  style: TextStyle(color: Colors.black54, fontSize: 14),
-                ),
-                const SizedBox(height: 16),
-                if (controller.isLoading.value)
-                  const Center(child: CircularProgressIndicator())
-                else if (controller.announcements.isEmpty)
-                  const Center(child: Text('No announcements available'))
-                else
-                  ...controller.announcements.map((announcement) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: _AnnouncementCard(announcement: announcement),
-                    );
-                  }).toList(),
-                const SizedBox(height: 40),
-              ],
+                  const SizedBox(height: 6),
+                  const Text(
+                    'Stay updated with church news',
+                    style: TextStyle(color: Colors.black54, fontSize: 14),
+                  ),
+                  const SizedBox(height: 20),
+
+                  if (ctrl.isLoading.value)
+                    const Center(child: CircularProgressIndicator())
+                  else if (ctrl.announcements.isEmpty)
+                    const Center(child: Text('No announcements available'))
+                  else
+                    ...ctrl.announcements.map((announcement) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: _AnnouncementCard(announcement: announcement),
+                      );
+                    }).toList(),
+
+                  const SizedBox(height: 30),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -58,68 +71,65 @@ class _AnnouncementCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.04),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(16),
+      elevation: 1,
+      shadowColor: Colors.black.withOpacity(0.05),
       child: InkWell(
+        borderRadius: BorderRadius.circular(16),
         onTap: () {},
-        borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(14),
+          padding: const EdgeInsets.all(16),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Icon circle
+              /// Left Icon
               Container(
+                width: 44,
+                height: 44,
                 decoration: BoxDecoration(
-                  color: Colors.blue.shade50,
+                  color: const Color(0xFFE8F0FE),
                   shape: BoxShape.circle,
                 ),
-                padding: const EdgeInsets.all(12),
-                child: Icon(
-                  Icons.send_outlined,
-                  color: Colors.blue.shade400,
-                  size: 24,
+                child: const Icon(
+                  Icons.campaign_outlined,
+                  size: 20,
+                  color: Color(0xFF3B82F6),
                 ),
               ),
-              const SizedBox(width: 12),
-              // Content
+
+              const SizedBox(width: 14),
+
+              /// Content
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    /// Title + NEW badge
                     Row(
                       children: [
                         Expanded(
                           child: Text(
                             announcement.title,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                            ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        if (announcement.isNew)
+                        if (announcement.isNew) ...[
+                          const SizedBox(width: 8),
                           Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 8,
                               vertical: 3,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(4),
+                              color: const Color(0xFF3B82F6),
+                              borderRadius: BorderRadius.circular(12),
                             ),
                             child: const Text(
                               'NEW',
@@ -130,34 +140,41 @@ class _AnnouncementCard extends StatelessWidget {
                               ),
                             ),
                           ),
+                        ],
                       ],
                     ),
-                    const SizedBox(height: 6),
+
+                    const SizedBox(height: 8),
+
+                    /// Description
                     Text(
                       announcement.description,
-                      style: const TextStyle(
-                        color: Colors.black87,
-                        fontSize: 13,
-                      ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: Colors.black87,
+                      ),
                     ),
-                    const SizedBox(height: 10),
+
+                    const SizedBox(height: 12),
+
+                    /// Footer row
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           announcement.source,
                           style: const TextStyle(
-                            color: Colors.black54,
                             fontSize: 12,
+                            color: Colors.black54,
                           ),
                         ),
                         Text(
                           announcement.date,
                           style: const TextStyle(
-                            color: Colors.black54,
                             fontSize: 12,
+                            color: Colors.black54,
                           ),
                         ),
                       ],
@@ -165,16 +182,11 @@ class _AnnouncementCard extends StatelessWidget {
                   ],
                 ),
               ),
+
               const SizedBox(width: 8),
-              // Arrow
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Icon(
-                  Icons.chevron_right,
-                  color: Colors.grey.shade400,
-                  size: 20,
-                ),
-              ),
+
+              /// Chevron
+              const Icon(Icons.chevron_right, size: 22, color: Colors.grey),
             ],
           ),
         ),

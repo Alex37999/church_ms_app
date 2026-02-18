@@ -2,9 +2,11 @@ import 'package:get/get.dart';
 
 class ProfileController extends GetxController {
   final RxString username = ''.obs;
+  final RxString memberNo = ''.obs;
   final RxString email = ''.obs;
   final RxString phoneNumber = ''.obs;
   final RxString address = ''.obs;
+  final RxString memberSince = ''.obs;
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
 
@@ -18,16 +20,26 @@ class ProfileController extends GetxController {
     isLoading.value = true;
     try {
       // Initialize with sample data
-      username.value = 'John Doe';
-      email.value = 'john.doe@example.com';
-      phoneNumber.value = '+254712345678';
-      address.value = 'Nairobi, Kenya';
+      username.value = 'David Otieno';
+      memberNo.value = 'GCC-1024';
+      email.value = 'david.otieno@email.com';
+      phoneNumber.value = '+254 712 345 678';
+      address.value = 'Westside Branch';
+      memberSince.value = 'January 2024';
       errorMessage.value = '';
     } catch (e) {
       errorMessage.value = 'Failed to fetch profile: $e';
     } finally {
       isLoading.value = false;
     }
+  }
+
+  String getInitials() {
+    final names = username.value.split(' ');
+    if (names.length >= 2) {
+      return '${names[0][0]}${names[1][0]}'.toUpperCase();
+    }
+    return username.value.isNotEmpty ? username.value[0].toUpperCase() : '';
   }
 
   void updateProfile({

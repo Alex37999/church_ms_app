@@ -49,7 +49,6 @@ class HomePage extends GetView<HomeController> {
               ),
               children: [
                 header,
-                const SizedBox(height: 16),
                 Text(
                   'Welcome back, David!',
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -138,7 +137,7 @@ class HomePage extends GetView<HomeController> {
               ],
             ),
 
-            const ContributionsScreen(),
+            ContributionsScreen(),
             const ReceiptsScreen(),
             const AnnouncementsScreen(),
             const ProfileScreen(),

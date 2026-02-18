@@ -37,7 +37,15 @@ class AnnouncementsController extends GetxController {
           description:
               'Join us for our monthly prayer meeting this Friday at 6:00 PM...',
           source: 'Prayer Team',
-          date: '2026-02-08',
+          date: '2026-02-05',
+          isNew: false,
+        ),
+        AnnouncementModel(
+          title: 'Building Fund Update',
+          description:
+              'We are excited to share that we have reached 75% of our building fund...',
+          source: 'Finance Team',
+          date: '2026-02-01',
           isNew: false,
         ),
       ];
