@@ -131,7 +131,6 @@ class HomePage extends GetView<HomeController> {
         ),
 
         ContributionsScreen(),
-        ContributionsScreen(),
         const ReceiptsScreen(),
         const AnnouncementsScreen(),
         const ProfileScreen(),
