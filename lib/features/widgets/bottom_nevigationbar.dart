@@ -25,6 +25,7 @@ class AppBottomNavigationBar extends StatelessWidget {
 
     return Obx(() {
       return BottomNavigationBar(
+        backgroundColor: const Color(0xFFFBFCFF),
         currentIndex: ctrl.index.value,
         onTap: (i) {
           ctrl.changeIndex(i);

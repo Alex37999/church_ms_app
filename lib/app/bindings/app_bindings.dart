@@ -6,8 +6,11 @@ import '../../core/services/api_service.dart';
 class AppBindings extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<ApiClient>(() => ApiClient());
-    Get.lazyPut<ApiService>(() => ApiService());
-    Get.put(AppController());
+    // Core services and API
+    Get.lazyPut<ApiClient>(() => ApiClient(), fenix: true);
+    Get.lazyPut<ApiService>(() => ApiService(), fenix: true);
+
+    // Global controller
+    Get.put(AppController(), permanent: true);
   }
 }

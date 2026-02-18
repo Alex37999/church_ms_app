@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'app/bindings/app_bindings.dart';
-import 'features/dashboard/home_page.dart';
+import 'app/routes/app_pages.dart';
+import 'app/theme/app_theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,12 +17,12 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'ChurchMS App',
       debugShowCheckedModeBanner: false,
+      initialRoute: AppPages.INITIAL,
+      getPages: AppPages.routes,
       initialBinding: AppBindings(),
-      home: const HomePage(),
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.light,
     );
   }
 }

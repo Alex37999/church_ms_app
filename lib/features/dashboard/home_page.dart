@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/controllers/app_controller.dart';
 import '../widgets/bottom_nevigationbar.dart';
+import '../widgets/app_header.dart';
 import '../contributions/contributions_screen.dart';
 import '../receipts/receipts_screen.dart';
 import '../announcements/announcements_screen.dart';
 import '../profile/profile_screen.dart';
+import './controllers/home_controller.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final appCtrl = Get.find<AppController>();
     final navCtrl = Get.put(BottomNavController());
 
     return Obx(() {
@@ -32,6 +32,12 @@ class HomePage extends StatelessWidget {
               : 1;
           final childAspect = gridCount == 1 ? 3.2 : 1.6;
 
+          // Build header widget
+          final header = AppHeader(
+            scale: scale,
+            horizontalPadding: horizontalPadding,
+          );
+
           final pages = <Widget>[
             // Dashboard
             ListView(
@@ -42,6 +48,8 @@ class HomePage extends StatelessWidget {
                 12,
               ),
               children: [
+                header,
+                const SizedBox(height: 16),
                 Text(
                   'Welcome back, David!',
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -56,11 +64,6 @@ class HomePage extends StatelessWidget {
                 const Text(
                   'Member No: GCC-1024',
                   style: TextStyle(color: Colors.black54),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Environment: ${appCtrl.env}',
-                  style: const TextStyle(color: Colors.black45, fontSize: 12),
                 ),
                 const SizedBox(height: 18),
 
@@ -143,105 +146,7 @@ class HomePage extends StatelessWidget {
 
           return Scaffold(
             backgroundColor: const Color(0xFFFBFCFF),
-            body: Column(
-              children: [
-                // Fixed header at top
-                SafeArea(
-                  bottom: false,
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: horizontalPadding,
-                      vertical: 14 * scale,
-                    ),
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [Color(0xFF3B82F6), Color(0xFF60A5FA)],
-                      ),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(18),
-                        bottomRight: Radius.circular(18),
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'ChurchFlow',
-                              style: Theme.of(context).textTheme.titleLarge
-                                  ?.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize:
-                                        (Theme.of(
-                                              context,
-                                            ).textTheme.titleLarge?.fontSize ??
-                                            20) *
-                                        scale,
-                                  ),
-                            ),
-                            SizedBox(height: 4 * scale),
-                            Text(
-                              'Grace Community Church',
-                              style: Theme.of(context).textTheme.bodySmall
-                                  ?.copyWith(
-                                    color: Colors.white70,
-                                    fontSize:
-                                        (Theme.of(
-                                              context,
-                                            ).textTheme.bodySmall?.fontSize ??
-                                            12) *
-                                        scale,
-                                  ),
-                            ),
-                          ],
-                        ),
-                        const Spacer(),
-                        Stack(
-                          children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.notifications_none,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Positioned(
-                              right: 8,
-                              top: 6,
-                              child: Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: const BoxDecoration(
-                                  color: Colors.green,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Text(
-                                  '3',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // Main content
-                Expanded(
-                  child: IndexedStack(index: idx, children: pages),
-                ),
-              ],
-            ),
+            body: IndexedStack(index: idx, children: pages),
             bottomNavigationBar: AppBottomNavigationBar(onTap: (i) {}),
           );
         },
