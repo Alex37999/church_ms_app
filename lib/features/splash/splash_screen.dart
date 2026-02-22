@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Learn smarter, not harder',
+                      'Seamless Community. Inspired Faith.',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: colorScheme.onSurfaceVariant,
                         fontWeight: FontWeight.w500,
@@ -82,31 +82,24 @@ class _LogoMark extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 92,
-      height: 92,
+      width: 100,
+      height: 100,
       child: Stack(
         clipBehavior: Clip.none,
         children: <Widget>[
           DecoratedBox(
-            decoration: BoxDecoration(
-              color: primary,
-              borderRadius: BorderRadius.circular(22),
-            ),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(24)),
             child: Center(
-              child: Icon(
-                Icons.menu_book_rounded,
-                size: 46,
-                color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset(
+                  'assets/icon/app_icon.png',
+                  width: 60,
+                  height: 60,
+                  //color: Colors.white,
+                  fit: BoxFit.contain,
+                ),
               ),
-            ),
-          ),
-          Positioned(
-            top: -8,
-            right: -8,
-            child: Icon(
-              Icons.auto_awesome_rounded,
-              size: 18,
-              color: Color(0xFFFFC107).withValues(alpha: 0.85),
             ),
           ),
         ],

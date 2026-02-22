@@ -11,6 +11,7 @@ abstract class Routes {
   static const CONTRIBUTIONS = _Paths.CONTRIBUTIONS;
   static const RECEIPTS = _Paths.RECEIPTS;
   static const PROFILE = _Paths.PROFILE;
+  static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
   static const NOTIFICATIONS = _Paths.NOTIFICATIONS;
 }
 
@@ -24,5 +25,6 @@ abstract class _Paths {
   static const CONTRIBUTIONS = '/contributions';
   static const RECEIPTS = '/receipts';
   static const PROFILE = '/profile';
+  static const EDIT_PROFILE = '/profile/edit';
   static const NOTIFICATIONS = '/notifications';
 }

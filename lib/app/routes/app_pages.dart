@@ -9,6 +9,8 @@ import '../../features/notification/bindings/notification_binding.dart';
 import '../../features/notification/notification_screen.dart';
 import '../../features/profile/bindings/profile_binding.dart';
 import '../../features/profile/profile_screen.dart';
+import '../../features/edit_profile/edit_profile_screen.dart';
+import '../../features/edit_profile/edit_profile_binding.dart';
 import '../../features/receipts/bindings/receipts_binding.dart';
 import '../../features/receipts/receipts_screen.dart';
 import '../../features/auth/login/login_binding.dart';
@@ -69,6 +71,11 @@ class AppPages {
       name: _Paths.PROFILE,
       page: () => const ProfileScreen(),
       binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_PROFILE,
+      page: () => const EditProfileScreen(),
+      binding: EditProfileBinding(),
     ),
     GetPage(
       name: _Paths.NOTIFICATIONS,

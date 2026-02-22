@@ -136,7 +136,7 @@ class ProfileScreen extends GetView<ProfileController> {
                         icon: Icons.edit_outlined,
                         title: 'Edit Profile',
                         onTap: () {
-                          // TODO: Navigate to edit profile
+                          Get.toNamed(Routes.EDIT_PROFILE);
                         },
                       ),
                       const SizedBox(height: 12),
