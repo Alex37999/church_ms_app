@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../../core/controllers/theme_controller.dart';
 import 'package:churchmsapp/app/theme/app_theme.dart';
+import 'package:churchmsapp/app/routes/app_pages.dart';
 import 'login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
@@ -156,7 +157,7 @@ class _LoginFormState extends State<_LoginForm> {
       children: [
         const SizedBox(height: 6),
         Text(
-          'Studymora',
+          'ChurchMS',
           style: TextStyle(
             fontSize: 36,
             color: AppTheme.primaryColor,
@@ -217,7 +218,7 @@ class _LoginFormState extends State<_LoginForm> {
             const Spacer(),
             TextButton(
               onPressed: () {
-                Get.toNamed('/reset-password');
+                Get.toNamed(Routes.RESET_PASSWORD);
               },
               child: Text(
                 'Forgot password?',
@@ -238,8 +239,8 @@ class _LoginFormState extends State<_LoginForm> {
             child: ElevatedButton(
               onPressed: controller.isLoading.value
                   ? null
-                  : () {
-                      controller.login();
+                  : () async {
+                      await controller.login();
                     },
               style: ElevatedButton.styleFrom(
                 elevation: 6,

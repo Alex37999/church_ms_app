@@ -55,7 +55,7 @@ class AppHeader extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'ChurchFlow',
+                  'ChurchMS',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -67,7 +67,7 @@ class AppHeader extends StatelessWidget {
                 ),
                 SizedBox(height: 4 * scale),
                 Text(
-                  'Grace Community Church',
+                  'ChurchMS',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Colors.white70,
                     fontSize:

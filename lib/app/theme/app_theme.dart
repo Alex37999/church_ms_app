@@ -4,12 +4,13 @@ class AppTheme {
   AppTheme._();
 
   // Primary brand color used across the app (kept as a single source)
-  static const Color primaryColor = Color(0xFF673AB7);
+  // Aligned with the blue used in home/profile screens
+  static const Color primaryColor = Color(0xFF5B6FFF);
 
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
       brightness: Brightness.light,
       scaffoldBackgroundColor: const Color(0xFFFBFCFF),
       appBarTheme: const AppBarTheme(
@@ -24,7 +25,7 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.deepPurple,
+        seedColor: primaryColor,
         brightness: Brightness.dark,
       ),
       brightness: Brightness.dark,

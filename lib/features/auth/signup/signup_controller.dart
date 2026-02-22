@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../core/controllers/theme_controller.dart';
 import '../../../core/services/storage_service.dart';
+import 'package:churchmsapp/app/routes/app_pages.dart';
 import '../data/auth_repository.dart';
 
 class RegisterController extends GetxController {
@@ -114,7 +115,7 @@ class RegisterController extends GetxController {
         );
 
         // Users are automatically verified, navigate to home
-        Get.offAllNamed('/home');
+        Get.offAllNamed(Routes.HOME);
         return;
       }
 
@@ -165,7 +166,7 @@ class RegisterController extends GetxController {
     }
   }
 
-  void navigateToLogin() => Get.toNamed('/login');
+  void navigateToLogin() => Get.toNamed(Routes.LOGIN);
 
   @override
   void onClose() {

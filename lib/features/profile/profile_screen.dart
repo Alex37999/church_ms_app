@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:churchmsapp/app/routes/app_pages.dart';
+import 'package:churchmsapp/core/services/storage_service.dart';
 import '../widgets/app_header.dart';
 import './controllers/profile_controller.dart';
 
@@ -160,6 +162,38 @@ class ProfileScreen extends GetView<ProfileController> {
                         onTap: () {
                           // TODO: Navigate to account settings
                         },
+                      ),
+                      const SizedBox(height: 18),
+
+                      // Logout button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () async {
+                            // Clear stored session and navigate to login
+                            final storage = Get.find<StorageService>();
+                            await storage.setLoggedIn(false);
+                            await storage.saveToken('');
+                            await storage.saveUserId('');
+                            await storage.saveUserEmail('');
+                            await storage.saveUserFullName('');
+                            Get.offAllNamed(Routes.LOGIN);
+                          },
+                          icon: const Icon(Icons.logout, color: Colors.white),
+                          label: const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 14.0),
+                            child: Text(
+                              'Logout',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),

@@ -17,15 +17,18 @@ import '../../features/auth/signup/signup_binding.dart';
 import '../../features/auth/signup/signup_screen.dart';
 import '../../features/auth/reset_pass/reset_pass_binding.dart';
 import '../../features/auth/reset_pass/reset_pass_screen.dart';
+import '../../features/splash/splash_screen.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.HOME;
+  static const INITIAL = Routes.SPLASH;
 
   static final routes = [
+    // Splash (entry) page
+    GetPage(name: _Paths.SPLASH, page: () => const SplashScreen()),
     // Authentication pages
     GetPage(
       name: _Paths.LOGIN,

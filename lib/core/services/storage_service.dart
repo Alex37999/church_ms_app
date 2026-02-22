@@ -8,4 +8,5 @@ class StorageService extends GetxService {
   Future<void> saveUserEmail(String email) async {}
   Future<void> saveUserFullName(String name) async {}
   Future<void> setLoggedIn(bool value) async {}
+  Future<bool> isLoggedIn() async => false;
 }

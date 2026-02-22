@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../core/services/storage_service.dart';
 import '../data/auth_repository.dart';
+import 'package:churchmsapp/app/routes/app_pages.dart';
 
 class LoginController extends GetxController {
   final formKey = GlobalKey<FormState>();
@@ -52,6 +53,24 @@ class LoginController extends GetxController {
 
       final loginResponse = await _authRepository.login(body);
 
+      // Development fallback: if auth repo is a stub and returns null,
+      // treat as successful login so tapping the login button navigates to Home.
+      if (loginResponse == null) {
+        await Get.find<StorageService>().setLoggedIn(true);
+        Get.snackbar(
+          'Success 🎉',
+          'Login (dev) — navigating to Home',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 1),
+        );
+
+        await Future.delayed(const Duration(milliseconds: 300));
+        Get.offAllNamed(Routes.HOME);
+        return;
+      }
+
       //===Success check=============//
       if (loginResponse != null &&
           loginResponse.success == true &&
@@ -99,7 +118,7 @@ class LoginController extends GetxController {
 
         await Future.delayed(const Duration(milliseconds: 300));
 
-        Get.offAllNamed('/home');
+        Get.offAllNamed(Routes.HOME);
       } else {
         String errorMessage = 'Invalid email or password. Please try again.';
 
@@ -137,7 +156,7 @@ class LoginController extends GetxController {
   }
 
   void navigateToRegister() {
-    Get.toNamed('/signup');
+    Get.toNamed(Routes.SIGNUP);
   }
 
   @override

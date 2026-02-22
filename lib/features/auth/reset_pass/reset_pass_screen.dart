@@ -45,7 +45,15 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
                       ),
                     ],
                   ),
-                  child: _ResetForm(),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: mq.size.height - 120,
+                    ),
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: _ResetForm(),
+                    ),
+                  ),
                 );
               }),
             ),

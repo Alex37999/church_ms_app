@@ -1,8 +1,9 @@
 part of 'app_pages.dart';
 
 abstract class Routes {
-  static const INITIAL = _Paths.HOME;
+  static const INITIAL = _Paths.SPLASH;
   static const HOME = _Paths.HOME;
+  static const SPLASH = _Paths.SPLASH;
   static const LOGIN = _Paths.LOGIN;
   static const SIGNUP = _Paths.SIGNUP;
   static const RESET_PASSWORD = _Paths.RESET_PASSWORD;
@@ -15,6 +16,7 @@ abstract class Routes {
 
 abstract class _Paths {
   static const HOME = '/home';
+  static const SPLASH = '/';
   static const LOGIN = '/login';
   static const SIGNUP = '/signup';
   static const RESET_PASSWORD = '/reset-password';
