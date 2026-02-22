@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 class AppTheme {
   AppTheme._();
 
+  // Primary brand color used across the app (kept as a single source)
+  static const Color primaryColor = Color(0xFF673AB7);
+
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,

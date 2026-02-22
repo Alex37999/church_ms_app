@@ -11,6 +11,12 @@ import '../../features/profile/bindings/profile_binding.dart';
 import '../../features/profile/profile_screen.dart';
 import '../../features/receipts/bindings/receipts_binding.dart';
 import '../../features/receipts/receipts_screen.dart';
+import '../../features/auth/login/login_binding.dart';
+import '../../features/auth/login/login_screen.dart';
+import '../../features/auth/signup/signup_binding.dart';
+import '../../features/auth/signup/signup_screen.dart';
+import '../../features/auth/reset_pass/reset_pass_binding.dart';
+import '../../features/auth/reset_pass/reset_pass_screen.dart';
 
 part 'app_routes.dart';
 
@@ -20,6 +26,22 @@ class AppPages {
   static const INITIAL = Routes.HOME;
 
   static final routes = [
+    // Authentication pages
+    GetPage(
+      name: _Paths.LOGIN,
+      page: () => const LoginView(),
+      binding: LoginBinding(),
+    ),
+    GetPage(
+      name: _Paths.SIGNUP,
+      page: () => const RegisterView(),
+      binding: RegisterBinding(),
+    ),
+    GetPage(
+      name: _Paths.RESET_PASSWORD,
+      page: () => const ResetPasswordView(),
+      binding: ResetPasswordBinding(),
+    ),
     GetPage(
       name: _Paths.HOME,
       page: () => const HomePage(),
