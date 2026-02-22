@@ -22,24 +22,30 @@ class ContributionsController extends GetxController {
           type: 'Tithe',
           amount: 10000,
           date: '2026-02-15',
-          status: 'Completed',
+          status: 'Confirmed',
           method: 'M-PESA',
+          time: '10:30 AM',
+          transactionCode: 'TXN12345',
         ),
         ContributionModel(
           id: '2',
           type: 'Offering',
           amount: 5000,
           date: '2026-02-10',
-          status: 'Completed',
+          status: 'Confirmed',
           method: 'Bank Transfer',
+          time: '09:20 AM',
+          transactionCode: 'TXN54321',
         ),
         ContributionModel(
           id: '3',
           type: 'Building Fund',
           amount: 20000,
           date: '2026-02-05',
-          status: 'Completed',
+          status: 'Confirmed',
           method: 'M-PESA',
+          time: '08:45 AM',
+          transactionCode: 'TXN98765',
         ),
       ]);
       calculateTotal();
@@ -71,6 +77,8 @@ class ContributionModel {
   final String date;
   final String status;
   final String method;
+  final String? time;
+  final String? transactionCode;
 
   ContributionModel({
     required this.id,
@@ -79,5 +87,7 @@ class ContributionModel {
     required this.date,
     required this.status,
     this.method = 'M-PESA',
+    this.time,
+    this.transactionCode,
   });
 }

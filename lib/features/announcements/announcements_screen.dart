@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:churchmsapp/app/routes/app_pages.dart';
 import '../widgets/app_header.dart';
 import './controllers/announcements_controller.dart';
 
@@ -79,7 +80,8 @@ class _AnnouncementCard extends StatelessWidget {
       shadowColor: Colors.black.withOpacity(0.05),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
-        onTap: () {},
+        onTap: () =>
+            Get.toNamed(Routes.ANNOUNCEMENTS_DETAILS, arguments: announcement),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(

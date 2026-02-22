@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../widgets/app_header.dart';
 import './controllers/receipts_controller.dart';
+import './contribution_receipts.dart';
 
 class ReceiptsScreen extends GetView<ReceiptsController> {
   const ReceiptsScreen({super.key});
@@ -57,7 +58,9 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
                           shadowColor: Colors.black.withOpacity(0.04),
                           child: InkWell(
                             borderRadius: BorderRadius.circular(12),
-                            onTap: () {},
+                            onTap: () => Get.to(
+                              () => ContributionReceiptScreen(receipt: receipt),
+                            ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 14,

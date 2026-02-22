@@ -121,15 +121,7 @@ class _CustomInput extends StatelessWidget {
                 ],
               ),
             ),
-            // Error message below the text field (শুধু লাল টেক্সট)
-            if (errorText != null && errorText!.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(left: 12, top: 4),
-                child: Text(
-                  errorText!,
-                  style: const TextStyle(color: Colors.red, fontSize: 12),
-                ),
-              ),
+            // validation UI removed — error messages are handled elsewhere
           ],
         );
       },
@@ -239,8 +231,9 @@ class _LoginFormState extends State<_LoginForm> {
             child: ElevatedButton(
               onPressed: controller.isLoading.value
                   ? null
-                  : () async {
-                      await controller.login();
+                  : () {
+                      // Directly navigate to Home on sign in press
+                      Get.offAllNamed(Routes.HOME);
                     },
               style: ElevatedButton.styleFrom(
                 elevation: 6,

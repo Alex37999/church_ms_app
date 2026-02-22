@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../widgets/app_header.dart';
 import './controllers/contributions_controller.dart';
+import './contribution_details.dart';
 
 class ContributionsScreen extends GetView<ContributionsController> {
   ContributionsScreen({super.key});
@@ -73,23 +74,11 @@ class ContributionsScreen extends GetView<ContributionsController> {
                         shadowColor: Colors.black.withOpacity(0.04),
                         child: InkWell(
                           borderRadius: BorderRadius.circular(12),
-                          onTap: () {
-                            if (selected) {
-                              _selectedContributionId.value = null;
-                              Get.snackbar(
-                                'Selection',
-                                'Deselected item',
-                                snackPosition: SnackPosition.BOTTOM,
-                              );
-                            } else {
-                              _selectedContributionId.value = id;
-                              Get.snackbar(
-                                'Selection',
-                                'Selected ${contribution.type}',
-                                snackPosition: SnackPosition.BOTTOM,
-                              );
-                            }
-                          },
+                          onTap: () => Get.to(
+                            () => ContributionDetailsScreen(
+                              contribution: contribution,
+                            ),
+                          ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 14,

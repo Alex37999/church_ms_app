@@ -160,7 +160,7 @@ class ProfileScreen extends GetView<ProfileController> {
                         icon: Icons.settings_outlined,
                         title: 'Account Settings',
                         onTap: () {
-                          // TODO: Navigate to account settings
+                          Get.toNamed(Routes.ACCOUNT_SETTINGS);
                         },
                       ),
                       const SizedBox(height: 18),

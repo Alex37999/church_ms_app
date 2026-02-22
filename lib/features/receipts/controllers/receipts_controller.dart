@@ -23,6 +23,20 @@ class ReceiptsController extends GetxController {
           date: '2026-02-10',
           status: 'Available',
           contributionsCount: 2,
+          memberName: 'David Otieno',
+          memberNo: 'GCC-1024',
+          contributions: [
+            ReceiptContribution(
+              label: 'Tithe',
+              date: '2026-02-15',
+              amount: 10000,
+            ),
+            ReceiptContribution(
+              label: 'Offering',
+              date: '2026-02-08',
+              amount: 5000,
+            ),
+          ],
         ),
         ReceiptModel(
           id: 'REC-001',
@@ -31,6 +45,20 @@ class ReceiptsController extends GetxController {
           date: '2026-02-01',
           status: 'Available',
           contributionsCount: 2,
+          memberName: 'Grace Njoroge',
+          memberNo: 'GCC-0987',
+          contributions: [
+            ReceiptContribution(
+              label: 'Tithe',
+              date: '2026-01-15',
+              amount: 10000,
+            ),
+            ReceiptContribution(
+              label: 'Offering',
+              date: '2026-01-08',
+              amount: 5000,
+            ),
+          ],
         ),
         ReceiptModel(
           id: 'REC-002',
@@ -39,6 +67,25 @@ class ReceiptsController extends GetxController {
           date: '2026-01-01',
           status: 'Available',
           contributionsCount: 3,
+          memberName: 'Samuel Karanja',
+          memberNo: 'GCC-0765',
+          contributions: [
+            ReceiptContribution(
+              label: 'Tithe',
+              date: '2025-12-15',
+              amount: 10000,
+            ),
+            ReceiptContribution(
+              label: 'Offering',
+              date: '2025-12-08',
+              amount: 5000,
+            ),
+            ReceiptContribution(
+              label: 'Special',
+              date: '2025-12-20',
+              amount: 5000,
+            ),
+          ],
         ),
         ReceiptModel(
           id: 'REC-003',
@@ -47,6 +94,15 @@ class ReceiptsController extends GetxController {
           date: '2025-12-01',
           status: 'Available',
           contributionsCount: 1,
+          memberName: 'Alice Wambui',
+          memberNo: 'GCC-0456',
+          contributions: [
+            ReceiptContribution(
+              label: 'Tithe',
+              date: '2025-11-15',
+              amount: 10000,
+            ),
+          ],
         ),
       ]);
       errorMessage.value = '';
@@ -70,6 +126,9 @@ class ReceiptModel {
   final String date;
   final String status;
   final int contributionsCount;
+  final String? memberName;
+  final String? memberNo;
+  final List<ReceiptContribution>? contributions;
 
   ReceiptModel({
     required this.id,
@@ -78,5 +137,20 @@ class ReceiptModel {
     required this.date,
     required this.status,
     this.contributionsCount = 0,
+    this.memberName,
+    this.memberNo,
+    this.contributions,
+  });
+}
+
+class ReceiptContribution {
+  final String label;
+  final String date;
+  final double amount;
+
+  ReceiptContribution({
+    required this.label,
+    required this.date,
+    required this.amount,
   });
 }

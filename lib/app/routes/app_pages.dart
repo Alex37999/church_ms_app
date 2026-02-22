@@ -20,6 +20,8 @@ import '../../features/auth/signup/signup_screen.dart';
 import '../../features/auth/reset_pass/reset_pass_binding.dart';
 import '../../features/auth/reset_pass/reset_pass_screen.dart';
 import '../../features/splash/splash_screen.dart';
+import '../../features/account_settings/account_settings_screen.dart';
+import '../../features/announcements/announcements_details_screen.dart';
 
 part 'app_routes.dart';
 
@@ -81,6 +83,17 @@ class AppPages {
       name: _Paths.NOTIFICATIONS,
       page: () => const NotificationScreen(),
       binding: NotificationBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACCOUNT_SETTINGS,
+      page: () => const AccountSettingsScreen(),
+    ),
+    GetPage(
+      name: _Paths.ANNOUNCEMENTS_DETAILS,
+      page: () {
+        final announcement = Get.arguments;
+        return AnnouncementsDetailsScreen(announcement: announcement);
+      },
     ),
   ];
 }
