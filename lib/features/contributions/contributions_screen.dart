@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../widgets/app_header.dart';
 import './controllers/contributions_controller.dart';
-import './contribution_details.dart';
+import 'contribution_details_screen.dart';
 
 class ContributionsScreen extends GetView<ContributionsController> {
   ContributionsScreen({super.key});

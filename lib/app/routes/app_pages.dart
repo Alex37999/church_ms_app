@@ -10,7 +10,7 @@ import '../../features/notification/notification_screen.dart';
 import '../../features/profile/bindings/profile_binding.dart';
 import '../../features/profile/profile_screen.dart';
 import '../../features/edit_profile/edit_profile_screen.dart';
-import '../../features/edit_profile/edit_profile_binding.dart';
+import '../../features/edit_profile/bindings/edit_profile_binding.dart';
 import '../../features/receipts/bindings/receipts_binding.dart';
 import '../../features/receipts/receipts_screen.dart';
 import '../../features/auth/login/login_binding.dart';

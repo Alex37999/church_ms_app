@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../profile/controllers/profile_controller.dart';
+import '../../profile/controllers/profile_controller.dart';
 
 class EditProfileController extends GetxController {
   late final ProfileController profileController;

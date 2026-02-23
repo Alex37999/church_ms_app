@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../widgets/app_header.dart';
 import './controllers/receipts_controller.dart';
-import './contribution_receipts.dart';
+import 'receipts_details_screen.dart';
 
 class ReceiptsScreen extends GetView<ReceiptsController> {
   const ReceiptsScreen({super.key});

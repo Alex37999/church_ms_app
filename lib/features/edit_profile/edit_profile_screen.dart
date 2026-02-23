@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'edit_profile_controller.dart';
+import 'controllers/edit_profile_controller.dart';
 import '../widgets/app_header.dart';
 
 class EditProfileScreen extends GetView<EditProfileController> {
