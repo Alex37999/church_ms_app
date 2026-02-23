@@ -65,13 +65,15 @@ class ContributionsScreen extends GetView<ContributionsController> {
                     final selected = _selectedContributionId.value == id;
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 12),
-                      child: Material(
-                        color: selected
-                            ? const Color(0xFFF0F9FF)
-                            : Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        elevation: selected ? 2 : 0.5,
-                        shadowColor: Colors.black.withOpacity(0.04),
+                      child: Card(
+                        color: Colors.white,
+                        elevation: selected ? 8 : 3,
+                        margin: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(color: Colors.grey.shade100),
+                        ),
+                        shadowColor: Colors.black26,
                         child: InkWell(
                           borderRadius: BorderRadius.circular(12),
                           onTap: () => Get.to(

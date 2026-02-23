@@ -173,49 +173,48 @@ class _SummaryCard extends StatelessWidget {
       height: 1.1,
     );
 
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
+    return Card(
+      color: Colors.white,
+      elevation: 6,
+      shadowColor: const Color.fromRGBO(0, 0, 0, 0.06),
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.04),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        side: BorderSide(color: Colors.grey.shade100),
       ),
-      padding: const EdgeInsets.all(12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: color ?? Colors.grey.shade200,
-              shape: BoxShape.circle,
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: color ?? Colors.grey.shade200,
+                shape: BoxShape.circle,
+              ),
+              padding: const EdgeInsets.all(9),
+              child: Icon(icon, color: iconColor ?? Colors.black54, size: 20),
             ),
-            padding: const EdgeInsets.all(9),
-            child: Icon(icon, color: iconColor ?? Colors.black54, size: 20),
-          ),
-          const SizedBox(height: 10),
-          Flexible(
-            child: Text(
-              title,
-              maxLines: 2,
+            const SizedBox(height: 10),
+            Flexible(
+              child: Text(
+                title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: titleStyle,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              value,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: titleStyle,
+              style: valueStyle,
             ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            value,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: valueStyle,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -238,17 +237,14 @@ class _ActivityItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
+    return Card(
+      color: Colors.white,
+      elevation: 6,
+      shadowColor: Color.fromRGBO(0, 0, 0, 0.06),
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.04),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        side: BorderSide(color: Colors.grey.shade100),
       ),
       child: ListTile(
         leading: CircleAvatar(

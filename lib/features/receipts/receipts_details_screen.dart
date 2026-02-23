@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../widgets/app_header.dart';
 import './controllers/receipts_controller.dart';
 
 class ContributionReceiptScreen extends StatelessWidget {
@@ -61,41 +62,19 @@ class ContributionReceiptScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          SafeArea(
-            bottom: false,
-            child: Container(
-              width: double.infinity,
-              color: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: () => Get.back(),
-                    icon: const Icon(Icons.arrow_back),
-                    color: const Color(0xFF2563EB),
-                    tooltip: 'Back',
-                  ),
-                  const SizedBox(width: 8),
-                  const Text(
-                    'Back',
-                    style: TextStyle(
-                      color: Color(0xFF2563EB),
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          AppHeader(showBackButton: true, onBack: () => Get.back()),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
               children: [
                 Card(
+                  color: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(color: Colors.grey.shade100),
                   ),
-                  elevation: 0.5,
+                  elevation: 6,
+                  shadowColor: Colors.black26,
                   child: Padding(
                     padding: const EdgeInsets.all(18.0),
                     child: Column(

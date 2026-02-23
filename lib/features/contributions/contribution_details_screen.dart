@@ -62,10 +62,13 @@ class ContributionDetailsScreen extends StatelessWidget {
                 const SizedBox(height: 18),
 
                 Card(
+                  color: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(color: Colors.grey.shade100),
                   ),
-                  elevation: 0.5,
+                  elevation: 6,
+                  shadowColor: Colors.black26,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -99,12 +102,18 @@ class ContributionDetailsScreen extends StatelessWidget {
                   onPressed: () => Get.to(
                     () => ContributionDetailsScreen(contribution: contribution),
                   ),
-                  icon: const Icon(Icons.remove_red_eye_outlined),
+                  icon: const Icon(
+                    Icons.remove_red_eye_outlined,
+                    color: Colors.white,
+                  ),
                   label: const Padding(
                     padding: EdgeInsets.symmetric(vertical: 12.0),
                     child: Text(
                       'View Receipt',
-                      style: TextStyle(fontWeight: FontWeight.w700),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                   style: ElevatedButton.styleFrom(
