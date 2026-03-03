@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'dart:io';
+
+import 'package:image_picker/image_picker.dart';
+
 import '../../profile/controllers/profile_controller.dart';
+import '../data/edit_profile_repository.dart';
+import '../data/edit_profile_model.dart' as edit_model;
 
 class EditProfileController extends GetxController {
   late final ProfileController profileController;
@@ -12,6 +18,9 @@ class EditProfileController extends GetxController {
   final addressCtrl = TextEditingController();
 
   final isLoading = false.obs;
+  final EditProfileRepository _repo = EditProfileRepository();
+  final ImagePicker _picker = ImagePicker();
+  final Rxn<XFile> imageFile = Rxn<XFile>();
 
   @override
   void onInit() {
@@ -50,12 +59,33 @@ class EditProfileController extends GetxController {
 
     try {
       isLoading.value = true;
-      // In a real app, you'd call an API here. For now update local controller.
+
+      final edit_model.Data? updated = await _repo.editProfile(
+        name: newName,
+        email: newEmail,
+        phone: newPhone,
+        address: newAddress,
+        imagePath: imageFile.value?.path,
+      );
+
+      if (updated == null) {
+        Get.snackbar(
+          'Error',
+          'Failed to update profile',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        return;
+      }
+
+      // Update local ProfileController with returned values
       profileController.updateProfile(
-        newUsername: newName,
-        newEmail: newEmail,
-        newPhone: newPhone,
-        newAddress: newAddress,
+        newUsername: updated.name,
+        newEmail: updated.email,
+        newPhone: updated.phone,
+        newAddress: updated.address,
+        newImageUrl: updated.image,
       );
 
       Get.snackbar(
@@ -63,19 +93,38 @@ class EditProfileController extends GetxController {
         'Profile updated',
         snackPosition: SnackPosition.BOTTOM,
       );
+
       // close screen
       await Future.delayed(const Duration(milliseconds: 200));
       Get.back();
     } catch (e) {
       Get.snackbar(
         'Error',
-        'Failed to save profile',
+        'Failed to save profile: $e',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  Future<void> pickImage() async {
+    try {
+      final XFile? picked = await _picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 80,
+      );
+      if (picked != null) {
+        imageFile.value = picked;
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Failed to pick image',
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
   }
 

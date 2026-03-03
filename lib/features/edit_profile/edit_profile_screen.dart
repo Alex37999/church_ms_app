@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -35,59 +37,91 @@ class EditProfileScreen extends GetView<EditProfileController> {
                 ),
                 const SizedBox(height: 20),
 
-                // Avatar with initials
+                // Avatar with initials or image; tap to pick new photo
                 Center(
                   child: Column(
                     children: [
-                      Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF5B6FFF),
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0xFF5B6FFF).withOpacity(0.3),
-                              blurRadius: 12,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Text(
-                              controller.profileController.getInitials(),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 44,
-                                fontWeight: FontWeight.bold,
+                      GestureDetector(
+                        onTap: controller.pickImage,
+                        child: Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF5B6FFF),
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF5B6FFF).withOpacity(0.3),
+                                blurRadius: 12,
+                                offset: const Offset(0, 4),
                               ),
-                            ),
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.2),
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 2),
+                            ],
+                          ),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Obx(() {
+                                // show selected image first, then remote image, otherwise initials
+                                if (controller.imageFile.value != null) {
+                                  return ClipOval(
+                                    child: Image.file(
+                                      File(controller.imageFile.value!.path),
+                                      fit: BoxFit.cover,
+                                      width: 100,
+                                      height: 100,
                                     ),
-                                  ],
-                                ),
-                                padding: const EdgeInsets.all(4),
-                                child: const Icon(
-                                  Icons.camera_alt,
-                                  size: 16,
-                                  color: Color(0xFF5B6FFF),
+                                  );
+                                }
+
+                                final remote =
+                                    controller.profileController.imageUrl.value;
+                                if (remote.isNotEmpty) {
+                                  return ClipOval(
+                                    child: Image.network(
+                                      remote,
+                                      fit: BoxFit.cover,
+                                      width: 100,
+                                      height: 100,
+                                    ),
+                                  );
+                                }
+
+                                return Center(
+                                  child: Text(
+                                    controller.profileController.getInitials(),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 44,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                );
+                              }),
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        blurRadius: 4,
+                                        offset: const Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  padding: const EdgeInsets.all(4),
+                                  child: const Icon(
+                                    Icons.camera_alt,
+                                    size: 16,
+                                    color: Color(0xFF5B6FFF),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       const SizedBox(height: 8),
