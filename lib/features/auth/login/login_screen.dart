@@ -121,6 +121,14 @@ class _CustomInput extends StatelessWidget {
                 ],
               ),
             ),
+            if (errorText != null && errorText!.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0, top: 6.0),
+                child: Text(
+                  errorText!,
+                  style: const TextStyle(color: Colors.redAccent, fontSize: 12),
+                ),
+              ),
             // validation UI removed — error messages are handled elsewhere
           ],
         );
@@ -145,137 +153,136 @@ class _LoginFormState extends State<_LoginForm> {
   Widget build(BuildContext context) {
     final t = Get.find<ThemeController>();
 
-    return Column(
-      children: [
-        const SizedBox(height: 6),
-        Text(
-          'ChurchMS',
-          style: TextStyle(
-            fontSize: 36,
-            color: AppTheme.primaryColor,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 0.6,
-          ),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          'Welcome Back',
-          style: TextStyle(
-            fontSize: 24,
-            color: t.primaryText,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          'Sign in to your account to continue',
-          style: TextStyle(color: t.secondaryText),
-        ),
-
-        const SizedBox(height: 18),
-
-        Obx(
-          () => _CustomInput(
-            icon: Icons.email_outlined,
-            hint: 'Email Address',
-            controller: controller.emailController,
-            errorText: controller.emailError.value,
-          ),
-        ),
-
-        const SizedBox(height: 12),
-
-        Obx(
-          () => _CustomInput(
-            icon: Icons.lock_outline,
-            hint: 'Password',
-            controller: controller.passwordController,
-            obscure: controller.obscurePassword.value,
-            toggleObscure: controller.togglePasswordVisibility,
-            errorText: controller.passwordError.value,
-          ),
-        ),
-
-        const SizedBox(height: 8),
-
-        Row(
-          children: [
-            Obx(
-              () => Checkbox(
-                value: controller.rememberMe.value,
-                onChanged: (v) => controller.rememberMe.value = v!,
-              ),
+    return Form(
+      key: controller.formKey,
+      child: Column(
+        children: [
+          const SizedBox(height: 6),
+          Text(
+            'ChurchMS',
+            style: TextStyle(
+              fontSize: 36,
+              color: AppTheme.primaryColor,
+              fontWeight: FontWeight.bold,
             ),
-            Text('Remember me', style: TextStyle(color: t.secondaryText)),
-            const Spacer(),
-            SizedBox.shrink(),
-          ],
-        ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'Welcome Back',
+            style: TextStyle(
+              fontSize: 24,
+              color: t.primaryText,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            'Sign in to your account to continue',
+            style: TextStyle(color: t.secondaryText),
+          ),
 
-        const SizedBox(height: 8),
+          const SizedBox(height: 18),
 
-        Obx(
-          () => SizedBox(
-            width: double.infinity,
-            height: 50,
-            child: ElevatedButton(
-              onPressed: controller.isLoading.value
-                  ? null
-                  : () {
-                      // Directly navigate to Home on sign in press
-                      Get.offAllNamed(Routes.HOME);
-                    },
-              style: ElevatedButton.styleFrom(
-                elevation: 6,
-                backgroundColor: AppTheme.primaryColor,
-                padding: EdgeInsets.zero,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+          Obx(
+            () => _CustomInput(
+              icon: Icons.email_outlined,
+              hint: 'Email Address',
+              controller: controller.emailController,
+              errorText: controller.emailError.value,
+            ),
+          ),
+
+          const SizedBox(height: 12),
+
+          Obx(
+            () => _CustomInput(
+              icon: Icons.lock_outline,
+              hint: 'Password',
+              controller: controller.passwordController,
+              obscure: controller.obscurePassword.value,
+              toggleObscure: controller.togglePasswordVisibility,
+              errorText: controller.passwordError.value,
+            ),
+          ),
+
+          const SizedBox(height: 8),
+
+          Row(
+            children: [
+              Obx(
+                () => Checkbox(
+                  value: controller.rememberMe.value,
+                  onChanged: (v) => controller.rememberMe.value = v!,
                 ),
               ),
-              child: Container(
-                alignment: Alignment.center,
-                child: controller.isLoading.value
-                    ? const SizedBox(
-                        height: 22,
-                        width: 22,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(Icons.login, color: Colors.white),
-                          SizedBox(width: 10),
-                          Text(
-                            'Sign In',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+              Text('Remember me', style: TextStyle(color: t.secondaryText)),
+              const Spacer(),
+              SizedBox.shrink(),
+            ],
+          ),
+
+          const SizedBox(height: 8),
+
+          Obx(
+            () => SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: controller.isLoading.value
+                    ? null
+                    : () => controller.login(formKey: controller.formKey),
+                style: ElevatedButton.styleFrom(
+                  elevation: 6,
+                  backgroundColor: AppTheme.primaryColor,
+                  padding: EdgeInsets.zero,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Container(
+                  alignment: Alignment.center,
+                  child: controller.isLoading.value
+                      ? const SizedBox(
+                          height: 22,
+                          width: 22,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
                           ),
-                        ],
-                      ),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.login, color: Colors.white),
+                            SizedBox(width: 10),
+                            Text(
+                              'Sign In',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                ),
               ),
             ),
           ),
-        ),
 
-        // const SizedBox(height: 14),
+          // const SizedBox(height: 14),
 
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: [
-        //     Text(
-        //       "Don't have an account?",
-        //       style: TextStyle(color: t.secondaryText),
-        //     ),
-        //     SizedBox.shrink(),
-        //   ],
-        // ),
-      ],
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     Text(
+          //       "Don't have an account?",
+          //       style: TextStyle(color: t.secondaryText),
+          //     ),
+          //     SizedBox.shrink(),
+          //   ],
+          // ),
+        ],
+      ),
     );
   }
 }

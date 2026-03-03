@@ -52,18 +52,55 @@ class LoginController extends GetxController {
       };
 
       final loginResponse = await _authRepository.login(body);
+      // Log parsed response model
+      try {
+        print(
+          '🔐 [LoginController] parsed response: ${loginResponse?.toJson()}',
+        );
+      } catch (_) {}
 
-      // Development fallback: if auth repo is a stub and returns null,
-      // treat as successful login so tapping the login button navigates to Home.
+      // If API call failed or returned null, show failure and exit.
       if (loginResponse == null) {
+        Get.snackbar(
+          'Login Failed',
+          'Unable to contact server. Please try again.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        return;
+      }
+
+      // Successful response
+      if (loginResponse.success == true &&
+          loginResponse.token != null &&
+          loginResponse.token!.isNotEmpty) {
+        // Save token
+        await Get.find<StorageService>().saveToken(loginResponse.token!);
+
+        // Save user data
+        final member = loginResponse.member;
+        if (member != null) {
+          if (member.id != null) {
+            await Get.find<StorageService>().saveUserId(member.id.toString());
+          }
+          if (member.name != null) {
+            await Get.find<StorageService>().saveUserFullName(member.name!);
+          }
+          if (member.email != null) {
+            await Get.find<StorageService>().saveUserEmail(member.email!);
+          }
+        }
+
         await Get.find<StorageService>().setLoggedIn(true);
+
         Get.snackbar(
           'Success 🎉',
-          'Login (dev) — navigating to Home',
+          loginResponse.message ?? 'Login successful',
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.green,
           colorText: Colors.white,
-          duration: const Duration(seconds: 1),
+          duration: const Duration(seconds: 2),
         );
 
         await Future.delayed(const Duration(milliseconds: 300));
@@ -71,73 +108,15 @@ class LoginController extends GetxController {
         return;
       }
 
-      //===Success check=============//
-      if (loginResponse != null &&
-          loginResponse.success == true &&
-          loginResponse.data?.accessToken?.isNotEmpty == true) {
-        print('🔍 DEBUG LOGIN: loginResponse.data = ${loginResponse.data}');
-        print('🔍 DEBUG LOGIN: user object = ${loginResponse.data?.user}');
-        print('🔍 DEBUG LOGIN: user.name = ${loginResponse.data?.user?.name}');
-        print('🔍 DEBUG LOGIN: user.id = ${loginResponse.data?.user?.id}');
-
-        // Token Save
-        await Get.find<StorageService>().saveToken(
-          loginResponse.data!.accessToken!,
-        );
-
-        // Save User ID and Full Name
-        if (loginResponse.data?.user?.id != null) {
-          await Get.find<StorageService>().saveUserId(
-            loginResponse.data!.user!.id.toString(),
-          );
-        }
-        if (loginResponse.data?.user?.name != null) {
-          final fullName = loginResponse.data!.user!.name!;
-          print('🔍 DEBUG LOGIN: About to save fullName = "$fullName"');
-          await Get.find<StorageService>().saveUserFullName(fullName);
-          print('🔍 DEBUG LOGIN: Saved fullName successfully');
-        } else {
-          print('⚠️ DEBUG LOGIN: user.name is null!');
-        }
-
-        // Set logged in state
-        await Get.find<StorageService>().setLoggedIn(true);
-
-        // Success Snackbar
-        Get.snackbar(
-          'Success 🎉',
-          'Login Successful!',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-          duration: const Duration(seconds: 2),
-          margin: const EdgeInsets.all(10),
-          borderRadius: 12,
-          icon: const Icon(Icons.check_circle, color: Colors.white),
-        );
-
-        await Future.delayed(const Duration(milliseconds: 300));
-
-        Get.offAllNamed(Routes.HOME);
-      } else {
-        String errorMessage = 'Invalid email or password. Please try again.';
-
-        if (loginResponse?.message != null &&
-            loginResponse!.message!.isNotEmpty) {
-          errorMessage = loginResponse.message!;
-        }
-
-        Get.snackbar(
-          'Login Failed',
-          errorMessage,
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          duration: const Duration(seconds: 3),
-          margin: const EdgeInsets.all(10),
-          borderRadius: 12,
-        );
-      }
+      // If not successful, show server message
+      final errMsg = loginResponse.message ?? 'Invalid email or password.';
+      Get.snackbar(
+        'Login Failed',
+        errMsg,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     } catch (e) {
       Get.snackbar(
         'Login Failed',
