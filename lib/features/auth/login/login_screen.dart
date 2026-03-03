@@ -208,17 +208,7 @@ class _LoginFormState extends State<_LoginForm> {
             ),
             Text('Remember me', style: TextStyle(color: t.secondaryText)),
             const Spacer(),
-            TextButton(
-              onPressed: () {
-                Get.toNamed(Routes.RESET_PASSWORD);
-              },
-              child: Text(
-                'Forgot password?',
-                style: TextStyle(
-                  color: Color.lerp(AppTheme.primaryColor, Colors.black, 0.18),
-                ),
-              ),
-            ),
+            SizedBox.shrink(),
           ],
         ),
 
@@ -273,26 +263,18 @@ class _LoginFormState extends State<_LoginForm> {
           ),
         ),
 
-        const SizedBox(height: 14),
+        // const SizedBox(height: 14),
 
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Don't have an account?",
-              style: TextStyle(color: t.secondaryText),
-            ),
-            TextButton(
-              onPressed: controller.navigateToRegister,
-              child: Text(
-                'Sign up now',
-                style: TextStyle(
-                  color: Color.lerp(AppTheme.primaryColor, Colors.black, 0.18),
-                ),
-              ),
-            ),
-          ],
-        ),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: [
+        //     Text(
+        //       "Don't have an account?",
+        //       style: TextStyle(color: t.secondaryText),
+        //     ),
+        //     SizedBox.shrink(),
+        //   ],
+        // ),
       ],
     );
   }

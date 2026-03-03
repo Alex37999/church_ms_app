@@ -15,10 +15,7 @@ import '../../features/receipts/bindings/receipts_binding.dart';
 import '../../features/receipts/receipts_screen.dart';
 import '../../features/auth/login/login_binding.dart';
 import '../../features/auth/login/login_screen.dart';
-import '../../features/auth/signup/signup_binding.dart';
-import '../../features/auth/signup/signup_screen.dart';
-import '../../features/auth/reset_pass/reset_pass_binding.dart';
-import '../../features/auth/reset_pass/reset_pass_screen.dart';
+// Signup and reset-password screens removed (app uses login-only flow)
 import '../../features/splash/splash_screen.dart';
 import '../../features/account_settings/account_settings_screen.dart';
 import '../../features/announcements/announcements_details_screen.dart';
@@ -39,16 +36,7 @@ class AppPages {
       page: () => const LoginView(),
       binding: LoginBinding(),
     ),
-    GetPage(
-      name: _Paths.SIGNUP,
-      page: () => const RegisterView(),
-      binding: RegisterBinding(),
-    ),
-    GetPage(
-      name: _Paths.RESET_PASSWORD,
-      page: () => const ResetPasswordView(),
-      binding: ResetPasswordBinding(),
-    ),
+    // Signup and reset-password routes removed (login-only)
     GetPage(
       name: _Paths.HOME,
       page: () => const HomePage(),

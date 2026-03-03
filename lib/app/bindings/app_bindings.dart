@@ -8,12 +8,14 @@ import '../../core/services/storage_service.dart';
 class AppBindings extends Bindings {
   @override
   void dependencies() {
+    // Simple storage service (initialize first)
+    final storage = StorageService();
+    storage.init();
+    Get.put<StorageService>(storage, permanent: true);
+
     // Core services and API
     Get.lazyPut<ApiClient>(() => ApiClient(), fenix: true);
     Get.lazyPut<ApiService>(() => ApiService(), fenix: true);
-
-    // Simple storage service (stub)
-    Get.put<StorageService>(StorageService(), permanent: true);
 
     // Theme controller (global)
     Get.put<ThemeController>(ThemeController(), permanent: true);

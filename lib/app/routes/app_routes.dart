@@ -5,8 +5,7 @@ abstract class Routes {
   static const HOME = _Paths.HOME;
   static const SPLASH = _Paths.SPLASH;
   static const LOGIN = _Paths.LOGIN;
-  static const SIGNUP = _Paths.SIGNUP;
-  static const RESET_PASSWORD = _Paths.RESET_PASSWORD;
+  // Signup and reset password routes removed
   static const ANNOUNCEMENTS = _Paths.ANNOUNCEMENTS;
   static const CONTRIBUTIONS = _Paths.CONTRIBUTIONS;
   static const RECEIPTS = _Paths.RECEIPTS;
@@ -21,8 +20,7 @@ abstract class _Paths {
   static const HOME = '/home';
   static const SPLASH = '/';
   static const LOGIN = '/login';
-  static const SIGNUP = '/signup';
-  static const RESET_PASSWORD = '/reset-password';
+  // Signup and reset password paths removed
   static const ANNOUNCEMENTS = '/announcements';
   static const ANNOUNCEMENTS_DETAILS = '/announcements/:id';
   static const CONTRIBUTIONS = '/contributions';

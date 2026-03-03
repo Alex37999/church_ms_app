@@ -1,47 +1,64 @@
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:get/get.dart';
+import '../services/storage_service.dart';
 
 class ApiClient {
-  final Dio dio;
-  static final ApiClient _instance = ApiClient._internal();
+  final dio.Dio _dio;
+  static ApiClient? _instance;
 
-  factory ApiClient() => _instance;
+  factory ApiClient() => _instance ??= ApiClient._internal();
 
   ApiClient._internal()
-    : dio = Dio(
-        BaseOptions(
+    : _dio = dio.Dio(
+        dio.BaseOptions(
           baseUrl: const String.fromEnvironment(
             'BASE_URL',
-            defaultValue: 'https://api.example.com',
+            defaultValue: 'https://churchsmartly.com',
           ),
           connectTimeout: const Duration(seconds: 10),
           receiveTimeout: const Duration(seconds: 20),
+          responseType: dio.ResponseType.json,
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
+            'X-Requested-With': 'XMLHttpRequest',
+          },
         ),
       ) {
-    dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) {
-          // Add common headers here if needed
+    _dio.interceptors.add(
+      dio.InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          try {
+            final storage = Get.find<StorageService>();
+            final token = await storage.getToken();
+            if (token != null && token.isNotEmpty) {
+              options.headers['Authorization'] = 'Bearer $token';
+            }
+          } catch (_) {
+            // StorageService might not be ready; ignore and continue
+          }
+
           handler.next(options);
         },
         onResponse: (response, handler) {
           handler.next(response);
         },
-        onError: (DioException e, handler) {
+        onError: (dio.DioException e, handler) {
           handler.next(e);
         },
       ),
     );
   }
 
-  Future<Response> get(String path, {Map<String, dynamic>? params}) async {
-    return dio.get(path, queryParameters: params);
+  Future<dio.Response> get(String path, {Map<String, dynamic>? params}) async {
+    return _dio.get(path, queryParameters: params);
   }
 
-  Future<Response> post(
+  Future<dio.Response> post(
     String path, {
     dynamic data,
     Map<String, dynamic>? params,
   }) async {
-    return dio.post(path, data: data, queryParameters: params);
+    return _dio.post(path, data: data, queryParameters: params);
   }
 }

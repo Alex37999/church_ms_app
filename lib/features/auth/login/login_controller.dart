@@ -156,7 +156,14 @@ class LoginController extends GetxController {
   }
 
   void navigateToRegister() {
-    Get.toNamed(Routes.SIGNUP);
+    Get.snackbar(
+      'Not available',
+      'Signup is not supported in this app.',
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.grey.shade800,
+      colorText: Colors.white,
+      duration: const Duration(seconds: 2),
+    );
   }
 
   @override
