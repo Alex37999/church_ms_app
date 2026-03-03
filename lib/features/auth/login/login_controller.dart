@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/services/storage_service.dart';
+import 'dart:convert';
 import '../data/auth_repository.dart';
 import 'package:churchmsapp/app/routes/app_pages.dart';
 
@@ -52,10 +53,11 @@ class LoginController extends GetxController {
       };
 
       final loginResponse = await _authRepository.login(body);
-      // Log parsed response model
+
+      // Log parsed response model as JSON
       try {
         print(
-          '🔐 [LoginController] parsed response: ${loginResponse?.toJson()}',
+          '🔐 [LoginController] parsed response JSON: ${jsonEncode(loginResponse?.toJson())}',
         );
       } catch (_) {}
 
@@ -147,8 +149,9 @@ class LoginController extends GetxController {
 
   @override
   void onClose() {
-    emailController.dispose();
-    passwordController.dispose();
+    // Do not dispose controllers here — keep them while app session is active.
+    // Disposing here can cause `A TextEditingController was used after being disposed`
+    // if UI tries to rebuild while the controller is still referenced.
     super.onClose();
   }
 }

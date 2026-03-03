@@ -1,4 +1,5 @@
 import '../../../core/network/api_client.dart';
+import 'dart:convert';
 import 'login_model.dart';
 
 class AuthRepository {
@@ -10,7 +11,7 @@ class AuthRepository {
       final res = await _client.post('/api/member/login', data: body);
       // Log raw response for debugging
       try {
-        print('🔁 [AuthRepository] raw response: ${res.data}');
+        print('🔁 [AuthRepository] raw response JSON: ${jsonEncode(res.data)}');
       } catch (_) {}
       if (res.data == null) return null;
       if (res.data is Map<String, dynamic>) {
@@ -37,6 +38,25 @@ class AuthRepository {
       return res.data;
     } catch (e) {
       return null;
+    }
+  }
+
+  /// Call logout endpoint. Returns true when logout succeeded.
+  Future<bool> logout() async {
+    try {
+      final res = await _client.post('/api/member/logout');
+      try {
+        print(
+          '🔁 [AuthRepository] logout raw response JSON: ${jsonEncode(res.data)}',
+        );
+      } catch (_) {}
+      if (res.data is Map<String, dynamic>) {
+        final success = (res.data as Map<String, dynamic>)['success'];
+        return success == true;
+      }
+      return false;
+    } catch (e) {
+      return false;
     }
   }
 }

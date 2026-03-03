@@ -39,4 +39,13 @@ class StorageService extends GetxService {
   }
 
   Future<bool> isLoggedIn() async => _box.read<bool>(_kLoggedInKey) ?? false;
+
+  /// Clear stored session data (token and user info).
+  Future<void> clearSession() async {
+    await _box.remove(_kTokenKey);
+    await _box.remove(_kUserIdKey);
+    await _box.remove(_kUserEmailKey);
+    await _box.remove(_kFullNameKey);
+    await _box.write(_kLoggedInKey, false);
+  }
 }

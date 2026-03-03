@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:churchmsapp/app/theme/app_theme.dart';
 import '../../app/routes/app_pages.dart';
+import '../../core/services/storage_service.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,10 +15,21 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future<void>.delayed(const Duration(seconds: 2), () {
+    Future<void>.delayed(const Duration(seconds: 2), () async {
       if (!mounted) return;
-      // Always send users to the login screen after splash
-      Get.offAllNamed(Routes.LOGIN);
+      // If a logged-in session exists, go to home; otherwise go to login
+      try {
+        final loggedIn = Get.isRegistered<StorageService>()
+            ? await Get.find<StorageService>().isLoggedIn()
+            : false;
+        if (loggedIn) {
+          Get.offAllNamed(Routes.HOME);
+        } else {
+          Get.offAllNamed(Routes.LOGIN);
+        }
+      } catch (_) {
+        Get.offAllNamed(Routes.LOGIN);
+      }
     });
   }
 

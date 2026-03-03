@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:churchmsapp/app/routes/app_pages.dart';
 import 'package:churchmsapp/core/services/storage_service.dart';
+import '../auth/data/auth_repository.dart';
 import '../widgets/app_header.dart';
 import './controllers/profile_controller.dart';
 
@@ -170,13 +171,17 @@ class ProfileScreen extends GetView<ProfileController> {
                         width: double.infinity,
                         child: ElevatedButton.icon(
                           onPressed: () async {
-                            // Clear stored session and navigate to login
+                            final repo = AuthRepository();
                             final storage = Get.find<StorageService>();
-                            await storage.setLoggedIn(false);
-                            await storage.saveToken('');
-                            await storage.saveUserId('');
-                            await storage.saveUserEmail('');
-                            await storage.saveUserFullName('');
+
+                            // Attempt API logout first
+                            final ok = await repo.logout();
+                            print('🔁 [Profile] logout API success: $ok');
+
+                            // Clear local session regardless of API result
+                            await storage.clearSession();
+
+                            // Navigate to login
                             Get.offAllNamed(Routes.LOGIN);
                           },
                           icon: const Icon(Icons.logout, color: Colors.white),
