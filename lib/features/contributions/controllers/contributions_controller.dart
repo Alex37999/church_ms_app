@@ -22,6 +22,8 @@ class ContributionsController extends GetxController {
 
   // Receipts
   final RxList<ReceiptItem> receipts = <ReceiptItem>[].obs;
+  // Bank accounts provided by the API
+  final RxList<BankAccount> bankAccounts = <BankAccount>[].obs;
 
   Future<void> fetchReceipts() async {
     try {
@@ -110,6 +112,24 @@ class ContributionsController extends GetxController {
       }).toList();
 
       contributions.assignAll(mapped);
+
+      // Map bank accounts
+      final List bankItems = (data['bank_accounts'] ?? []) as List;
+      final mappedBanks = bankItems.map<BankAccount>((raw) {
+        return BankAccount(
+          id: raw['id'] is int
+              ? raw['id'] as int
+              : int.tryParse(raw['id']?.toString() ?? '0') ?? 0,
+          bankName: (raw['bank_name'] ?? '').toString(),
+          accountName: (raw['account_name'] ?? '').toString(),
+          accountNumber: (raw['account_number'] ?? '').toString(),
+          branchName: (raw['branch_name'] ?? '').toString(),
+          routingNumber: (raw['routing_number'] ?? '').toString(),
+          swiftCode: (raw['swift_code'] ?? '').toString(),
+          instructions: (raw['instructions'] ?? '').toString(),
+        );
+      }).toList();
+      bankAccounts.assignAll(mappedBanks);
 
       calculateTotal();
       // metrics are driven by API stats, but keep calculateMetrics to ensure consistency
@@ -218,5 +238,27 @@ class ReceiptItem {
     required this.status,
     required this.type,
     required this.paymentMethod,
+  });
+}
+
+class BankAccount {
+  final int id;
+  final String bankName;
+  final String accountName;
+  final String accountNumber;
+  final String branchName;
+  final String routingNumber;
+  final String swiftCode;
+  final String instructions;
+
+  BankAccount({
+    required this.id,
+    required this.bankName,
+    required this.accountName,
+    required this.accountNumber,
+    required this.branchName,
+    required this.routingNumber,
+    required this.swiftCode,
+    required this.instructions,
   });
 }

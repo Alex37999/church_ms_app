@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../widgets/app_header.dart';
 import './controllers/contributions_controller.dart';
 import 'contribution_details_screen.dart';
+import 'make_donate_screen.dart';
 
 class ContributionsScreen extends GetView<ContributionsController> {
   ContributionsScreen({super.key});
@@ -56,7 +57,10 @@ class ContributionsScreen extends GetView<ContributionsController> {
 
                       OutlinedButton.icon(
                         onPressed: () {
-                          Get.snackbar('Donate', 'Make Donate pressed');
+                          Get.dialog(
+                            const MakeDonateScreen(),
+                            barrierDismissible: true,
+                          );
                         },
                         icon: const Icon(Icons.volunteer_activism, size: 18),
                         label: const Text('Make Donate'),
@@ -123,41 +127,41 @@ class ContributionsScreen extends GetView<ContributionsController> {
                   const SizedBox(height: 12),
 
                   // Receipts list
-                  Obx(() {
-                    if (ctrl.receipts.isEmpty) {
-                      return const SizedBox.shrink();
-                    }
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Receipts',
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.w700),
-                        ),
-                        const SizedBox(height: 8),
-                        ...ctrl.receipts.map((r) {
-                          return Card(
-                            margin: const EdgeInsets.only(bottom: 8),
-                            child: ListTile(
-                              title: Text(r.receiptNumber),
-                              subtitle: Text(
-                                '${r.date} • ${_formatCurrency(r.amount)}',
-                              ),
-                              trailing: IconButton(
-                                icon: const Icon(Icons.download_outlined),
-                                onPressed: () => ctrl.copyReceiptUrlToClipboard(
-                                  r.downloadUrl,
-                                ),
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                        const SizedBox(height: 12),
-                      ],
-                    );
-                  }),
-                  const SizedBox(height: 14),
+                  // Obx(() {
+                  //   if (ctrl.receipts.isEmpty) {
+                  //     return const SizedBox.shrink();
+                  //   }
+                  //   return Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       Text(
+                  //         'Receipts',
+                  //         style: Theme.of(context).textTheme.titleMedium
+                  //             ?.copyWith(fontWeight: FontWeight.w700),
+                  //       ),
+                  //       const SizedBox(height: 8),
+                  //       ...ctrl.receipts.map((r) {
+                  //         return Card(
+                  //           margin: const EdgeInsets.only(bottom: 8),
+                  //           child: ListTile(
+                  //             title: Text(r.receiptNumber),
+                  //             subtitle: Text(
+                  //               '${r.date} • ${_formatCurrency(r.amount)}',
+                  //             ),
+                  //             trailing: IconButton(
+                  //               icon: const Icon(Icons.download_outlined),
+                  //               onPressed: () => ctrl.copyReceiptUrlToClipboard(
+                  //                 r.downloadUrl,
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         );
+                  //       }).toList(),
+                  //       const SizedBox(height: 12),
+                  //     ],
+                  //   );
+                  // }),
+                  // const SizedBox(height: 14),
 
                   // Filter chips
                   Obx(
