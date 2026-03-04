@@ -208,66 +208,87 @@ class _MakeDonateScreenState extends State<MakeDonateScreen> {
 
                       // Show bank instructions immediately after selecting Bank Transfer
                       if (_paymentMethod.toLowerCase().contains('bank')) ...[
-                        Builder(builder: (ctx) {
-                          final contribCtrl = Get.find<ContributionsController>();
-                          return Obx(() {
-                            if (contribCtrl.bankAccounts.isEmpty) {
+                        Builder(
+                          builder: (ctx) {
+                            final contribCtrl =
+                                Get.find<ContributionsController>();
+                            return Obx(() {
+                              if (contribCtrl.bankAccounts.isEmpty) {
+                                return Container(
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFE6F7FF),
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                      color: const Color(0xFFBEE6F9),
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    'No bank account information available.',
+                                  ),
+                                );
+                              }
+
+                              final acc = contribCtrl.bankAccounts.first;
                               return Container(
                                 width: double.infinity,
                                 padding: const EdgeInsets.all(12),
                                 decoration: BoxDecoration(
                                   color: const Color(0xFFE6F7FF),
                                   borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: const Color(0xFFBEE6F9)),
-                                ),
-                                child: const Text('No bank account information available.'),
-                              );
-                            }
-
-                            final acc = contribCtrl.bankAccounts.first;
-                            return Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFE6F7FF),
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: const Color(0xFFBEE6F9)),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.info_outline, color: Color(0xFF0B6FBF)),
-                                      const SizedBox(width: 8),
-                                      Text(
-                                        'Bank Transfer Instructions',
-                                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xFF0B6FBF),
-                                            ),
-                                      ),
-                                    ],
+                                  border: Border.all(
+                                    color: const Color(0xFFBEE6F9),
                                   ),
-                                  const SizedBox(height: 10),
-                                  _bankRow('Bank Name:', acc.bankName),
-                                  const SizedBox(height: 6),
-                                  _bankRow('Account Name:', acc.accountName),
-                                  const SizedBox(height: 6),
-                                  _bankRow('Account Number:', acc.accountNumber),
-                                  const SizedBox(height: 6),
-                                  _bankRow('Bank Branch:', acc.branchName),
-                                  const SizedBox(height: 6),
-                                  _bankRow('Routing Number:', acc.routingNumber),
-                                  const SizedBox(height: 6),
-                                  _bankRow('SWIFT / BIC:', acc.swiftCode),
-                                  const SizedBox(height: 6),
-                                  _bankRow('Instructions:', acc.instructions),
-                                ],
-                              ),
-                            );
-                          });
-                        }),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.info_outline,
+                                          color: Color(0xFF0B6FBF),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          'Bank Transfer Instructions',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.w700,
+                                                color: const Color(0xFF0B6FBF),
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10),
+                                    _bankRow('Bank Name:', acc.bankName),
+                                    const SizedBox(height: 6),
+                                    _bankRow('Account Name:', acc.accountName),
+                                    const SizedBox(height: 6),
+                                    _bankRow(
+                                      'Account Number:',
+                                      acc.accountNumber,
+                                    ),
+                                    const SizedBox(height: 6),
+                                    _bankRow('Bank Branch:', acc.branchName),
+                                    const SizedBox(height: 6),
+                                    _bankRow(
+                                      'Routing Number:',
+                                      acc.routingNumber,
+                                    ),
+                                    const SizedBox(height: 6),
+                                    _bankRow('SWIFT / BIC:', acc.swiftCode),
+                                    const SizedBox(height: 6),
+                                    _bankRow('Instructions:', acc.instructions),
+                                  ],
+                                ),
+                              );
+                            });
+                          },
+                        ),
                         const SizedBox(height: 12),
                       ],
 
