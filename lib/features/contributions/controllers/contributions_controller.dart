@@ -1,57 +1,124 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_client.dart';
+import 'package:flutter/services.dart';
 
 class ContributionsController extends GetxController {
   final RxList<ContributionModel> contributions = <ContributionModel>[].obs;
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
   final RxDouble totalContributions = 0.0.obs;
+  final RxDouble totalThisYear = 0.0.obs;
+  final RxDouble totalThisMonth = 0.0.obs;
+  final RxDouble averageAmount = 0.0.obs;
+  final RxDouble changeThisMonthPercent =
+      0.0.obs; // percent change vs previous month
 
   @override
   void onInit() {
     super.onInit();
     fetchContributions();
+    fetchReceipts();
   }
 
-  void fetchContributions() {
+  // Receipts
+  final RxList<ReceiptItem> receipts = <ReceiptItem>[].obs;
+
+  Future<void> fetchReceipts() async {
+    try {
+      final resp = await ApiClient().get('/api/member/receipts');
+      final body = resp.data;
+      if (body == null || body['success'] != true) {
+        return;
+      }
+
+      final data = body['data'] ?? {};
+      final List items = (data['receipts'] ?? []) as List;
+      final mapped = items.map<ReceiptItem>((raw) {
+        return ReceiptItem(
+          id: (raw['id'] ?? '').toString(),
+          receiptNumber: (raw['receipt_number'] ?? '').toString(),
+          amount: (raw['amount'] ?? 0).toDouble(),
+          date: (raw['contribute_date'] ?? '').toString(),
+          downloadUrl: (raw['download_url'] ?? '').toString(),
+          status: (raw['status'] ?? '').toString(),
+          type: (raw['type'] ?? '').toString(),
+          paymentMethod: (raw['payment_method'] ?? '').toString(),
+        );
+      }).toList();
+
+      receipts.assignAll(mapped);
+    } catch (_) {
+      // ignore
+    }
+  }
+
+  Future<void> copyReceiptUrlToClipboard(String url) async {
+    if (url.isEmpty) {
+      Get.snackbar('Download', 'No download URL available');
+      return;
+    }
+    await Clipboard.setData(ClipboardData(text: url));
+    Get.snackbar('Download', 'Receipt URL copied to clipboard');
+  }
+
+  Future<void> fetchContributions() async {
     isLoading.value = true;
     try {
-      // Initialize with sample data
-      contributions.assignAll([
-        ContributionModel(
-          id: '1',
-          type: 'Tithe',
-          amount: 10000,
-          date: '2026-02-15',
-          status: 'Confirmed',
-          method: 'M-PESA',
-          time: '10:30 AM',
-          transactionCode: 'TXN12345',
-        ),
-        ContributionModel(
-          id: '2',
-          type: 'Offering',
-          amount: 5000,
-          date: '2026-02-10',
-          status: 'Confirmed',
-          method: 'Bank Transfer',
-          time: '09:20 AM',
-          transactionCode: 'TXN54321',
-        ),
-        ContributionModel(
-          id: '3',
-          type: 'Building Fund',
-          amount: 20000,
-          date: '2026-02-05',
-          status: 'Confirmed',
-          method: 'M-PESA',
-          time: '08:45 AM',
-          transactionCode: 'TXN98765',
-        ),
-      ]);
+      final resp = await ApiClient().get('/api/member/contributions');
+      final body = resp.data;
+
+      if (body == null || body['success'] != true) {
+        errorMessage.value = 'Failed to load contributions';
+        contributions.clear();
+        return;
+      }
+
+      final data = body['data'] ?? {};
+
+      // Map stats
+      final stats = data['stats'] ?? {};
+      totalThisYear.value = (stats['total_this_year'] ?? 0).toDouble();
+      totalThisMonth.value = (stats['total_this_month'] ?? 0).toDouble();
+      averageAmount.value = (stats['average'] ?? 0).toDouble();
+      changeThisMonthPercent.value = (stats['month_change_pct'] ?? 0)
+          .toDouble();
+
+      // Map contributions list into local model
+      final List items = (data['contributions'] ?? []) as List;
+      final mapped = items.map<ContributionModel>((raw) {
+        String type = (raw['type'] ?? '').toString();
+        // Convert snake_case to Title Case
+        type = type
+            .replaceAll('_', ' ')
+            .split(' ')
+            .map((s) {
+              if (s.isEmpty) return s;
+              return s[0].toUpperCase() + s.substring(1);
+            })
+            .join(' ');
+
+        return ContributionModel(
+          id: (raw['id'] ?? '').toString(),
+          type: type,
+          amount: (raw['amount'] ?? 0).toDouble(),
+          date: (raw['contribute_date'] ?? '').toString(),
+          status: (raw['status'] ?? '').toString(),
+          method: (raw['payment_method'] ?? '').toString(),
+          time: raw['created_at']?.toString(),
+          transactionCode: raw['transaction_code']?.toString(),
+        );
+      }).toList();
+
+      contributions.assignAll(mapped);
+
       calculateTotal();
+      // metrics are driven by API stats, but keep calculateMetrics to ensure consistency
+      calculateMetrics();
+
       errorMessage.value = '';
     } catch (e) {
       errorMessage.value = 'Failed to fetch contributions: $e';
+      contributions.clear();
     } finally {
       isLoading.value = false;
     }
@@ -62,6 +129,46 @@ class ContributionsController extends GetxController {
       0,
       (sum, item) => sum + item.amount,
     );
+  }
+
+  void calculateMetrics() {
+    final now = DateTime.now();
+    final currentYear = now.year;
+    final currentMonth = now.month;
+
+    double yearSum = 0.0;
+    double monthSum = 0.0;
+    double prevMonthSum = 0.0;
+
+    for (final c in contributions) {
+      try {
+        final dt = DateTime.parse(c.date).toLocal();
+        if (dt.year == currentYear) yearSum += c.amount;
+        if (dt.year == currentYear && dt.month == currentMonth)
+          monthSum += c.amount;
+        // prev month calculation
+        final prev = DateTime(currentYear, currentMonth - 1);
+        if (dt.year == prev.year && dt.month == prev.month)
+          prevMonthSum += c.amount;
+      } catch (_) {
+        // ignore parse errors
+      }
+    }
+
+    totalThisYear.value = yearSum;
+    totalThisMonth.value = monthSum;
+
+    averageAmount.value = contributions.isEmpty
+        ? 0.0
+        : (contributions.fold(0.0, (s, it) => s + it.amount) /
+              contributions.length);
+
+    if (prevMonthSum == 0) {
+      changeThisMonthPercent.value = monthSum == 0 ? 0.0 : 100.0;
+    } else {
+      changeThisMonthPercent.value =
+          ((monthSum - prevMonthSum) / prevMonthSum) * 100.0;
+    }
   }
 
   @override
@@ -89,5 +196,27 @@ class ContributionModel {
     this.method = 'M-PESA',
     this.time,
     this.transactionCode,
+  });
+}
+
+class ReceiptItem {
+  final String id;
+  final String receiptNumber;
+  final double amount;
+  final String date;
+  final String downloadUrl;
+  final String status;
+  final String type;
+  final String paymentMethod;
+
+  ReceiptItem({
+    required this.id,
+    required this.receiptNumber,
+    required this.amount,
+    required this.date,
+    required this.downloadUrl,
+    required this.status,
+    required this.type,
+    required this.paymentMethod,
   });
 }
