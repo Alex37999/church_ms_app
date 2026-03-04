@@ -13,7 +13,6 @@ abstract class Routes {
   static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
   static const NOTIFICATIONS = _Paths.NOTIFICATIONS;
   static const ACCOUNT_SETTINGS = _Paths.ACCOUNT_SETTINGS;
-  static const ANNOUNCEMENTS_DETAILS = _Paths.ANNOUNCEMENTS_DETAILS;
 }
 
 abstract class _Paths {
@@ -22,7 +21,6 @@ abstract class _Paths {
   static const LOGIN = '/login';
   // Signup and reset password paths removed
   static const ANNOUNCEMENTS = '/announcements';
-  static const ANNOUNCEMENTS_DETAILS = '/announcements/:id';
   static const CONTRIBUTIONS = '/contributions';
   static const RECEIPTS = '/receipts';
   static const PROFILE = '/profile';

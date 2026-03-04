@@ -54,7 +54,7 @@ class ProfileScreen extends GetView<ProfileController> {
                         padding: const EdgeInsets.all(24),
                         child: Column(
                           children: [
-                            // Avatar Circle
+                            // Avatar Circle: show image if available, otherwise initials
                             Container(
                               width: 100,
                               height: 100,
@@ -71,14 +71,45 @@ class ProfileScreen extends GetView<ProfileController> {
                                   ),
                                 ],
                               ),
-                              child: Center(
-                                child: Text(
-                                  controller.getInitials(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 44,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              child: ClipOval(
+                                child: SizedBox(
+                                  width: 100,
+                                  height: 100,
+                                  child: controller.imageUrl.value.isNotEmpty
+                                      ? Image.network(
+                                          controller.imageUrl.value,
+                                          fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                                // Fallback to initials on load error
+                                                return Container(
+                                                  color: const Color(
+                                                    0xFF5B6FFF,
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      controller.getInitials(),
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 44,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                        )
+                                      : Center(
+                                          child: Text(
+                                            controller.getInitials(),
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 44,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
                                 ),
                               ),
                             ),

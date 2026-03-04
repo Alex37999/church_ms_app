@@ -18,7 +18,6 @@ import '../../features/auth/login/login_screen.dart';
 // Signup and reset-password screens removed (app uses login-only flow)
 import '../../features/splash/splash_screen.dart';
 import '../../features/account_settings/account_settings_screen.dart';
-import '../../features/announcements/announcements_details_screen.dart';
 
 part 'app_routes.dart';
 
@@ -76,12 +75,6 @@ class AppPages {
       name: _Paths.ACCOUNT_SETTINGS,
       page: () => const AccountSettingsScreen(),
     ),
-    GetPage(
-      name: _Paths.ANNOUNCEMENTS_DETAILS,
-      page: () {
-        final announcement = Get.arguments;
-        return AnnouncementsDetailsScreen(announcement: announcement);
-      },
-    ),
+    // Announcements details page removed.
   ];
 }

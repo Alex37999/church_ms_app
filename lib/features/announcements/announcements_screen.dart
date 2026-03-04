@@ -80,8 +80,9 @@ class _AnnouncementCard extends StatelessWidget {
       shadowColor: Colors.black.withOpacity(0.05),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
-        onTap: () =>
-            Get.toNamed(Routes.ANNOUNCEMENTS_DETAILS, arguments: announcement),
+        onTap: () {
+          // Details screen removed — tapping currently does nothing.
+        },
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(
