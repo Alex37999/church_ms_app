@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:churchmsapp/app/routes/app_pages.dart';
+// import 'package:churchmsapp/app/routes/app_pages.dart'; // unused
 import '../widgets/app_header.dart';
 import './controllers/announcements_controller.dart';
 
@@ -190,7 +190,7 @@ class _AnnouncementCard extends StatelessWidget {
               const SizedBox(width: 8),
 
               /// Chevron
-              const Icon(Icons.chevron_right, size: 22, color: Colors.grey),
+              // const Icon(Icons.chevron_right, size: 22, color: Colors.grey),
             ],
           ),
         ),

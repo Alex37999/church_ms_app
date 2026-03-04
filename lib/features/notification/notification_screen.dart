@@ -17,149 +17,195 @@ class NotificationScreen extends GetView<NotificationController> {
           children: [
             AppHeader(showBackButton: true, onBack: _goToDashboard),
             Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                children: [
-                  const SizedBox(height: 20),
-                  Text(
-                    'Notifications',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
+              child: RefreshIndicator(
+                onRefresh: controller.fetchNotifications,
+                child: ListView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  children: [
+                    const SizedBox(height: 20),
+                    Text(
+                      'Notifications',
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.w700),
                     ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    '${controller.unreadCount.value} new notifications',
-                    style: const TextStyle(color: Colors.black54, fontSize: 14),
-                  ),
-                  const SizedBox(height: 18),
-
-                  if (controller.isLoading.value)
-                    const Center(child: CircularProgressIndicator())
-                  else if (controller.errorMessage.value.isNotEmpty)
-                    Center(
-                      child: Text(
-                        controller.errorMessage.value,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(color: Colors.redAccent),
-                      ),
-                    )
-                  else if (controller.notifications.isEmpty)
-                    const Center(child: Text('No notifications'))
-                  else
-                    ...controller.notifications.map((notification) {
-                      final visual = _visualFor(notification);
-
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 14),
-                        child: Material(
-                          color: notification.isRead
-                              ? Colors.white
-                              : const Color(0xFFEFF6FF),
-                          borderRadius: BorderRadius.circular(16),
-                          elevation: 0.5,
-                          shadowColor: Colors.black.withOpacity(0.04),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(16),
-                            onTap: () => controller.markAsRead(notification.id),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: visual.bg,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Icon(
-                                      visual.icon,
-                                      color: visual.fg,
-                                      size: 20,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                notification.title,
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  fontWeight:
-                                                      notification.isRead
-                                                      ? FontWeight.w600
-                                                      : FontWeight.w700,
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                            ),
-                                            if (!notification.isRead) ...[
-                                              const SizedBox(width: 8),
-                                              Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                      horizontal: 8,
-                                                      vertical: 3,
-                                                    ),
-                                                decoration: BoxDecoration(
-                                                  color: const Color(
-                                                    0xFF3B82F6,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                ),
-                                                child: const Text(
-                                                  'NEW',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 10,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ],
-                                        ),
-                                        const SizedBox(height: 6),
-                                        Text(
-                                          notification.message,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            color: Colors.black87,
-                                            fontSize: 13,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          notification.date,
-                                          style: const TextStyle(
-                                            color: Colors.black54,
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
+                    const SizedBox(height: 6),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            '${controller.unreadCount.value} new notifications',
+                            style: const TextStyle(
+                              color: Colors.black54,
+                              fontSize: 14,
                             ),
                           ),
                         ),
-                      );
-                    }),
+                        if (controller.unreadCount.value > 0)
+                          TextButton(
+                            onPressed: () async {
+                              await controller.markAllRead();
+                              if (controller.errorMessage.value.isEmpty) {
+                                Get.snackbar(
+                                  'Notifications',
+                                  'All marked read',
+                                );
+                              } else {
+                                Get.snackbar(
+                                  'Error',
+                                  controller.errorMessage.value,
+                                  backgroundColor: Colors.red.shade50,
+                                );
+                              }
+                            },
+                            child: const Text('Mark all read'),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 18),
 
-                  const SizedBox(height: 80),
-                ],
+                    if (controller.isLoading.value)
+                      const Center(child: CircularProgressIndicator())
+                    else if (controller.errorMessage.value.isNotEmpty)
+                      Center(
+                        child: Text(
+                          controller.errorMessage.value,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(color: Colors.redAccent),
+                        ),
+                      )
+                    else if (controller.notifications.isEmpty)
+                      const Center(child: Text('No notifications'))
+                    else
+                      ...controller.notifications.map((notification) {
+                        final visual = _visualFor(notification);
+
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 14),
+                          child: Material(
+                            color: notification.isRead
+                                ? Colors.white
+                                : const Color(0xFFEFF6FF),
+                            borderRadius: BorderRadius.circular(16),
+                            elevation: 0.5,
+                            shadowColor: Colors.black.withOpacity(0.04),
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(16),
+                              onTap: () async {
+                                await controller.markAsRead(notification.id);
+                                if (controller.errorMessage.value.isEmpty) {
+                                  Get.snackbar('Notification', 'Marked read');
+                                } else {
+                                  Get.snackbar(
+                                    'Error',
+                                    controller.errorMessage.value,
+                                    backgroundColor: Colors.red.shade50,
+                                  );
+                                }
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        color: visual.bg,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Icon(
+                                        visual.icon,
+                                        color: visual.fg,
+                                        size: 20,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  notification.title,
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontWeight:
+                                                        notification.isRead
+                                                        ? FontWeight.w600
+                                                        : FontWeight.w700,
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                              ),
+                                              if (!notification.isRead) ...[
+                                                const SizedBox(width: 8),
+                                                Container(
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                        horizontal: 8,
+                                                        vertical: 3,
+                                                      ),
+                                                  decoration: BoxDecoration(
+                                                    color: const Color(
+                                                      0xFF3B82F6,
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          12,
+                                                        ),
+                                                  ),
+                                                  child: const Text(
+                                                    'NEW',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ],
+                                          ),
+                                          const SizedBox(height: 6),
+                                          Text(
+                                            notification.message,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              color: Colors.black87,
+                                              fontSize: 13,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            notification.date,
+                                            style: const TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+
+                    const SizedBox(height: 80),
+                  ],
+                ),
               ),
             ),
           ],
@@ -196,7 +242,7 @@ class NotificationScreen extends GetView<NotificationController> {
   }
 
   void _goToDashboard() {
-    final canPop = Get.key?.currentState?.canPop() ?? false;
+    final canPop = Get.key.currentState?.canPop() ?? false;
     if (canPop) {
       Get.back();
       if (Get.isRegistered<BottomNavController>()) {

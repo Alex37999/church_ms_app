@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../core/network/api_client.dart';
 
 class NotificationController extends GetxController {
   final RxList<NotificationModel> notifications = <NotificationModel>[].obs;
@@ -12,42 +13,57 @@ class NotificationController extends GetxController {
     fetchNotifications();
   }
 
-  void fetchNotifications() {
+  Future<void> fetchNotifications() async {
     isLoading.value = true;
     try {
-      // Initialize with sample data
-      notifications.assignAll([
-        NotificationModel(
-          id: '1',
-          title: 'Contribution Confirmed',
-          message: 'Your tithe of KES 10,000 has been recorded successfully',
-          date: '2 hours ago',
-          isRead: false,
-        ),
-        NotificationModel(
-          id: '2',
-          title: 'Event Reminder',
-          message: 'Youth Camp registration closes in 3 days',
-          date: '5 hours ago',
-          isRead: false,
-        ),
-        NotificationModel(
-          id: '3',
-          title: 'Birthday Wishes',
-          message: 'Happy Birthday! May God bless you abundantly',
-          date: '1 day ago',
-          isRead: false,
-        ),
-        NotificationModel(
-          id: '4',
-          title: 'Receipt Available',
-          message: 'Your January receipt is ready to download',
-          date: '3 days ago',
-          isRead: true,
-        ),
-      ]);
-      updateUnreadCount();
-      errorMessage.value = '';
+      final client = ApiClient();
+      final resp = await client.get('/api/member/notifications');
+      final data = resp.data;
+
+      if (data == null) {
+        errorMessage.value = 'Empty response from server';
+        return;
+      }
+
+      if (data is Map && data['success'] == true && data['data'] is List) {
+        final List items = data['data'];
+
+        final List<NotificationModel> mapped = items.map((item) {
+          final id = item['id']?.toString() ?? '';
+          final title = item['title']?.toString() ?? '';
+          final message = item['message']?.toString() ?? '';
+          final createdAtStr = item['created_at'] as String?;
+          String dateStr = '';
+          if (createdAtStr != null) {
+            try {
+              final dt = DateTime.parse(createdAtStr).toLocal();
+              dateStr =
+                  '${dt.year}-${dt.month.toString().padLeft(2, '0')}-${dt.day.toString().padLeft(2, '0')}';
+            } catch (_) {}
+          }
+          final isRead = (item['is_read'] == true);
+
+          return NotificationModel(
+            id: id,
+            title: title,
+            message: message,
+            date: dateStr,
+            isRead: isRead,
+          );
+        }).toList();
+
+        notifications.assignAll(mapped);
+        // unread_count may be provided by API
+        if (data['unread_count'] != null) {
+          unreadCount.value = (data['unread_count'] as num).toInt();
+        } else {
+          updateUnreadCount();
+        }
+
+        errorMessage.value = '';
+      } else {
+        errorMessage.value = 'Failed to load notifications';
+      }
     } catch (e) {
       errorMessage.value = 'Failed to fetch notifications: $e';
     } finally {
@@ -59,12 +75,28 @@ class NotificationController extends GetxController {
     unreadCount.value = notifications.where((n) => !n.isRead).length;
   }
 
-  void markAsRead(String notificationId) {
-    final index = notifications.indexWhere((n) => n.id == notificationId);
-    if (index != -1) {
-      notifications[index].isRead = true;
-      notifications.refresh();
-      updateUnreadCount();
+  Future<void> markAsRead(String notificationId) async {
+    try {
+      final id = int.tryParse(notificationId);
+      if (id == null) return;
+      final client = ApiClient();
+      await client.post('/api/member/notification/$id/mark-read');
+
+      // Re-fetch latest notifications from server to ensure sync
+      await fetchNotifications();
+    } catch (e) {
+      errorMessage.value = 'Failed to mark notification read: $e';
+    }
+  }
+
+  Future<void> markAllRead() async {
+    try {
+      final client = ApiClient();
+      await client.post('/api/member/notifications/mark-all-read');
+      // Re-fetch to reflect server state
+      await fetchNotifications();
+    } catch (e) {
+      errorMessage.value = 'Failed to mark all read: $e';
     }
   }
 
