@@ -344,10 +344,10 @@ class _MakeDonateScreenState extends State<MakeDonateScreen> {
                             value: 'Offering',
                             child: Text('Offering'),
                           ),
-                          // DropdownMenuItem(
-                          //   value: 'Donation',
-                          //   child: Text('Donation'),
-                          // ),
+                          DropdownMenuItem(
+                            value: 'Donation',
+                            child: Text('Donation'),
+                          ),
                           DropdownMenuItem(
                             value: 'Building Fund',
                             child: Text('Building Fund'),
