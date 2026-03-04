@@ -54,6 +54,18 @@ class ApiClient {
     return _dio.get(path, queryParameters: params);
   }
 
+  /// Download raw bytes from a full URL (used for file downloads).
+  Future<dio.Response> getBytes(
+    String url, {
+    Map<String, dynamic>? params,
+  }) async {
+    return _dio.get(
+      url,
+      queryParameters: params,
+      options: dio.Options(responseType: dio.ResponseType.bytes),
+    );
+  }
+
   Future<dio.Response> post(
     String path, {
     dynamic data,

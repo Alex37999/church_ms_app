@@ -153,6 +153,19 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
 
                                   const SizedBox(width: 8),
 
+                                  // Download button
+                                  IconButton(
+                                    onPressed: () => ctrl.downloadReceipt(
+                                      receipt.downloadUrl ?? '',
+                                    ),
+                                    icon: const Icon(
+                                      Icons.download_outlined,
+                                      color: Color(0xFF2563EB),
+                                    ),
+                                  ),
+
+                                  const SizedBox(width: 4),
+
                                   const Icon(
                                     Icons.chevron_right,
                                     size: 22,

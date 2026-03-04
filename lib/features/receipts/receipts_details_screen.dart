@@ -227,14 +227,16 @@ class ContributionReceiptScreen extends StatelessWidget {
                         const SizedBox(height: 18),
                         ElevatedButton.icon(
                           onPressed: () {
-                            // Placeholder for PDF download/export
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  'Download PDF not implemented in demo',
+                            final ctrl = Get.find<ReceiptsController>();
+                            if ((r.downloadUrl ?? '').isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('No download URL available'),
                                 ),
-                              ),
-                            );
+                              );
+                              return;
+                            }
+                            ctrl.downloadReceipt(r.downloadUrl ?? '');
                           },
                           icon: const Icon(
                             Icons.download_rounded,
