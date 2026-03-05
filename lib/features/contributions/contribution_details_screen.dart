@@ -11,6 +11,10 @@ class ContributionDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ContributionsController ctrl = Get.find();
+
+    final isAccepted = contribution.status.toLowerCase() == 'accepted';
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -99,9 +103,9 @@ class ContributionDetailsScreen extends StatelessWidget {
 
                 const SizedBox(height: 18),
                 ElevatedButton.icon(
-                  onPressed: () => Get.to(
-                    () => ContributionDetailsScreen(contribution: contribution),
-                  ),
+                  onPressed: () async {
+                    await ctrl.copyReceiptUrlForContribution(contribution.id);
+                  },
                   icon: const Icon(
                     Icons.remove_red_eye_outlined,
                     color: Colors.white,
@@ -126,19 +130,22 @@ class ContributionDetailsScreen extends StatelessWidget {
 
                 const SizedBox(height: 12),
                 OutlinedButton.icon(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Download Receipt not implemented'),
-                      ),
-                    );
-                  },
+                  onPressed: isAccepted
+                      ? () async {
+                          await ctrl.copyReceiptUrlForContribution(
+                            contribution.id,
+                          );
+                        }
+                      : null,
                   icon: const Icon(Icons.download_rounded),
-                  label: const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12.0),
+                  label: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12.0),
                     child: Text(
                       'Download Receipt',
-                      style: TextStyle(fontWeight: FontWeight.w700),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: isAccepted ? Colors.black : Colors.black26,
+                      ),
                     ),
                   ),
                   style: OutlinedButton.styleFrom(

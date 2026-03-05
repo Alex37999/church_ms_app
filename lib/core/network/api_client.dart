@@ -15,6 +15,8 @@ class ApiClient {
             'BASE_URL',
             defaultValue: 'https://churchsmartly.com',
           ),
+          // Treat 4xx responses as non-errors so callers can inspect response bodies
+          validateStatus: (status) => status != null && status < 500,
           connectTimeout: const Duration(seconds: 10),
           receiveTimeout: const Duration(seconds: 20),
           responseType: dio.ResponseType.json,
@@ -25,6 +27,27 @@ class ApiClient {
           },
         ),
       ) {
+    // Add verbose logging to aid debugging (enable in debug builds)
+    _dio.interceptors.add(
+      dio.LogInterceptor(
+        request: true,
+        requestHeader: true,
+        requestBody: true,
+        responseHeader: true,
+        responseBody: true,
+        error: true,
+        logPrint: (obj) {
+          // Use Get.log so logs appear in Flutter's logging output
+          try {
+            Get.log(obj.toString());
+          } catch (_) {
+            // fallback
+            // ignore: avoid_print
+            print(obj);
+          }
+        },
+      ),
+    );
     _dio.interceptors.add(
       dio.InterceptorsWrapper(
         onRequest: (options, handler) async {
@@ -93,5 +116,20 @@ class ApiClient {
     Map<String, dynamic>? params,
   }) async {
     return _dio.post(path, data: data, queryParameters: params);
+  }
+
+  Future<dio.Response> delete(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? params,
+  }) async {
+    return _dio.delete(path, data: data, queryParameters: params);
+  }
+
+  /// Build a full URL for a relative API path using the configured baseUrl.
+  String buildUrl(String path) {
+    final base = _dio.options.baseUrl;
+    if (path.startsWith('/')) return base + path;
+    return '$base/$path';
   }
 }

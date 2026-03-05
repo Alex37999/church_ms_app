@@ -126,22 +126,50 @@ class EventScreen extends GetView<EventController> {
                           if (e.rsvpRequired && !e.isAttending)
                             SizedBox(
                               width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: () => ctrl.rsvp(e.id),
-                                child: const Text("RSVP - I'm Attending"),
-                              ),
+                              child: Obx(() {
+                                final processing = ctrl.isProcessing(e.id);
+                                return ElevatedButton(
+                                  onPressed: processing
+                                      ? null
+                                      : () => ctrl.rsvp(e.id),
+                                  child: processing
+                                      ? const SizedBox(
+                                          height: 16,
+                                          width: 16,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            color: Colors.white,
+                                          ),
+                                        )
+                                      : const Text("RSVP - I'm Attending"),
+                                );
+                              }),
                             ),
                           if (e.rsvpRequired && e.isAttending)
                             SizedBox(
                               width: double.infinity,
-                              child: OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  foregroundColor: Colors.red,
-                                  side: const BorderSide(color: Colors.red),
-                                ),
-                                onPressed: () => ctrl.cancelRsvp(e.id),
-                                child: const Text('Cancel RSVP'),
-                              ),
+                              child: Obx(() {
+                                final processing = ctrl.isProcessing(e.id);
+                                return OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    foregroundColor: Colors.red,
+                                    side: const BorderSide(color: Colors.red),
+                                  ),
+                                  onPressed: processing
+                                      ? null
+                                      : () => ctrl.cancelRsvp(e.id),
+                                  child: processing
+                                      ? const SizedBox(
+                                          height: 16,
+                                          width: 16,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            color: Colors.red,
+                                          ),
+                                        )
+                                      : const Text('Cancel RSVP'),
+                                );
+                              }),
                             ),
                           const SizedBox(height: 8),
                           Align(

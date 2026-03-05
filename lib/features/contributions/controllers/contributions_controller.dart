@@ -63,6 +63,40 @@ class ContributionsController extends GetxController {
     Get.snackbar('Download', 'Receipt URL copied to clipboard');
   }
 
+  /// Copy receipt download URL for a contribution. If the receipts list
+  /// contains a matching entry with `downloadUrl`, that URL is used. Otherwise
+  /// this constructs a fallback download URL using the API path pattern.
+  Future<void> copyReceiptUrlForContribution(String contributionId) async {
+    try {
+      final found = receipts.firstWhere(
+        (r) => r.id == contributionId,
+        orElse: () => ReceiptItem(
+          id: '',
+          receiptNumber: '',
+          amount: 0,
+          date: '',
+          downloadUrl: '',
+          status: '',
+          type: '',
+          paymentMethod: '',
+        ),
+      );
+
+      if (found.downloadUrl.isNotEmpty) {
+        await copyReceiptUrlToClipboard(found.downloadUrl);
+        return;
+      }
+
+      // Build fallback URL using ApiClient baseUrl + known endpoint pattern
+      final fallback = ApiClient().buildUrl(
+        '/api/member/contribution/$contributionId/receipt/download',
+      );
+      await copyReceiptUrlToClipboard(fallback);
+    } catch (e) {
+      Get.snackbar('Download', 'Unable to get receipt URL: $e');
+    }
+  }
+
   Future<void> fetchContributions() async {
     isLoading.value = true;
     try {
