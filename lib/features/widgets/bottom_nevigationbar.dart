@@ -52,6 +52,11 @@ class AppBottomNavigationBar extends StatelessWidget {
             label: 'Receipts',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.event_outlined),
+            activeIcon: Icon(Icons.event),
+            label: 'Events',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.notifications_none),
             activeIcon: Icon(Icons.notifications),
             label: 'Announcements',

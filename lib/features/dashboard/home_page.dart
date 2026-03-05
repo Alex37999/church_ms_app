@@ -4,6 +4,7 @@ import '../widgets/bottom_nevigationbar.dart';
 import '../widgets/app_header.dart';
 import '../contributions/contributions_screen.dart';
 import '../receipts/receipts_screen.dart';
+import '../event/event_screen.dart';
 import '../announcements/announcements_screen.dart';
 import '../profile/profile_screen.dart';
 import './controllers/home_controller.dart';
@@ -90,13 +91,17 @@ class HomePage extends GetView<HomeController> {
                                     title: 'My Branch',
                                     value: hp?.branchName ?? '-',
                                   ),
-                                  _SummaryCard(
-                                    color: const Color(0xFFFFF7ED),
-                                    icon: Icons.event,
-                                    iconColor: const Color(0xFFF97316),
-                                    title: 'Upcoming Events',
-                                    value:
-                                        '${hp?.upcomingEventsCount?.toString() ?? '0'} Events',
+                                  InkWell(
+                                    onTap: () => navCtrl.changeIndex(3),
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: _SummaryCard(
+                                      color: const Color(0xFFFFF7ED),
+                                      icon: Icons.event,
+                                      iconColor: const Color(0xFFF97316),
+                                      title: 'Upcoming Events',
+                                      value:
+                                          '${hp?.upcomingEventsCount?.toString() ?? '0'} Events',
+                                    ),
                                   ),
                                 ],
                               ),
@@ -153,6 +158,7 @@ class HomePage extends GetView<HomeController> {
 
         ContributionsScreen(),
         const ReceiptsScreen(),
+        const EventScreen(),
         const AnnouncementsScreen(),
         const ProfileScreen(),
       ];
