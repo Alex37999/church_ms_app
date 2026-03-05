@@ -19,10 +19,15 @@ class _SplashScreenState extends State<SplashScreen> {
       if (!mounted) return;
       // If a logged-in session exists, go to home; otherwise go to login
       try {
-        final loggedIn = Get.isRegistered<StorageService>()
-            ? await Get.find<StorageService>().isLoggedIn()
-            : false;
-        if (loggedIn) {
+        final storage = Get.isRegistered<StorageService>()
+            ? Get.find<StorageService>()
+            : null;
+
+        final loggedIn = storage != null ? await storage.isLoggedIn() : false;
+        final token = storage != null ? await storage.getToken() : null;
+
+        // Consider the session valid only if both flags are present.
+        if (loggedIn && token != null && token.isNotEmpty) {
           Get.offAllNamed(Routes.HOME);
         } else {
           Get.offAllNamed(Routes.LOGIN);

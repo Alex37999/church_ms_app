@@ -10,7 +10,7 @@ class StorageService extends GetxService {
 
   late final GetStorage _box;
 
-  Future<void> init() async {
+  void init() {
     _box = GetStorage();
   }
 

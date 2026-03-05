@@ -44,6 +44,27 @@ class ApiClient {
           handler.next(response);
         },
         onError: (dio.DioException e, handler) {
+          // If the token is invalid/expired, clear local session and return to login.
+          // This avoids the app looking "empty" after a cold restart.
+          final status = e.response?.statusCode;
+          if (status == 401) {
+            try {
+              if (Get.isRegistered<StorageService>()) {
+                Get.find<StorageService>().clearSession();
+              }
+            } catch (_) {
+              // ignore
+            }
+
+            // Avoid tight loops if we're already on login.
+            try {
+              if (Get.currentRoute != '/login') {
+                Get.offAllNamed('/login');
+              }
+            } catch (_) {
+              // ignore
+            }
+          }
           handler.next(e);
         },
       ),

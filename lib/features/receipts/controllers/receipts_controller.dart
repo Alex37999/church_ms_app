@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:get/get.dart';
 import '../../../core/network/api_client.dart';
 import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
 
