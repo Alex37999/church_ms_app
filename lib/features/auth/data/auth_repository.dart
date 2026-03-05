@@ -50,9 +50,16 @@ class AuthRepository {
           '🔁 [AuthRepository] logout raw response JSON: ${jsonEncode(res.data)}',
         );
       } catch (_) {}
-      if (res.data is Map<String, dynamic>) {
-        final success = (res.data as Map<String, dynamic>)['success'];
-        return success == true;
+      if (res.data is Map) {
+        final map = Map<String, dynamic>.from(res.data as Map);
+        final success = map['success'] == true;
+        if (success) return true;
+
+        final message = map['message']?.toString().toLowerCase().trim();
+        if (message != null && message.contains('unauthenticated')) {
+          // Token/session already invalid; consider this a successful local logout.
+          return true;
+        }
       }
       return false;
     } catch (e) {
