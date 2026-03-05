@@ -57,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     _LogoMark(colorScheme: colorScheme, primary: primaryDark),
                     const SizedBox(height: 20),
                     Text(
-                      'ChurchMS',
+                      'Church Smartly',
                       style: Theme.of(context).textTheme.headlineMedium
                           ?.copyWith(
                             color: primaryDark,

@@ -156,7 +156,7 @@ class _LoginFormState extends State<_LoginForm> {
         children: [
           const SizedBox(height: 6),
           Text(
-            'ChurchMS',
+            'Church Smartly',
             style: TextStyle(
               fontSize: 36,
               color: AppTheme.primaryColor,

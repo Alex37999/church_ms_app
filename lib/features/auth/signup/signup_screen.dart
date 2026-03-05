@@ -85,7 +85,7 @@ class _RegisterFormState extends State<_RegisterForm> {
       children: [
         const SizedBox(height: 6),
         Text(
-          "ChurchMS",
+          "Church Smartly",
           style: TextStyle(
             fontSize: 34,
             fontWeight: FontWeight.bold,
