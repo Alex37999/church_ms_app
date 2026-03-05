@@ -7,6 +7,11 @@ import '../receipts/receipts_screen.dart';
 import '../event/event_screen.dart';
 import '../announcements/announcements_screen.dart';
 import '../profile/profile_screen.dart';
+import '../contributions/controllers/contributions_controller.dart';
+import '../receipts/controllers/receipts_controller.dart';
+import '../event/controller/event_controller.dart';
+import '../announcements/controllers/announcements_controller.dart';
+import '../profile/controllers/profile_controller.dart';
 import './controllers/home_controller.dart';
 
 class HomePage extends GetView<HomeController> {
@@ -166,7 +171,50 @@ class HomePage extends GetView<HomeController> {
       return Scaffold(
         backgroundColor: const Color(0xFFFBFCFF),
         body: IndexedStack(index: idx, children: pages),
-        bottomNavigationBar: AppBottomNavigationBar(onTap: (i) {}),
+        bottomNavigationBar: AppBottomNavigationBar(
+          onTap: (i) {
+            // Trigger refresh for the tapped tab so data updates immediately.
+            // Home
+            if (i == 0) {
+              controller.fetchDashboard();
+            }
+
+            // Contributions
+            if (i == 1) {
+              if (Get.isRegistered<ContributionsController>()) {
+                Get.find<ContributionsController>().fetchContributions();
+              }
+            }
+
+            // Receipts
+            if (i == 2) {
+              if (Get.isRegistered<ReceiptsController>()) {
+                Get.find<ReceiptsController>().fetchReceipts();
+              }
+            }
+
+            // Events
+            if (i == 3) {
+              if (Get.isRegistered<EventController>()) {
+                Get.find<EventController>().fetchEvents();
+              }
+            }
+
+            // Announcements
+            if (i == 4) {
+              if (Get.isRegistered<AnnouncementsController>()) {
+                Get.find<AnnouncementsController>().fetchAnnouncements();
+              }
+            }
+
+            // Profile
+            if (i == 5) {
+              if (Get.isRegistered<ProfileController>()) {
+                Get.find<ProfileController>().fetchProfile();
+              }
+            }
+          },
+        ),
       );
     });
   }

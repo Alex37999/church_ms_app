@@ -83,6 +83,11 @@ class AppHeader extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
+                    // Always refresh notifications when user taps the bell.
+                    if (Get.isRegistered<NotificationController>()) {
+                      Get.find<NotificationController>().fetchNotifications();
+                    }
+
                     if (Get.currentRoute != Routes.NOTIFICATIONS) {
                       Get.toNamed(Routes.NOTIFICATIONS);
                     }
