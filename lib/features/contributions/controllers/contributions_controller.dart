@@ -1,6 +1,10 @@
 import 'package:get/get.dart';
 import '../../../core/network/api_client.dart';
 import 'package:flutter/services.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ContributionsController extends GetxController {
   final RxList<ContributionModel> contributions = <ContributionModel>[].obs;
@@ -22,6 +26,7 @@ class ContributionsController extends GetxController {
 
   // Receipts
   final RxList<ReceiptItem> receipts = <ReceiptItem>[].obs;
+  final RxSet<String> downloadingReceiptIds = <String>{}.obs;
   // Bank accounts provided by the API
   final RxList<BankAccount> bankAccounts = <BankAccount>[].obs;
 
@@ -95,6 +100,101 @@ class ContributionsController extends GetxController {
     } catch (e) {
       Get.snackbar('Download', 'Unable to get receipt URL: $e');
     }
+  }
+
+  Future<void> downloadReceiptForContribution(String contributionId) async {
+    if (downloadingReceiptIds.contains(contributionId)) {
+      Get.snackbar('Download', 'Download already in progress...');
+      return;
+    }
+    downloadingReceiptIds.add(contributionId);
+
+    try {
+      Get.snackbar('Download', 'Downloading receipt...');
+      final url = ApiClient().buildUrl(
+        '/api/member/contribution/$contributionId/receipt/download',
+      );
+
+      final resp = await ApiClient().getBytes(url);
+      final status = resp.statusCode ?? 0;
+      final contentType = resp.headers.value('content-type')?.toLowerCase();
+
+      if (status < 200 || status >= 300) {
+        Get.snackbar('Download', 'Unable to download receipt');
+        return;
+      }
+
+      final raw = resp.data;
+      if (raw is! List<int>) {
+        Get.snackbar('Download', 'Invalid receipt response');
+        return;
+      }
+
+      // If the backend returns JSON in a bytes response, show the message.
+      if (contentType != null && contentType.contains('application/json')) {
+        try {
+          final decoded = jsonDecode(utf8.decode(raw));
+          if (decoded is Map) {
+            final msg = decoded['message']?.toString();
+            if (msg != null && msg.trim().isNotEmpty) {
+              Get.snackbar('Download', msg);
+              return;
+            }
+          }
+        } catch (_) {
+          // ignore JSON parse errors and continue as a binary file
+        }
+      }
+
+      final dir = await getApplicationDocumentsDirectory();
+      final filename =
+          _filenameFromHeaders(
+            contentDisposition: resp.headers.value('content-disposition'),
+            fallback: 'receipt_$contributionId.pdf',
+          ) ??
+          'receipt_$contributionId.pdf';
+
+      final file = File('${dir.path}/$filename');
+      await file.writeAsBytes(raw, flush: true);
+
+      Get.snackbar('Download', 'Receipt downloaded');
+
+      final result = await OpenFile.open(file.path);
+      if (result.type != ResultType.done) {
+        Get.snackbar('Download', 'Saved to ${file.path}');
+      }
+    } catch (e) {
+      Get.snackbar('Download', 'Failed: $e');
+    } finally {
+      downloadingReceiptIds.remove(contributionId);
+    }
+  }
+
+  String? _filenameFromHeaders({
+    required String? contentDisposition,
+    required String fallback,
+  }) {
+    try {
+      if (contentDisposition == null || contentDisposition.trim().isEmpty) {
+        return fallback;
+      }
+
+      // Common formats:
+      // - attachment; filename="receipt.pdf"
+      // - attachment; filename=receipt.pdf
+      final parts = contentDisposition.split(';');
+      for (final part in parts) {
+        final p = part.trim();
+        if (p.toLowerCase().startsWith('filename=')) {
+          var name = p.substring('filename='.length).trim();
+          if (name.startsWith('"') && name.endsWith('"')) {
+            name = name.substring(1, name.length - 1);
+          }
+          if (name.isNotEmpty) return name;
+        }
+      }
+    } catch (_) {}
+    return fallback;
   }
 
   Future<void> fetchContributions() async {

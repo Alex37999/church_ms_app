@@ -102,37 +102,37 @@ class ContributionDetailsScreen extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 18),
-                ElevatedButton.icon(
-                  onPressed: () async {
-                    await ctrl.copyReceiptUrlForContribution(contribution.id);
-                  },
-                  icon: const Icon(
-                    Icons.remove_red_eye_outlined,
-                    color: Colors.white,
-                  ),
-                  label: const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12.0),
-                    child: Text(
-                      'View Receipt',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2563EB),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
 
+                // ElevatedButton.icon(
+                //   onPressed: () async {
+                //     await ctrl.copyReceiptUrlForContribution(contribution.id);
+                //   },
+                //   icon: const Icon(
+                //     Icons.remove_red_eye_outlined,
+                //     color: Colors.white,
+                //   ),
+                //   label: const Padding(
+                //     padding: EdgeInsets.symmetric(vertical: 12.0),
+                //     child: Text(
+                //       'View Receipt',
+                //       style: TextStyle(
+                //         fontWeight: FontWeight.w700,
+                //         color: Colors.white,
+                //       ),
+                //     ),
+                //   ),
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: const Color(0xFF2563EB),
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(8),
+                //     ),
+                //   ),
+                // ),
                 const SizedBox(height: 12),
                 OutlinedButton.icon(
                   onPressed: isAccepted
                       ? () async {
-                          await ctrl.copyReceiptUrlForContribution(
+                          await ctrl.downloadReceiptForContribution(
                             contribution.id,
                           );
                         }
