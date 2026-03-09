@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/controllers/theme_controller.dart';
-import 'package:churchmsapp/app/theme/app_theme.dart';
 import 'login_controller.dart';
 
 class LoginView extends GetView<LoginController> {

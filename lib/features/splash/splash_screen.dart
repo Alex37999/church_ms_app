@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:churchmsapp/app/theme/app_theme.dart';
 import '../../app/routes/app_pages.dart';
 import '../../core/services/storage_service.dart';
 
@@ -40,7 +39,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     final bgColor = const Color(0xFF0F2A4A);
     const accentGreen = Color(0xFF16A34A);
 
@@ -186,41 +184,6 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _LogoMark extends StatelessWidget {
-  const _LogoMark({required this.colorScheme, required this.primary});
-
-  final ColorScheme colorScheme;
-  final Color primary;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 100,
-      height: 100,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: <Widget>[
-          DecoratedBox(
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(24)),
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.asset(
-                  'assets/icon/app_icon.png',
-                  width: 60,
-                  height: 60,
-                  //color: Colors.white,
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
