@@ -10,48 +10,170 @@ class LoginView extends GetView<LoginController> {
 
   @override
   Widget build(BuildContext context) {
+    final mq = MediaQuery.of(context);
+    final headerHeight = min(300.0, mq.size.height * 0.36);
+
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          // Background gradient
-          Container(color: Colors.white),
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            // Top header with decorative circles
+            Container(
+              height: headerHeight,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Color(0xFF0F2A4A),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(32),
+                  bottomRight: Radius.circular(32),
+                ),
+              ),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  // left teal circle
+                  Positioned(
+                    left: -40,
+                    bottom: 18,
+                    child: Container(
+                      width: 160,
+                      height: 160,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: const Color(0xFF16A34A).withOpacity(0.12),
+                      ),
+                    ),
+                  ),
+                  // right subtle dark circle
+                  Positioned(
+                    right: -60,
+                    top: -40,
+                    child: Container(
+                      width: 220,
+                      height: 220,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white.withOpacity(0.03),
+                      ),
+                    ),
+                  ),
+                  SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 18,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // small logo bubble
+                          Container(
+                            width: 66,
+                            height: 66,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF0F2A4A).withOpacity(0.6),
+                              borderRadius: BorderRadius.circular(18),
+                              border: Border.all(color: Colors.white24),
+                            ),
+                            child: Center(
+                              child: Container(
+                                width: 46,
+                                height: 46,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(6.0),
+                                  child: Image.asset(
+                                    'assets/icon/app_icon.png',
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 18),
+                          // Brand title
+                          RichText(
+                            text: TextSpan(
+                              style: Theme.of(context).textTheme.headlineMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w800,
+                                    color: Colors.white,
+                                  ),
+                              children: const <TextSpan>[
+                                TextSpan(
+                                  text: 'Church',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                TextSpan(
+                                  text: 'Smartly',
+                                  style: TextStyle(color: Color(0xFF16A34A)),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Welcome back to your church community',
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(color: Colors.white70),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
 
-          // Main content
-          SafeArea(
-            child: Center(
+            // Form card
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
               child: Obx(() {
                 final t = Get.find<ThemeController>();
-                final mq = MediaQuery.of(context);
-                final cardWidth = min(360.0, mq.size.width * 0.90);
+                final cardWidth = min(520.0, mq.size.width - 32);
 
                 return Container(
                   width: cardWidth,
-                  margin: const EdgeInsets.symmetric(vertical: 20),
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 24,
+                    horizontal: 18,
+                    vertical: 20,
                   ),
                   decoration: BoxDecoration(
                     color: t.cardColor,
-                    borderRadius: BorderRadius.circular(22),
+                    borderRadius: BorderRadius.circular(14),
                     boxShadow: const [
                       BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 12,
+                        color: Colors.black12,
+                        blurRadius: 10,
                         offset: Offset(0, 6),
                       ),
                     ],
                   ),
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: _LoginForm(),
-                  ),
+                  child: _LoginForm(),
                 );
               }),
             ),
-          ),
-        ],
+            // site text outside the card
+            const SizedBox(height: 6),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Center(
+                child: Text(
+                  'churchsmartly.com',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Get.find<ThemeController>().secondaryText,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -146,6 +268,68 @@ class _LoginForm extends StatefulWidget {
 class _LoginFormState extends State<_LoginForm> {
   late final controller = Get.find<LoginController>();
 
+  Future<void> _showBranchPicker(
+    BuildContext context,
+    LoginController ctrl,
+  ) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return SafeArea(
+          child: Container(
+            margin: const EdgeInsets.all(12),
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.6),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 36,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.white24,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                Flexible(
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: ctrl.branches.length,
+                    separatorBuilder: (_, __) =>
+                        const Divider(color: Colors.white12, height: 1),
+                    itemBuilder: (context, index) {
+                      final branch = ctrl.branches[index];
+                      final selected = ctrl.selectedBranch.value == branch;
+                      return ListTile(
+                        title: Text(
+                          branch,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        trailing: selected
+                            ? const Icon(Icons.check, color: Colors.green)
+                            : null,
+                        onTap: () {
+                          ctrl.selectBranch(branch);
+                          Navigator.of(context).pop();
+                        },
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 8),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = Get.find<ThemeController>();
@@ -153,37 +337,27 @@ class _LoginFormState extends State<_LoginForm> {
     return Form(
       key: controller.formKey,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 6),
           Text(
-            'Church Smartly',
+            'Sign In',
             style: TextStyle(
-              fontSize: 36,
-              color: AppTheme.primaryColor,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            'Welcome Back',
-            style: TextStyle(
-              fontSize: 24,
-              color: t.primaryText,
+              fontSize: 22,
+              color: Color(0xFF0F2A4A),
               fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 6),
           Text(
-            'Sign in to your account to continue',
+            'Enter your details to continue',
             style: TextStyle(color: t.secondaryText),
           ),
-
           const SizedBox(height: 18),
 
           Obx(
             () => _CustomInput(
               icon: Icons.email_outlined,
-              hint: 'Email Address',
+              hint: 'Email or Mobile Number',
               controller: controller.emailController,
               errorText: controller.emailError.value,
             ),
@@ -202,7 +376,47 @@ class _LoginFormState extends State<_LoginForm> {
             ),
           ),
 
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
+
+          // Branch selector (custom modal)
+          GetX<LoginController>(
+            builder: (c) {
+              final selected = c.selectedBranch.value;
+              return GestureDetector(
+                onTap: () => _showBranchPicker(context, controller),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 14,
+                  ),
+                  decoration: BoxDecoration(
+                    color: t.inputFill,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.location_on_outlined, color: t.inputIconColor),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          selected.isEmpty ? 'Select your Branch' : selected,
+                          style: TextStyle(
+                            color: selected.isEmpty
+                                ? t.secondaryText
+                                : t.primaryText,
+                          ),
+                        ),
+                      ),
+                      const Icon(Icons.keyboard_arrow_down),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+
+          const SizedBox(height: 10),
 
           Row(
             children: [
@@ -214,7 +428,10 @@ class _LoginFormState extends State<_LoginForm> {
               ),
               Text('Remember me', style: TextStyle(color: t.secondaryText)),
               const Spacer(),
-              SizedBox.shrink(),
+              TextButton(
+                onPressed: () {},
+                child: const Text('Forgot Password?'),
+              ),
             ],
           ),
 
@@ -230,41 +447,59 @@ class _LoginFormState extends State<_LoginForm> {
                     : () => controller.login(formKey: controller.formKey),
                 style: ElevatedButton.styleFrom(
                   elevation: 6,
-                  backgroundColor: AppTheme.primaryColor,
-                  padding: EdgeInsets.zero,
+                  backgroundColor: Color(0xFF0F2A4A),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: Container(
-                  alignment: Alignment.center,
-                  child: controller.isLoading.value
-                      ? const SizedBox(
-                          height: 22,
-                          width: 22,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.login, color: Colors.white),
-                            SizedBox(width: 10),
-                            Text(
-                              'Sign In',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                child: controller.isLoading.value
+                    ? const SizedBox(
+                        height: 22,
+                        width: 22,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
                         ),
-                ),
+                      )
+                    : const Text(
+                        'Sign In',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
               ),
             ),
           ),
+
+          const SizedBox(height: 18),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Divider(
+                    color: t.secondaryText.withOpacity(0.4),
+                    thickness: 1,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Text(
+                    'Secure & Encrypted',
+                    style: TextStyle(fontSize: 12, color: t.secondaryText),
+                  ),
+                ),
+                Expanded(
+                  child: Divider(
+                    color: t.secondaryText.withOpacity(0.4),
+                    thickness: 1,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
 
           // const SizedBox(height: 14),
 

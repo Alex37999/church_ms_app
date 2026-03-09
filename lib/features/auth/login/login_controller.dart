@@ -14,6 +14,17 @@ class LoginController extends GetxController {
   final rememberMe = false.obs;
   final isLoading = false.obs;
 
+  // Branch selection
+  final branches = <String>[
+    'Westside Branch',
+    'Eastside Branch',
+    'Central Branch',
+    'Northside Branch',
+    'Southside Branch',
+  ];
+
+  final selectedBranch = ''.obs;
+
   // Error observables
   final emailError = RxString('');
   final passwordError = RxString('');
@@ -134,6 +145,10 @@ class LoginController extends GetxController {
 
   void togglePasswordVisibility() {
     obscurePassword.value = !obscurePassword.value;
+  }
+
+  void selectBranch(String branch) {
+    selectedBranch.value = branch;
   }
 
   void navigateToRegister() {
