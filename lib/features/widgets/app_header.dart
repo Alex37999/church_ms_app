@@ -181,8 +181,9 @@ class AppHeader extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 22 * scale,
+                      fontSize: 24 * scale,
                       fontWeight: FontWeight.w900,
+                      letterSpacing: 0.2,
                     ),
                   ),
                   SizedBox(height: 6 * scale),

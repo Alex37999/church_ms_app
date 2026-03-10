@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   AppTheme._();
@@ -22,6 +23,10 @@ class AppTheme {
 
   static ThemeData get lightTheme {
     final base = ThemeData.light(useMaterial3: true);
+    final interTextTheme = GoogleFonts.interTextTheme(base.textTheme);
+    final interPrimaryTextTheme = GoogleFonts.interTextTheme(
+      base.primaryTextTheme,
+    );
 
     return ThemeData(
       useMaterial3: true,
@@ -38,11 +43,11 @@ class AppTheme {
       scaffoldBackgroundColor: pageBackground,
       canvasColor: cardBackground,
       dividerColor: cardBorder,
-      textTheme: base.textTheme.apply(
+      textTheme: interTextTheme.apply(
         bodyColor: textPrimary,
         displayColor: textPrimary,
       ),
-      primaryTextTheme: base.primaryTextTheme.apply(
+      primaryTextTheme: interPrimaryTextTheme.apply(
         bodyColor: textPrimary,
         displayColor: textPrimary,
       ),
@@ -104,6 +109,12 @@ class AppTheme {
   }
 
   static ThemeData get darkTheme {
+    final base = ThemeData.dark(useMaterial3: true);
+    final interTextTheme = GoogleFonts.interTextTheme(base.textTheme);
+    final interPrimaryTextTheme = GoogleFonts.interTextTheme(
+      base.primaryTextTheme,
+    );
+
     return ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
@@ -112,6 +123,8 @@ class AppTheme {
       ),
       brightness: Brightness.dark,
       scaffoldBackgroundColor: const Color(0xFF121212),
+      textTheme: interTextTheme,
+      primaryTextTheme: interPrimaryTextTheme,
       appBarTheme: const AppBarTheme(
         backgroundColor: Color(0xFF121212),
         elevation: 0,
