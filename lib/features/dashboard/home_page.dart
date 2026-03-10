@@ -14,210 +14,65 @@ import '../announcements/controllers/announcements_controller.dart';
 import '../profile/controllers/profile_controller.dart';
 import './controllers/home_controller.dart';
 
-class HomePage extends GetView<HomeController> {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late final HomeController _homeController;
+  late final BottomNavController _navCtrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _homeController = Get.find<HomeController>();
+    _navCtrl = Get.isRegistered<BottomNavController>()
+        ? Get.find<BottomNavController>()
+        : Get.put(BottomNavController());
+  }
+
+  Widget _buildActivePage(int index) {
+    switch (index) {
+      case 0:
+        return _DashboardTab(
+          homeController: _homeController,
+          navCtrl: _navCtrl,
+        );
+      case 1:
+        return const ContributionsScreen();
+      case 2:
+        return const ReceiptsScreen();
+      case 3:
+        return const EventScreen();
+      case 4:
+        return const AnnouncementsScreen();
+      case 5:
+        return const ProfileScreen();
+      default:
+        return _DashboardTab(
+          homeController: _homeController,
+          navCtrl: _navCtrl,
+        );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final navCtrl = Get.put(BottomNavController());
-
     return Obx(() {
-      final idx = navCtrl.index.value;
-
-      final pages = <Widget>[
-        // Dashboard tab (redesigned)
-        Column(
-          children: [
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: controller.fetchDashboard,
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  children: [
-                    Obx(() {
-                      final hp = controller.homepage.value?.data;
-                      final isLoading = controller.isLoading.value;
-
-                      if (isLoading) {
-                        return const SizedBox(
-                          height: 240,
-                          child: Center(child: CircularProgressIndicator()),
-                        );
-                      }
-
-                      return Column(
-                        children: [
-                          const AppHeader(),
-
-                          const SizedBox(height: 18),
-
-                          // 2x2 white summary cards
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: GridView.count(
-                              crossAxisCount: 2,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              crossAxisSpacing: 12,
-                              mainAxisSpacing: 12,
-                              childAspectRatio: 1.28,
-                              children: [
-                                _SummaryCard(
-                                  color: const Color(0xFFEFFAF3),
-                                  icon: Icons.attach_money,
-                                  iconColor: const Color(0xFF16A34A),
-                                  title: 'Total Given',
-                                  value:
-                                      '${hp?.currencySymbol ?? 'KES'} ${hp?.totalContributions ?? '0'}',
-                                ),
-                                _SummaryCard(
-                                  color: const Color(0xFFEFF6FF),
-                                  icon: Icons.trending_up,
-                                  iconColor: const Color(0xFF2563EB),
-                                  title: 'Last Giving',
-                                  value: hp?.lastContributionDate ?? '-',
-                                ),
-                                _SummaryCard(
-                                  color: const Color(0xFFF5F3FF),
-                                  icon: Icons.location_on,
-                                  iconColor: const Color(0xFF7C3AED),
-                                  title: 'My Branch',
-                                  value: hp?.branchName ?? '-',
-                                ),
-                                InkWell(
-                                  onTap: () => navCtrl.changeIndex(3),
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: _SummaryCard(
-                                    color: const Color(0xFFFFF7ED),
-                                    icon: Icons.event,
-                                    iconColor: const Color(0xFFF97316),
-                                    title: 'Upcoming',
-                                    value:
-                                        '${hp?.upcomingEventsCount ?? 0} Events',
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          const SizedBox(height: 18),
-
-                          // Recent activity header
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'Recent Activity',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium
-                                        ?.copyWith(fontWeight: FontWeight.w700),
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () {},
-                                  child: const Text(
-                                    'View all >',
-                                    style: TextStyle(color: Color(0xFF4B5563)),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          // Recent activity list
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Column(
-                              children: (hp?.recentActivity ?? []).map<Widget>((
-                                act,
-                              ) {
-                                final icon = act.type == 'announcement'
-                                    ? Icons.campaign_outlined
-                                    : Icons.attach_money;
-                                final subtitle = act.description ?? '';
-                                final time = act.time != null
-                                    ? _formatRelative(act.time!)
-                                    : '';
-
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 10.0),
-                                  child: Card(
-                                    color: Colors.white,
-                                    elevation: 6,
-                                    shadowColor: const Color.fromRGBO(
-                                      0,
-                                      0,
-                                      0,
-                                      0.06,
-                                    ),
-                                    margin: EdgeInsets.zero,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                      side: BorderSide(
-                                        color: Colors.grey.shade100,
-                                      ),
-                                    ),
-                                    child: ListTile(
-                                      leading: CircleAvatar(
-                                        backgroundColor: const Color(
-                                          0xFFF3F4F6,
-                                        ),
-                                        child: Icon(
-                                          icon,
-                                          color: Colors.black54,
-                                        ),
-                                      ),
-                                      title: Text(
-                                        act.title ?? '-',
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      subtitle: Text(subtitle),
-                                      trailing: Text(
-                                        time,
-                                        style: const TextStyle(
-                                          color: Colors.black45,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-
-                          const SizedBox(height: 80),
-                        ],
-                      );
-                    }),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-
-        ContributionsScreen(),
-        const ReceiptsScreen(),
-        const EventScreen(),
-        const AnnouncementsScreen(),
-        const ProfileScreen(),
-      ];
+      final idx = _navCtrl.index.value;
 
       return Scaffold(
         backgroundColor: const Color(0xFFFBFCFF),
-        body: IndexedStack(index: idx, children: pages),
+        body: KeyedSubtree(key: ValueKey(idx), child: _buildActivePage(idx)),
         bottomNavigationBar: AppBottomNavigationBar(
           onTap: (i) {
             // Trigger refresh for the tapped tab so data updates immediately.
             // Home
             if (i == 0) {
-              controller.fetchDashboard();
+              _homeController.fetchDashboard();
             }
 
             // Contributions
@@ -261,6 +116,161 @@ class HomePage extends GetView<HomeController> {
   }
 }
 
+class _DashboardTab extends StatelessWidget {
+  final HomeController homeController;
+  final BottomNavController navCtrl;
+
+  const _DashboardTab({required this.homeController, required this.navCtrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: homeController.fetchDashboard,
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          Obx(() {
+            final hp = homeController.homepage.value?.data;
+            final isLoading = homeController.isLoading.value;
+
+            if (isLoading) {
+              return const SizedBox(
+                height: 240,
+                child: Center(child: CircularProgressIndicator()),
+              );
+            }
+
+            return Column(
+              children: [
+                const AppHeader(),
+                const SizedBox(height: 18),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: GridView.count(
+                    crossAxisCount: 2,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    childAspectRatio: 1.28,
+                    children: [
+                      _SummaryCard(
+                        color: const Color(0xFFEFFAF3),
+                        icon: Icons.attach_money,
+                        iconColor: const Color(0xFF16A34A),
+                        title: 'Total Given',
+                        value:
+                            '${hp?.currencySymbol ?? 'KES'} ${hp?.totalContributions ?? '0'}',
+                      ),
+                      _SummaryCard(
+                        color: const Color(0xFFEFF6FF),
+                        icon: Icons.trending_up,
+                        iconColor: const Color(0xFF2563EB),
+                        title: 'Last Giving',
+                        value: hp?.lastContributionDate ?? '-',
+                      ),
+                      _SummaryCard(
+                        color: const Color(0xFFF5F3FF),
+                        icon: Icons.location_on,
+                        iconColor: const Color(0xFF7C3AED),
+                        title: 'My Branch',
+                        value: hp?.branchName ?? '-',
+                      ),
+                      InkWell(
+                        onTap: () => navCtrl.changeIndex(3),
+                        borderRadius: BorderRadius.circular(12),
+                        child: _SummaryCard(
+                          color: const Color(0xFFFFF7ED),
+                          icon: Icons.event,
+                          iconColor: const Color(0xFFF97316),
+                          title: 'Upcoming',
+                          value: '${hp?.upcomingEventsCount ?? 0} Events',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 18),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Recent Activity',
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {},
+                        child: const Text(
+                          'View all >',
+                          style: TextStyle(color: Color(0xFF4B5563)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    children: (hp?.recentActivity ?? []).map<Widget>((act) {
+                      final icon = act.type == 'announcement'
+                          ? Icons.campaign_outlined
+                          : Icons.attach_money;
+                      final subtitle = act.description ?? '';
+                      final time = act.time != null
+                          ? _formatRelative(act.time!)
+                          : '';
+
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: Card(
+                          color: Colors.white,
+                          elevation: 5,
+                          shadowColor: const Color.fromRGBO(15, 23, 42, 0.08),
+                          surfaceTintColor: Colors.white,
+                          margin: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: const BorderSide(color: Color(0xFFE7ECF3)),
+                          ),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: const Color(0xFFF1F5F9),
+                              child: Icon(icon, color: const Color(0xFF334155)),
+                            ),
+                            title: Text(
+                              act.title ?? '-',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            subtitle: Text(subtitle),
+                            trailing: Text(
+                              time,
+                              style: const TextStyle(
+                                color: Colors.black45,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                const SizedBox(height: 80),
+              ],
+            );
+          }),
+        ],
+      ),
+    );
+  }
+}
+
 class _SummaryCard extends StatelessWidget {
   final Color? color;
   final IconData icon;
@@ -291,12 +301,13 @@ class _SummaryCard extends StatelessWidget {
 
     return Card(
       color: Colors.white,
-      elevation: 6,
-      shadowColor: const Color.fromRGBO(0, 0, 0, 0.06),
+      elevation: 5,
+      shadowColor: const Color.fromRGBO(15, 23, 42, 0.08),
+      surfaceTintColor: Colors.white,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: Colors.grey.shade100),
+        borderRadius: BorderRadius.circular(20),
+        side: const BorderSide(color: Color(0xFFE7ECF3)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -309,6 +320,13 @@ class _SummaryCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: color ?? Colors.grey.shade200,
                 shape: BoxShape.circle,
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color.fromRGBO(255, 255, 255, 0.4),
+                    blurRadius: 10,
+                    offset: Offset(0, 2),
+                  ),
+                ],
               ),
               padding: const EdgeInsets.all(9),
               child: Icon(icon, color: iconColor ?? Colors.black54, size: 20),

@@ -12,7 +12,7 @@ class AnnouncementsScreen extends GetView<AnnouncementsController> {
     final ctrl = controller;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF3F4F6),
+      backgroundColor: const Color(0xFFF4F7FB),
       body: Obx(
         () => Column(
           children: [
@@ -75,11 +75,11 @@ class _AnnouncementCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(16),
-      elevation: 1,
-      shadowColor: Colors.black.withOpacity(0.05),
+      borderRadius: BorderRadius.circular(20),
+      elevation: 5,
+      shadowColor: const Color.fromRGBO(15, 23, 42, 0.08),
       child: InkWell(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         onTap: () {
           // Details screen removed — tapping currently does nothing.
         },
@@ -90,15 +90,22 @@ class _AnnouncementCard extends StatelessWidget {
             children: [
               /// Left Icon
               Container(
-                width: 44,
-                height: 44,
+                width: 48,
+                height: 48,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE8F0FE),
+                  color: const Color(0xFFEAF2FF),
                   shape: BoxShape.circle,
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color.fromRGBO(59, 130, 246, 0.14),
+                      blurRadius: 16,
+                      offset: Offset(0, 8),
+                    ),
+                  ],
                 ),
                 child: const Icon(
                   Icons.campaign_outlined,
-                  size: 20,
+                  size: 22,
                   color: Color(0xFF3B82F6),
                 ),
               ),
@@ -164,22 +171,17 @@ class _AnnouncementCard extends StatelessWidget {
                     const SizedBox(height: 12),
 
                     /// Footer row
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
                       children: [
-                        Text(
-                          announcement.source,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.black54,
-                          ),
+                        _InfoPill(
+                          icon: Icons.apartment_rounded,
+                          label: announcement.source,
                         ),
-                        Text(
-                          announcement.date,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.black54,
-                          ),
+                        _InfoPill(
+                          icon: Icons.schedule_rounded,
+                          label: announcement.date,
                         ),
                       ],
                     ),
@@ -194,6 +196,40 @@ class _AnnouncementCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _InfoPill extends StatelessWidget {
+  final IconData icon;
+  final String label;
+
+  const _InfoPill({required this.icon, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8FAFC),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 14, color: const Color(0xFF64748B)),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 12,
+              color: Color(0xFF475569),
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
       ),
     );
   }

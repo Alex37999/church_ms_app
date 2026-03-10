@@ -12,7 +12,7 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
     final ctrl = controller;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F8FA),
+      backgroundColor: const Color(0xFFF4F7FB),
       body: Obx(
         () => ListView(
           padding: EdgeInsets.zero,
@@ -57,11 +57,11 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
                         padding: const EdgeInsets.only(bottom: 16),
                         child: Material(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          elevation: 0.5,
-                          shadowColor: Colors.black.withOpacity(0.04),
+                          borderRadius: BorderRadius.circular(20),
+                          elevation: 5,
+                          shadowColor: const Color.fromRGBO(15, 23, 42, 0.08),
                           child: InkWell(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(20),
                             onTap: () => Get.to(
                               () => ContributionReceiptScreen(receipt: receipt),
                             ),
@@ -74,15 +74,27 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Container(
-                                    width: 44,
-                                    height: 44,
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xFFEFF6FF),
+                                    width: 48,
+                                    height: 48,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFEAF2FF),
                                       shape: BoxShape.circle,
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: Color.fromRGBO(
+                                            59,
+                                            130,
+                                            246,
+                                            0.14,
+                                          ),
+                                          blurRadius: 16,
+                                          offset: Offset(0, 8),
+                                        ),
+                                      ],
                                     ),
                                     child: const Icon(
                                       Icons.receipt_long,
-                                      size: 20,
+                                      size: 22,
                                       color: Color(0xFF3B82F6),
                                     ),
                                   ),
@@ -123,8 +135,9 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
                                       Text(
                                         'KES ${receipt.totalAmount.toStringAsFixed(0)}',
                                         style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.w800,
                                           fontSize: 16,
+                                          color: Color(0xFF0F172A),
                                         ),
                                       ),
                                       const SizedBox(height: 6),
@@ -151,13 +164,17 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
                                     ],
                                   ),
                                   const SizedBox(width: 8),
-                                  IconButton(
-                                    onPressed: () => ctrl.downloadReceipt(
-                                      receipt.downloadUrl ?? '',
-                                    ),
-                                    icon: const Icon(
-                                      Icons.download_outlined,
-                                      color: Color(0xFF2563EB),
+                                  Material(
+                                    color: const Color(0xFFEFF6FF),
+                                    shape: const CircleBorder(),
+                                    child: IconButton(
+                                      onPressed: () => ctrl.downloadReceipt(
+                                        receipt.downloadUrl ?? '',
+                                      ),
+                                      icon: const Icon(
+                                        Icons.download_outlined,
+                                        color: Color(0xFF2563EB),
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(width: 4),

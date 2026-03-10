@@ -14,7 +14,7 @@ class EventScreen extends GetView<EventController> {
     final ctrl = Get.find<EventController>();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F8FA),
+      backgroundColor: const Color(0xFFF4F7FB),
       body: Obx(
         () => RefreshIndicator(
           onRefresh: ctrl.fetchEvents,
@@ -64,8 +64,12 @@ class EventScreen extends GetView<EventController> {
                     padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
                     child: Card(
                       color: Colors.white,
+                      elevation: 5,
+                      shadowColor: const Color.fromRGBO(15, 23, 42, 0.08),
+                      surfaceTintColor: Colors.white,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(20),
+                        side: const BorderSide(color: Color(0xFFE7ECF3)),
                       ),
                       margin: EdgeInsets.zero,
                       child: Padding(
@@ -79,54 +83,56 @@ class EventScreen extends GetView<EventController> {
                                   child: Text(
                                     e.title,
                                     style: const TextStyle(
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w800,
                                       fontSize: 16,
                                     ),
                                   ),
                                 ),
                                 const SizedBox(width: 8),
-                                Text(
-                                  '${e.date} ${e.time}'.trim(),
-                                  style: const TextStyle(color: Colors.black54),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.place,
-                                  size: 16,
-                                  color: Colors.black54,
-                                ),
-                                const SizedBox(width: 6),
-                                Expanded(
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFEFF6FF),
+                                    borderRadius: BorderRadius.circular(999),
+                                  ),
                                   child: Text(
-                                    e.venue,
+                                    '${e.date} ${e.time}'.trim(),
                                     style: const TextStyle(
-                                      color: Colors.black54,
+                                      color: Color(0xFF1D4ED8),
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 12,
                                     ),
                                   ),
                                 ),
                               ],
                             ),
                             const SizedBox(height: 8),
-                            Row(
+                            Wrap(
+                              spacing: 10,
+                              runSpacing: 10,
                               children: [
-                                const Icon(
-                                  Icons.group,
-                                  size: 16,
-                                  color: Colors.black54,
+                                _EventMetaPill(
+                                  icon: Icons.place_rounded,
+                                  label: e.venue,
                                 ),
-                                const SizedBox(width: 6),
-                                Text(
-                                  '${e.capacity} capacity',
-                                  style: const TextStyle(color: Colors.black54),
+                                _EventMetaPill(
+                                  icon: Icons.group_rounded,
+                                  label: '${e.capacity} capacity',
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 10),
-                            Text(e.description),
+                            const SizedBox(height: 8),
+                            const SizedBox(height: 4),
+                            Text(
+                              e.description,
+                              style: const TextStyle(
+                                color: Color(0xFF334155),
+                                height: 1.4,
+                              ),
+                            ),
                             const SizedBox(height: 12),
                             if (e.rsvpRequired && !e.isAttending)
                               SizedBox(
@@ -216,6 +222,40 @@ class EventScreen extends GetView<EventController> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _EventMetaPill extends StatelessWidget {
+  final IconData icon;
+  final String label;
+
+  const _EventMetaPill({required this.icon, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8FAFC),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 14, color: const Color(0xFF64748B)),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: const TextStyle(
+              color: Color(0xFF475569),
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
       ),
     );
   }

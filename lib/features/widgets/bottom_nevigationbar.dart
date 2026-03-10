@@ -18,10 +18,9 @@ class AppBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BottomNavController ctrl = Get.put(
-      BottomNavController(),
-      permanent: false,
-    );
+    final BottomNavController ctrl = Get.isRegistered<BottomNavController>()
+        ? Get.find<BottomNavController>()
+        : Get.put(BottomNavController(), permanent: false);
 
     return Obx(() {
       return BottomNavigationBar(

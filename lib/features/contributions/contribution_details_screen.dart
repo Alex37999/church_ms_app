@@ -16,7 +16,7 @@ class ContributionDetailsScreen extends StatelessWidget {
     final isAccepted = contribution.status.toLowerCase() == 'accepted';
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF4F7FB),
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -69,11 +69,12 @@ class ContributionDetailsScreen extends StatelessWidget {
                 Card(
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: BorderSide(color: Colors.grey.shade100),
+                    borderRadius: BorderRadius.circular(24),
+                    side: const BorderSide(color: Color(0xFFE7ECF3)),
                   ),
                   elevation: 6,
-                  shadowColor: Colors.black26,
+                  shadowColor: const Color.fromRGBO(15, 23, 42, 0.08),
+                  surfaceTintColor: Colors.white,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(

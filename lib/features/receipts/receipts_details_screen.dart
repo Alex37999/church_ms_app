@@ -59,7 +59,7 @@ class ContributionReceiptScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF4F7FB),
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -71,11 +71,12 @@ class ContributionReceiptScreen extends StatelessWidget {
                 Card(
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: BorderSide(color: Colors.grey.shade100),
+                    borderRadius: BorderRadius.circular(24),
+                    side: const BorderSide(color: Color(0xFFE7ECF3)),
                   ),
                   elevation: 6,
-                  shadowColor: Colors.black26,
+                  shadowColor: const Color.fromRGBO(15, 23, 42, 0.08),
+                  surfaceTintColor: Colors.white,
                   child: Padding(
                     padding: const EdgeInsets.all(18.0),
                     child: Column(
@@ -124,8 +125,9 @@ class ContributionReceiptScreen extends StatelessWidget {
 
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
+                            color: const Color(0xFFF8FAFC),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: const Color(0xFFE2E8F0)),
                           ),
                           padding: const EdgeInsets.symmetric(
                             horizontal: 12,
@@ -203,8 +205,9 @@ class ContributionReceiptScreen extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
+                            color: const Color(0xFFF8FAFC),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: const Color(0xFFE2E8F0)),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

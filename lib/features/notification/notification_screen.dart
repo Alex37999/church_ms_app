@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../app/routes/app_pages.dart';
 import '../widgets/bottom_nevigationbar.dart';
-import '../widgets/app_header.dart';
 import './controllers/notification_controller.dart';
 
 class NotificationScreen extends GetView<NotificationController> {
@@ -11,7 +10,7 @@ class NotificationScreen extends GetView<NotificationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF3F4F6),
+      backgroundColor: const Color(0xFFF4F7FB),
       body: Obx(
         () => RefreshIndicator(
           onRefresh: controller.fetchNotifications,
@@ -19,18 +18,33 @@ class NotificationScreen extends GetView<NotificationController> {
             physics: const AlwaysScrollableScrollPhysics(),
             padding: EdgeInsets.zero,
             children: [
-              // simple back button instead of AppHeader
               Padding(
-                padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).padding.top,
+                padding: EdgeInsets.fromLTRB(
+                  16,
+                  MediaQuery.of(context).padding.top + 10,
+                  16,
+                  0,
                 ),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: IconButton(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: _goToDashboard,
-                  ),
+                child: Row(
+                  children: [
+                    Material(
+                      color: Colors.white,
+                      elevation: 4,
+                      shadowColor: const Color.fromRGBO(15, 23, 42, 0.08),
+                      shape: const CircleBorder(),
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back_rounded),
+                        onPressed: _goToDashboard,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      'Notifications',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Padding(
@@ -38,43 +52,71 @@ class NotificationScreen extends GetView<NotificationController> {
                 child: Column(
                   children: [
                     const SizedBox(height: 20),
-                    Text(
-                      'Notifications',
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(fontWeight: FontWeight.w700),
-                    ),
-                    const SizedBox(height: 6),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            '${controller.unreadCount.value} new notifications',
-                            style: const TextStyle(
-                              color: Colors.black54,
-                              fontSize: 14,
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(18),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFFFFFFFF), Color(0xFFF8FBFF)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(22),
+                        border: Border.all(color: const Color(0xFFE7ECF3)),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color.fromRGBO(15, 23, 42, 0.06),
+                            blurRadius: 24,
+                            offset: Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${controller.unreadCount.value} new notifications',
+                                  style: const TextStyle(
+                                    color: Color(0xFF475569),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                const Text(
+                                  'Stay updated with your latest church activity.',
+                                  style: TextStyle(
+                                    color: Color(0xFF64748B),
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                        if (controller.unreadCount.value > 0)
-                          TextButton(
-                            onPressed: () async {
-                              await controller.markAllRead();
-                              if (controller.errorMessage.value.isEmpty) {
-                                Get.snackbar(
-                                  'Notifications',
-                                  'All marked read',
-                                );
-                              } else {
-                                Get.snackbar(
-                                  'Error',
-                                  controller.errorMessage.value,
-                                  backgroundColor: Colors.red.shade50,
-                                );
-                              }
-                            },
-                            child: const Text('Mark all read'),
-                          ),
-                      ],
+                          if (controller.unreadCount.value > 0)
+                            TextButton(
+                              onPressed: () async {
+                                await controller.markAllRead();
+                                if (controller.errorMessage.value.isEmpty) {
+                                  Get.snackbar(
+                                    'Notifications',
+                                    'All marked read',
+                                  );
+                                } else {
+                                  Get.snackbar(
+                                    'Error',
+                                    controller.errorMessage.value,
+                                    backgroundColor: Colors.red.shade50,
+                                  );
+                                }
+                              },
+                              child: const Text('Mark all read'),
+                            ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 18),
                     if (controller.isLoading.value)
@@ -98,12 +140,12 @@ class NotificationScreen extends GetView<NotificationController> {
                           child: Material(
                             color: notification.isRead
                                 ? Colors.white
-                                : const Color(0xFFEFF6FF),
-                            borderRadius: BorderRadius.circular(16),
-                            elevation: 0.5,
-                            shadowColor: Colors.black.withOpacity(0.04),
+                                : const Color(0xFFF7FAFF),
+                            borderRadius: BorderRadius.circular(20),
+                            elevation: notification.isRead ? 3 : 5,
+                            shadowColor: const Color.fromRGBO(15, 23, 42, 0.08),
                             child: InkWell(
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(20),
                               onTap: () async {
                                 await controller.markAsRead(notification.id);
                                 if (controller.errorMessage.value.isEmpty) {
@@ -122,19 +164,31 @@ class NotificationScreen extends GetView<NotificationController> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      width: 40,
-                                      height: 40,
+                                      width: 46,
+                                      height: 46,
                                       decoration: BoxDecoration(
                                         color: visual.bg,
                                         shape: BoxShape.circle,
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: Color.fromRGBO(
+                                              255,
+                                              255,
+                                              255,
+                                              0.6,
+                                            ),
+                                            blurRadius: 10,
+                                            offset: Offset(0, 2),
+                                          ),
+                                        ],
                                       ),
                                       child: Icon(
                                         visual.icon,
                                         color: visual.fg,
-                                        size: 20,
+                                        size: 22,
                                       ),
                                     ),
-                                    const SizedBox(width: 12),
+                                    const SizedBox(width: 14),
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
@@ -152,8 +206,11 @@ class NotificationScreen extends GetView<NotificationController> {
                                                     fontWeight:
                                                         notification.isRead
                                                         ? FontWeight.w600
-                                                        : FontWeight.w700,
+                                                        : FontWeight.w800,
                                                     fontSize: 14,
+                                                    color: const Color(
+                                                      0xFF0F172A,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -162,16 +219,16 @@ class NotificationScreen extends GetView<NotificationController> {
                                                 Container(
                                                   padding:
                                                       const EdgeInsets.symmetric(
-                                                        horizontal: 8,
-                                                        vertical: 3,
+                                                        horizontal: 9,
+                                                        vertical: 4,
                                                       ),
                                                   decoration: BoxDecoration(
                                                     color: const Color(
-                                                      0xFF3B82F6,
+                                                      0xFF2563EB,
                                                     ),
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                          12,
+                                                          999,
                                                         ),
                                                   ),
                                                   child: const Text(
@@ -180,7 +237,7 @@ class NotificationScreen extends GetView<NotificationController> {
                                                       color: Colors.white,
                                                       fontSize: 10,
                                                       fontWeight:
-                                                          FontWeight.w700,
+                                                          FontWeight.w800,
                                                     ),
                                                   ),
                                                 ),
@@ -193,16 +250,18 @@ class NotificationScreen extends GetView<NotificationController> {
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
-                                              color: Colors.black87,
+                                              color: Color(0xFF334155),
                                               fontSize: 13,
+                                              height: 1.35,
                                             ),
                                           ),
-                                          const SizedBox(height: 8),
+                                          const SizedBox(height: 10),
                                           Text(
                                             notification.date,
                                             style: const TextStyle(
-                                              color: Colors.black54,
+                                              color: Color(0xFF64748B),
                                               fontSize: 12,
+                                              fontWeight: FontWeight.w500,
                                             ),
                                           ),
                                         ],
