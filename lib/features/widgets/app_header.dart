@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../app/routes/app_pages.dart';
 import '../dashboard/controllers/home_controller.dart';
@@ -44,7 +45,7 @@ class AppHeader extends StatelessWidget {
         14 * scale,
       ),
       decoration: const BoxDecoration(
-        color: Color(0xFF0B2A53),
+        color: Color.fromARGB(255, 3, 43, 96),
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(28),
           bottomRight: Radius.circular(28),
@@ -89,10 +90,10 @@ class AppHeader extends StatelessWidget {
                     Text(
                       'CHURCH SMARTLY',
                       style: TextStyle(
-                        color: const Color(0xFF98C6FF),
-                        fontSize: 10 * scale,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.6,
+                        color: const Color.fromARGB(255, 27, 197, 58),
+                        fontSize: 12 * scale,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.7,
                       ),
                     ),
                     SizedBox(height: 2 * scale),
@@ -102,8 +103,8 @@ class AppHeader extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 13 * scale,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 16 * scale,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                   ],
@@ -156,26 +157,45 @@ class AppHeader extends StatelessWidget {
           Text(
             'Welcome back 👋',
             style: TextStyle(
-              color: const Color(0xFFBFD8FF),
-              fontSize: 12 * scale,
+              color: const Color.fromARGB(255, 161, 161, 161),
+              fontSize: 14 * scale,
+              fontWeight: FontWeight.w700,
             ),
           ),
           SizedBox(height: 4 * scale),
-          Text(
-            'Member No: ${hp?.memberNumber ?? 'GCC-XXXX'}',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16 * scale,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          SizedBox(height: 4 * scale),
-          Text(
-            hp?.branchName ?? 'Branch',
-            style: TextStyle(
-              color: const Color(0xFFBFD8FF),
-              fontSize: 11 * scale,
-            ),
+          Builder(
+            builder: (context) {
+              final storedName =
+                  GetStorage().read<String>('user_full_name') ?? '';
+              final displayName = storedName.trim().isNotEmpty
+                  ? storedName.trim()
+                  : 'Member Name';
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    displayName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22 * scale,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  SizedBox(height: 6 * scale),
+                  Text(
+                    '${hp?.memberNumber ?? 'GCC-XXXX'}  •  ${hp?.branchName ?? 'Branch'}',
+                    style: TextStyle(
+                      color: const Color.fromARGB(255, 161, 161, 161),
+                      fontSize: 12 * scale,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ],
       ),

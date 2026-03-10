@@ -426,10 +426,10 @@ class _LoginFormState extends State<_LoginForm> {
               ),
               Text('Remember me', style: TextStyle(color: t.secondaryText)),
               const Spacer(),
-              TextButton(
-                onPressed: () {},
-                child: const Text('Forgot Password?'),
-              ),
+              // TextButton(
+              //   onPressed: () {},
+              //   child: const Text('Forgot Password?'),
+              // ),
             ],
           ),
 
