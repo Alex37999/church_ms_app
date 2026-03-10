@@ -378,43 +378,42 @@ class _LoginFormState extends State<_LoginForm> {
           const SizedBox(height: 12),
 
           // Branch selector (custom modal)
-          GetX<LoginController>(
-            builder: (c) {
-              final selected = c.selectedBranch.value;
-              return GestureDetector(
-                onTap: () => _showBranchPicker(context, controller),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 14,
-                  ),
-                  decoration: BoxDecoration(
-                    color: t.inputFill,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.grey.withOpacity(0.2)),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.location_on_outlined, color: t.inputIconColor),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          selected.isEmpty ? 'Select your Branch' : selected,
-                          style: TextStyle(
-                            color: selected.isEmpty
-                                ? t.secondaryText
-                                : t.primaryText,
-                          ),
-                        ),
-                      ),
-                      const Icon(Icons.keyboard_arrow_down),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-
+          // GetX<LoginController>(
+          //   builder: (c) {
+          //     final selected = c.selectedBranch.value;
+          //     return GestureDetector(
+          //       onTap: () => _showBranchPicker(context, controller),
+          //       child: Container(
+          //         padding: const EdgeInsets.symmetric(
+          //           horizontal: 12,
+          //           vertical: 14,
+          //         ),
+          //         decoration: BoxDecoration(
+          //           color: t.inputFill,
+          //           borderRadius: BorderRadius.circular(12),
+          //           border: Border.all(color: Colors.grey.withOpacity(0.2)),
+          //         ),
+          //         child: Row(
+          //           children: [
+          //             Icon(Icons.location_on_outlined, color: t.inputIconColor),
+          //             const SizedBox(width: 12),
+          //             Expanded(
+          //               child: Text(
+          //                 selected.isEmpty ? 'Select your Branch' : selected,
+          //                 style: TextStyle(
+          //                   color: selected.isEmpty
+          //                       ? t.secondaryText
+          //                       : t.primaryText,
+          //                 ),
+          //               ),
+          //             ),
+          //             const Icon(Icons.keyboard_arrow_down),
+          //           ],
+          //         ),
+          //       ),
+          //     );
+          //   },
+          // ),
           const SizedBox(height: 10),
 
           Row(
