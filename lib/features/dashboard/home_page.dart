@@ -12,6 +12,7 @@ import '../receipts/controllers/receipts_controller.dart';
 import '../event/controller/event_controller.dart';
 import '../announcements/controllers/announcements_controller.dart';
 import '../profile/controllers/profile_controller.dart';
+import '../../app/theme/app_theme.dart';
 import './controllers/home_controller.dart';
 
 class HomePage extends StatefulWidget {
@@ -65,7 +66,7 @@ class _HomePageState extends State<HomePage> {
       final idx = _navCtrl.index.value;
 
       return Scaffold(
-        backgroundColor: const Color(0xFFFBFCFF),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: KeyedSubtree(key: ValueKey(idx), child: _buildActivePage(idx)),
         bottomNavigationBar: AppBottomNavigationBar(
           onTap: (i) {
@@ -155,22 +156,22 @@ class _DashboardTab extends StatelessWidget {
                     childAspectRatio: 1.28,
                     children: [
                       _SummaryCard(
-                        color: const Color(0xFFEFFAF3),
+                        color: AppTheme.softGreen,
                         icon: Icons.attach_money,
-                        iconColor: const Color(0xFF16A34A),
+                        iconColor: AppTheme.success,
                         title: 'Total Given',
                         value:
                             '${hp?.currencySymbol ?? 'KES'} ${hp?.totalContributions ?? '0'}',
                       ),
                       _SummaryCard(
-                        color: const Color(0xFFEFF6FF),
+                        color: AppTheme.softBlue,
                         icon: Icons.trending_up,
-                        iconColor: const Color(0xFF2563EB),
+                        iconColor: AppTheme.info,
                         title: 'Last Giving',
                         value: hp?.lastContributionDate ?? '-',
                       ),
                       _SummaryCard(
-                        color: const Color(0xFFF5F3FF),
+                        color: AppTheme.softViolet,
                         icon: Icons.location_on,
                         iconColor: const Color(0xFF7C3AED),
                         title: 'My Branch',
@@ -180,9 +181,9 @@ class _DashboardTab extends StatelessWidget {
                         onTap: () => navCtrl.changeIndex(3),
                         borderRadius: BorderRadius.circular(12),
                         child: _SummaryCard(
-                          color: const Color(0xFFFFF7ED),
+                          color: AppTheme.softOrange,
                           icon: Icons.event,
-                          iconColor: const Color(0xFFF97316),
+                          iconColor: AppTheme.warning,
                           title: 'Upcoming',
                           value: '${hp?.upcomingEventsCount ?? 0} Events',
                         ),
@@ -206,7 +207,7 @@ class _DashboardTab extends StatelessWidget {
                         onPressed: () {},
                         child: const Text(
                           'View all >',
-                          style: TextStyle(color: Color(0xFF4B5563)),
+                          style: TextStyle(color: AppTheme.textSecondary),
                         ),
                       ),
                     ],
@@ -227,19 +228,19 @@ class _DashboardTab extends StatelessWidget {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 10.0),
                         child: Card(
-                          color: Colors.white,
+                          color: AppTheme.cardBackground,
                           elevation: 5,
                           shadowColor: const Color.fromRGBO(15, 23, 42, 0.08),
-                          surfaceTintColor: Colors.white,
+                          surfaceTintColor: AppTheme.cardBackground,
                           margin: EdgeInsets.zero,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
-                            side: const BorderSide(color: Color(0xFFE7ECF3)),
+                            side: const BorderSide(color: AppTheme.cardBorder),
                           ),
                           child: ListTile(
                             leading: CircleAvatar(
-                              backgroundColor: const Color(0xFFF1F5F9),
-                              child: Icon(icon, color: const Color(0xFF334155)),
+                              backgroundColor: AppTheme.surfaceSubtle,
+                              child: Icon(icon, color: AppTheme.brandNavy),
                             ),
                             title: Text(
                               act.title ?? '-',
@@ -251,7 +252,7 @@ class _DashboardTab extends StatelessWidget {
                             trailing: Text(
                               time,
                               style: const TextStyle(
-                                color: Colors.black45,
+                                color: AppTheme.textSecondary,
                                 fontSize: 12,
                               ),
                             ),
@@ -289,7 +290,7 @@ class _SummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final titleStyle = Theme.of(context).textTheme.bodySmall?.copyWith(
-      color: Colors.black54,
+      color: AppTheme.textSecondary,
       fontSize: 11,
       height: 1.15,
     );
@@ -300,14 +301,14 @@ class _SummaryCard extends StatelessWidget {
     );
 
     return Card(
-      color: Colors.white,
+      color: AppTheme.cardBackground,
       elevation: 5,
       shadowColor: const Color.fromRGBO(15, 23, 42, 0.08),
-      surfaceTintColor: Colors.white,
+      surfaceTintColor: AppTheme.cardBackground,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
-        side: const BorderSide(color: Color(0xFFE7ECF3)),
+        side: const BorderSide(color: AppTheme.cardBorder),
       ),
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -318,7 +319,7 @@ class _SummaryCard extends StatelessWidget {
           children: [
             Container(
               decoration: BoxDecoration(
-                color: color ?? Colors.grey.shade200,
+                color: color ?? AppTheme.surfaceSubtle,
                 shape: BoxShape.circle,
                 boxShadow: const [
                   BoxShadow(
@@ -329,7 +330,11 @@ class _SummaryCard extends StatelessWidget {
                 ],
               ),
               padding: const EdgeInsets.all(9),
-              child: Icon(icon, color: iconColor ?? Colors.black54, size: 20),
+              child: Icon(
+                icon,
+                color: iconColor ?? AppTheme.textSecondary,
+                size: 20,
+              ),
             ),
             const SizedBox(height: 10),
             Flexible(

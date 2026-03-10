@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:churchmsapp/app/routes/app_pages.dart';
+import 'package:churchmsapp/app/theme/app_theme.dart';
 import 'package:churchmsapp/core/services/storage_service.dart';
 import '../auth/data/auth_repository.dart';
 import '../widgets/app_header.dart';
@@ -30,7 +31,7 @@ class ProfileScreen extends GetView<ProfileController> {
                 const SizedBox(height: 8),
                 const Text(
                   'View and manage your information',
-                  style: TextStyle(color: Colors.black54, fontSize: 14),
+                  style: TextStyle(color: AppTheme.textSecondary, fontSize: 14),
                 ),
                 const SizedBox(height: 32),
                 if (controller.isLoading.value)
@@ -41,7 +42,7 @@ class ProfileScreen extends GetView<ProfileController> {
                       // Profile Card
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: AppTheme.cardBackground,
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
@@ -59,13 +60,13 @@ class ProfileScreen extends GetView<ProfileController> {
                               width: 100,
                               height: 100,
                               decoration: BoxDecoration(
-                                color: const Color(0xFF5B6FFF),
+                                color: AppTheme.primaryColor,
                                 shape: BoxShape.circle,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: const Color(
-                                      0xFF5B6FFF,
-                                    ).withOpacity(0.3),
+                                    color: AppTheme.primaryColor.withOpacity(
+                                      0.3,
+                                    ),
                                     blurRadius: 12,
                                     offset: const Offset(0, 4),
                                   ),
@@ -83,9 +84,7 @@ class ProfileScreen extends GetView<ProfileController> {
                                               (context, error, stackTrace) {
                                                 // Fallback to initials on load error
                                                 return Container(
-                                                  color: const Color(
-                                                    0xFF5B6FFF,
-                                                  ),
+                                                  color: AppTheme.primaryColor,
                                                   child: Center(
                                                     child: Text(
                                                       controller.getInitials(),
@@ -171,30 +170,30 @@ class ProfileScreen extends GetView<ProfileController> {
                           Get.toNamed(Routes.EDIT_PROFILE);
                         },
                       ),
-                      const SizedBox(height: 12),
-                      _MenuItemTile(
-                        icon: Icons.lock_outline,
-                        title: 'Change Password',
-                        onTap: () {
-                          // TODO: Navigate to change password
-                        },
-                      ),
-                      const SizedBox(height: 12),
-                      _MenuItemTile(
-                        icon: Icons.notifications_outlined,
-                        title: 'Notification Preferences',
-                        onTap: () {
-                          // TODO: Navigate to notification preferences
-                        },
-                      ),
-                      const SizedBox(height: 12),
-                      _MenuItemTile(
-                        icon: Icons.settings_outlined,
-                        title: 'Account Settings',
-                        onTap: () {
-                          Get.toNamed(Routes.ACCOUNT_SETTINGS);
-                        },
-                      ),
+                      // const SizedBox(height: 12),
+                      // _MenuItemTile(
+                      //   icon: Icons.lock_outline,
+                      //   title: 'Change Password',
+                      //   onTap: () {
+                      //     // TODO: Navigate to change password
+                      //   },
+                      // ),
+                      // const SizedBox(height: 12),
+                      // _MenuItemTile(
+                      //   icon: Icons.notifications_outlined,
+                      //   title: 'Notification Preferences',
+                      //   onTap: () {
+                      //     // TODO: Navigate to notification preferences
+                      //   },
+                      // ),
+                      // const SizedBox(height: 12),
+                      // _MenuItemTile(
+                      //   icon: Icons.settings_outlined,
+                      //   title: 'Account Settings',
+                      //   onTap: () {
+                      //     Get.toNamed(Routes.ACCOUNT_SETTINGS);
+                      //   },
+                      // ),
                       const SizedBox(height: 18),
 
                       // Logout button

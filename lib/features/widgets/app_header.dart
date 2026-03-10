@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../app/routes/app_pages.dart';
+import '../../app/theme/app_theme.dart';
 import '../dashboard/controllers/home_controller.dart';
 import '../notification/controllers/notification_controller.dart';
 
@@ -45,7 +46,7 @@ class AppHeader extends StatelessWidget {
         14 * scale,
       ),
       decoration: const BoxDecoration(
-        color: Color.fromARGB(255, 3, 43, 96),
+        color: AppTheme.brandNavy,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(28),
           bottomRight: Radius.circular(28),
@@ -90,7 +91,7 @@ class AppHeader extends StatelessWidget {
                     Text(
                       'CHURCH SMARTLY',
                       style: TextStyle(
-                        color: const Color.fromARGB(255, 27, 197, 58),
+                        color: AppTheme.accentGreen,
                         fontSize: 12 * scale,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 0.7,
@@ -132,10 +133,10 @@ class AppHeader extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF10B981),
+                            color: AppTheme.success,
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: const Color(0xFF0B2A53),
+                              color: AppTheme.brandNavy,
                               width: 1.5,
                             ),
                           ),
@@ -157,7 +158,7 @@ class AppHeader extends StatelessWidget {
           Text(
             'Welcome back 👋',
             style: TextStyle(
-              color: const Color.fromARGB(255, 161, 161, 161),
+              color: AppTheme.textSecondary,
               fontSize: 14 * scale,
               fontWeight: FontWeight.w700,
             ),
@@ -188,7 +189,7 @@ class AppHeader extends StatelessWidget {
                   Text(
                     '${hp?.memberNumber ?? 'GCC-XXXX'}  •  ${hp?.branchName ?? 'Branch'}',
                     style: TextStyle(
-                      color: const Color.fromARGB(255, 161, 161, 161),
+                      color: AppTheme.textSecondary,
                       fontSize: 12 * scale,
                       fontWeight: FontWeight.w600,
                     ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../app/theme/app_theme.dart';
 import '../widgets/app_header.dart';
 import 'binding/event_binding.dart';
 import 'controller/event_controller.dart';
@@ -14,7 +15,7 @@ class EventScreen extends GetView<EventController> {
     final ctrl = Get.find<EventController>();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F7FB),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Obx(
         () => RefreshIndicator(
           onRefresh: ctrl.fetchEvents,
@@ -36,7 +37,7 @@ class EventScreen extends GetView<EventController> {
                     Text(
                       'Church events and activities',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.black54,
+                        color: AppTheme.textSecondary,
                         fontWeight: FontWeight.w500,
                       ),
                     ),

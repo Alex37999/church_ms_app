@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../app/theme/app_theme.dart';
 import '../widgets/app_header.dart';
 import './controllers/receipts_controller.dart';
 import 'receipts_details_screen.dart';
@@ -12,7 +13,7 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
     final ctrl = controller;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F7FB),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Obx(
         () => ListView(
           padding: EdgeInsets.zero,
@@ -32,7 +33,10 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
                   const SizedBox(height: 6),
                   const Text(
                     'Download your contribution receipts',
-                    style: TextStyle(color: Colors.black54, fontSize: 14),
+                    style: TextStyle(
+                      color: AppTheme.textSecondary,
+                      fontSize: 14,
+                    ),
                   ),
                   const SizedBox(height: 20),
 

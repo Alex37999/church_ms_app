@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../app/theme/app_theme.dart';
 import '../widgets/app_header.dart';
 import './controllers/contributions_controller.dart';
 
@@ -16,7 +17,7 @@ class ContributionDetailsScreen extends StatelessWidget {
     final isAccepted = contribution.status.toLowerCase() == 'accepted';
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F7FB),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -32,9 +33,9 @@ class ContributionDetailsScreen extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         'Total Amount',
-                        style: Theme.of(
-                          context,
-                        ).textTheme.bodyMedium?.copyWith(color: Colors.black54),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppTheme.textSecondary,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -49,13 +50,13 @@ class ContributionDetailsScreen extends StatelessWidget {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFDFF7E7),
+                          color: AppTheme.softGreen,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
                           contribution.status,
                           style: const TextStyle(
-                            color: Color(0xFF057A34),
+                            color: AppTheme.success,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -67,14 +68,14 @@ class ContributionDetailsScreen extends StatelessWidget {
                 const SizedBox(height: 18),
 
                 Card(
-                  color: Colors.white,
+                  color: AppTheme.cardBackground,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(24),
-                    side: const BorderSide(color: Color(0xFFE7ECF3)),
+                    side: const BorderSide(color: AppTheme.cardBorder),
                   ),
                   elevation: 6,
                   shadowColor: const Color.fromRGBO(15, 23, 42, 0.08),
-                  surfaceTintColor: Colors.white,
+                  surfaceTintColor: AppTheme.cardBackground,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(

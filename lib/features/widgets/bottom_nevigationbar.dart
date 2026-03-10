@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../app/theme/app_theme.dart';
+
 class BottomNavController extends GetxController {
   final RxInt index = 0.obs;
   void changeIndex(int i) => index.value = i;
@@ -24,15 +26,17 @@ class AppBottomNavigationBar extends StatelessWidget {
 
     return Obx(() {
       return BottomNavigationBar(
-        backgroundColor: const Color(0xFFFBFCFF),
+        backgroundColor: Theme.of(
+          context,
+        ).bottomNavigationBarTheme.backgroundColor,
         currentIndex: ctrl.index.value,
         onTap: (i) {
           ctrl.changeIndex(i);
           if (onTap != null) onTap!(i);
         },
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: const Color(0xFF0B2A53),
-        unselectedItemColor: Colors.grey[500],
+        selectedItemColor: AppTheme.brandNavy,
+        unselectedItemColor: AppTheme.textSecondary,
         showUnselectedLabels: true,
         items: const [
           BottomNavigationBarItem(

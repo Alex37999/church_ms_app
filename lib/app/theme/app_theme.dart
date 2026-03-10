@@ -3,41 +3,79 @@ import 'package:flutter/material.dart';
 class AppTheme {
   AppTheme._();
 
-  // Primary brand color used across the app (kept as a single source)
-  // Aligned with the blue used in home/profile screens
-  static const Color primaryColor = Color(0xFF5B6FFF);
+  static const Color primaryColor = Color(0xFF123A75);
+  static const Color brandNavy = Color(0xFF0D2B56);
+  static const Color accentGreen = Color(0xFF22C55E);
+  static const Color pageBackground = Color(0xFFF5F7FB);
+  static const Color cardBackground = Color(0xFFFFFFFF);
+  static const Color surfaceSubtle = Color(0xFFF8FBFF);
+  static const Color cardBorder = Color(0xFFE4EAF2);
+  static const Color textPrimary = Color(0xFF0F172A);
+  static const Color textSecondary = Color(0xFF667085);
+  static const Color info = Color(0xFF2563EB);
+  static const Color success = Color(0xFF16A34A);
+  static const Color warning = Color(0xFFEA580C);
+  static const Color softBlue = Color(0xFFEAF2FF);
+  static const Color softGreen = Color(0xFFEFFAF3);
+  static const Color softViolet = Color(0xFFF5F3FF);
+  static const Color softOrange = Color(0xFFFFF7ED);
 
   static ThemeData get lightTheme {
+    final base = ThemeData.light(useMaterial3: true);
+
     return ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(seedColor: primaryColor).copyWith(
-        surface: const Color(0xFFF7F9FC),
-        surfaceContainerLow: const Color(0xFFFFFFFF),
-        outlineVariant: const Color(0xFFE4EAF2),
+        primary: primaryColor,
+        secondary: accentGreen,
+        surface: cardBackground,
+        surfaceContainerLow: cardBackground,
+        outline: cardBorder,
+        outlineVariant: cardBorder,
+        onSurface: textPrimary,
       ),
       brightness: Brightness.light,
-      scaffoldBackgroundColor: const Color(0xFFF4F7FB),
+      scaffoldBackgroundColor: pageBackground,
+      canvasColor: cardBackground,
+      dividerColor: cardBorder,
+      textTheme: base.textTheme.apply(
+        bodyColor: textPrimary,
+        displayColor: textPrimary,
+      ),
+      primaryTextTheme: base.primaryTextTheme.apply(
+        bodyColor: textPrimary,
+        displayColor: textPrimary,
+      ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: Color(0xFFF4F7FB),
+        backgroundColor: pageBackground,
         elevation: 0,
         centerTitle: true,
+        foregroundColor: textPrimary,
       ),
       cardTheme: CardThemeData(
-        color: Colors.white,
+        color: cardBackground,
         elevation: 6,
         margin: EdgeInsets.zero,
         shadowColor: const Color.fromRGBO(15, 23, 42, 0.08),
-        surfaceTintColor: Colors.white,
+        surfaceTintColor: cardBackground,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          side: const BorderSide(color: Color(0xFFE7ECF3)),
+          side: const BorderSide(color: cardBorder),
         ),
+      ),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: cardBackground,
+        selectedItemColor: brandNavy,
+        unselectedItemColor: textSecondary,
+        selectedIconTheme: IconThemeData(color: brandNavy),
+        unselectedIconTheme: IconThemeData(color: textSecondary),
+        type: BottomNavigationBarType.fixed,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           elevation: 0,
           backgroundColor: primaryColor,
-          foregroundColor: Colors.white,
+          foregroundColor: cardBackground,
           minimumSize: const Size(0, 48),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
@@ -46,8 +84,8 @@ class AppTheme {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: const Color(0xFF1F2937),
-          side: const BorderSide(color: Color(0xFFD7E0EA)),
+          foregroundColor: textPrimary,
+          side: const BorderSide(color: cardBorder),
           minimumSize: const Size(0, 48),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
@@ -56,7 +94,7 @@ class AppTheme {
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: const Color(0xFF1D4ED8),
+          foregroundColor: primaryColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

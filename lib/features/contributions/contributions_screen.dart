@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../app/theme/app_theme.dart';
 import '../widgets/app_header.dart';
 import './controllers/contributions_controller.dart';
 import 'contribution_details_screen.dart';
@@ -46,7 +47,7 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                           const Text(
                             'View your giving \n history and receipts',
                             style: TextStyle(
-                              color: Colors.black54,
+                              color: AppTheme.textSecondary,
                               fontSize: 14,
                             ),
                           ),
@@ -64,8 +65,8 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                       icon: const Icon(Icons.volunteer_activism, size: 18),
                       label: const Text('Make Donate'),
                       style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: Color(0xFFE11D48)),
-                        foregroundColor: const Color(0xFFE11D48),
+                        side: const BorderSide(color: AppTheme.primaryColor),
+                        foregroundColor: AppTheme.primaryColor,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 12,
                           vertical: 10,
@@ -87,9 +88,9 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                             'KES ${ctrl.totalThisYear.value.toStringAsFixed(0)}',
                         subtitle:
                             '${ctrl.changeThisMonthPercent.value >= 0 ? '+' : ''}${ctrl.changeThisMonthPercent.value.toStringAsFixed(0)}%',
-                        iconBg: const Color(0xFFEFFAF3),
+                        iconBg: AppTheme.softGreen,
                         icon: Icons.attach_money,
-                        iconColor: const Color(0xFF16A34A),
+                        iconColor: AppTheme.success,
                         showTrailing: true,
                       ),
                       const SizedBox(height: 12),
@@ -99,9 +100,9 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                             'KES ${ctrl.totalThisMonth.value.toStringAsFixed(0)}',
                         subtitle:
                             'vs prev ${ctrl.changeThisMonthPercent.value.toStringAsFixed(0)}%',
-                        iconBg: const Color(0xFFEFF6FF),
+                        iconBg: AppTheme.softBlue,
                         icon: Icons.calendar_today,
-                        iconColor: const Color(0xFF2563EB),
+                        iconColor: AppTheme.info,
                         showTrailing: true,
                       ),
                       const SizedBox(height: 12),
@@ -110,7 +111,7 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                         value:
                             'KES ${ctrl.averageAmount.value.toStringAsFixed(0)}',
                         subtitle: 'per contribution',
-                        iconBg: const Color(0xFFF5F3FF),
+                        iconBg: AppTheme.softViolet,
                         icon: Icons.pie_chart,
                         iconColor: const Color(0xFF7C3AED),
                         showTrailing: true,
@@ -155,12 +156,12 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 12),
                         child: Card(
-                          color: Colors.white,
+                          color: AppTheme.cardBackground,
                           elevation: 3,
                           margin: EdgeInsets.zero,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
-                            side: BorderSide(color: Colors.grey.shade100),
+                            side: const BorderSide(color: AppTheme.cardBorder),
                           ),
                           shadowColor: Colors.black26,
                           child: InkWell(
@@ -209,13 +210,13 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                                           const Icon(
                                             Icons.calendar_today_outlined,
                                             size: 14,
-                                            color: Colors.black45,
+                                            color: AppTheme.textSecondary,
                                           ),
                                           const SizedBox(width: 6),
                                           Text(
                                             contribution.date,
                                             style: const TextStyle(
-                                              color: Colors.black54,
+                                              color: AppTheme.textSecondary,
                                               fontSize: 12,
                                             ),
                                           ),
@@ -225,7 +226,7 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                                       Text(
                                         'Receipt: ${contribution.id}',
                                         style: const TextStyle(
-                                          color: Colors.black45,
+                                          color: AppTheme.textSecondary,
                                           fontSize: 12,
                                         ),
                                       ),
@@ -237,12 +238,12 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                                               contribution.status
                                                       .toLowerCase() ==
                                                   'accepted'
-                                              ? Colors.green
+                                              ? AppTheme.success
                                               : (contribution.status
                                                             .toLowerCase() ==
                                                         'pending'
-                                                    ? Colors.orange
-                                                    : Colors.black54),
+                                                    ? AppTheme.warning
+                                                    : AppTheme.textSecondary),
                                           fontSize: 12,
                                           fontWeight: FontWeight.w600,
                                         ),
@@ -264,7 +265,7 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                                       Text(
                                         contribution.method,
                                         style: const TextStyle(
-                                          color: Colors.black54,
+                                          color: AppTheme.textSecondary,
                                           fontSize: 12,
                                         ),
                                       ),
@@ -274,7 +275,7 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                                   const Icon(
                                     Icons.chevron_right,
                                     size: 22,
-                                    color: Colors.grey,
+                                    color: AppTheme.textSecondary,
                                   ),
                                 ],
                               ),
@@ -316,14 +317,14 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
-          color: selected ? const Color(0xFF3B82F6) : Colors.white,
+          color: selected ? AppTheme.primaryColor : AppTheme.cardBackground,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.black12),
+          border: Border.all(color: AppTheme.cardBorder),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: selected ? Colors.white : Colors.black87,
+            color: selected ? Colors.white : AppTheme.textPrimary,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -334,13 +335,13 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
   Color _tagColor(String type) {
     switch (type.toLowerCase()) {
       case 'tithe':
-        return const Color(0xFF3B82F6);
+        return AppTheme.info;
       case 'offering':
-        return const Color(0xFF10B981);
+        return AppTheme.success;
       case 'building fund':
         return const Color(0xFF8B5CF6);
       default:
-        return const Color(0xFF6B7280);
+        return AppTheme.textSecondary;
     }
   }
 }
@@ -391,9 +392,9 @@ class _MetricCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodySmall?.copyWith(color: Colors.black54),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppTheme.textSecondary,
+                    ),
                   ),
                   const SizedBox(height: 6),
                   Text(
@@ -408,13 +409,13 @@ class _MetricCard extends StatelessWidget {
                       const Icon(
                         Icons.trending_up,
                         size: 14,
-                        color: Colors.green,
+                        color: AppTheme.success,
                       ),
                       const SizedBox(width: 6),
                       Text(
                         subtitle,
                         style: const TextStyle(
-                          color: Colors.green,
+                          color: AppTheme.success,
                           fontSize: 12,
                         ),
                       ),
@@ -427,11 +428,11 @@ class _MetricCard extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(left: 8),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
+                  color: AppTheme.surfaceSubtle,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 padding: const EdgeInsets.all(8),
-                child: const Icon(Icons.attach_money, color: Color(0xFF10B981)),
+                child: const Icon(Icons.attach_money, color: AppTheme.success),
               ),
           ],
         ),

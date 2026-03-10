@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../app/routes/app_pages.dart';
+import '../../app/theme/app_theme.dart';
 import '../widgets/bottom_nevigationbar.dart';
 import './controllers/notification_controller.dart';
 
@@ -10,7 +11,7 @@ class NotificationScreen extends GetView<NotificationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F7FB),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Obx(
         () => RefreshIndicator(
           onRefresh: controller.fetchNotifications,
@@ -28,7 +29,7 @@ class NotificationScreen extends GetView<NotificationController> {
                 child: Row(
                   children: [
                     Material(
-                      color: Colors.white,
+                      color: AppTheme.cardBackground,
                       elevation: 4,
                       shadowColor: const Color.fromRGBO(15, 23, 42, 0.08),
                       shape: const CircleBorder(),
@@ -57,12 +58,15 @@ class NotificationScreen extends GetView<NotificationController> {
                       padding: const EdgeInsets.all(18),
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
-                          colors: [Color(0xFFFFFFFF), Color(0xFFF8FBFF)],
+                          colors: [
+                            AppTheme.cardBackground,
+                            AppTheme.surfaceSubtle,
+                          ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
                         borderRadius: BorderRadius.circular(22),
-                        border: Border.all(color: const Color(0xFFE7ECF3)),
+                        border: Border.all(color: AppTheme.cardBorder),
                         boxShadow: const [
                           BoxShadow(
                             color: Color.fromRGBO(15, 23, 42, 0.06),
