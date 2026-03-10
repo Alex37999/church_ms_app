@@ -29,189 +29,173 @@ class HomePage extends GetView<HomeController> {
         Column(
           children: [
             Expanded(
-              child: MediaQuery.removePadding(
-                context: context,
-                removeTop: true,
-                child: RefreshIndicator(
-                  onRefresh: controller.fetchDashboard,
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    children: [
-                      Obx(() {
-                        final hp = controller.homepage.value?.data;
-                        final isLoading = controller.isLoading.value;
+              child: RefreshIndicator(
+                onRefresh: controller.fetchDashboard,
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: [
+                    Obx(() {
+                      final hp = controller.homepage.value?.data;
+                      final isLoading = controller.isLoading.value;
 
-                        if (isLoading) {
-                          return const SizedBox(
-                            height: 240,
-                            child: Center(child: CircularProgressIndicator()),
-                          );
-                        }
+                      if (isLoading) {
+                        return const SizedBox(
+                          height: 240,
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      }
 
-                        return Column(
-                          children: [
-                            const AppHeader(),
+                      return Column(
+                        children: [
+                          const AppHeader(),
 
-                            const SizedBox(height: 18),
+                          const SizedBox(height: 18),
 
-                            // 2x2 white summary cards
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                              ),
-                              child: GridView.count(
-                                crossAxisCount: 2,
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                crossAxisSpacing: 12,
-                                mainAxisSpacing: 12,
-                                childAspectRatio: 1.28,
-                                children: [
-                                  _SummaryCard(
-                                    color: const Color(0xFFEFFAF3),
-                                    icon: Icons.attach_money,
-                                    iconColor: const Color(0xFF16A34A),
-                                    title: 'Total Given',
+                          // 2x2 white summary cards
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: GridView.count(
+                              crossAxisCount: 2,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              crossAxisSpacing: 12,
+                              mainAxisSpacing: 12,
+                              childAspectRatio: 1.28,
+                              children: [
+                                _SummaryCard(
+                                  color: const Color(0xFFEFFAF3),
+                                  icon: Icons.attach_money,
+                                  iconColor: const Color(0xFF16A34A),
+                                  title: 'Total Given',
+                                  value:
+                                      '${hp?.currencySymbol ?? 'KES'} ${hp?.totalContributions ?? '0'}',
+                                ),
+                                _SummaryCard(
+                                  color: const Color(0xFFEFF6FF),
+                                  icon: Icons.trending_up,
+                                  iconColor: const Color(0xFF2563EB),
+                                  title: 'Last Giving',
+                                  value: hp?.lastContributionDate ?? '-',
+                                ),
+                                _SummaryCard(
+                                  color: const Color(0xFFF5F3FF),
+                                  icon: Icons.location_on,
+                                  iconColor: const Color(0xFF7C3AED),
+                                  title: 'My Branch',
+                                  value: hp?.branchName ?? '-',
+                                ),
+                                InkWell(
+                                  onTap: () => navCtrl.changeIndex(3),
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: _SummaryCard(
+                                    color: const Color(0xFFFFF7ED),
+                                    icon: Icons.event,
+                                    iconColor: const Color(0xFFF97316),
+                                    title: 'Upcoming',
                                     value:
-                                        '${hp?.currencySymbol ?? 'KES'} ${hp?.totalContributions ?? '0'}',
+                                        '${hp?.upcomingEventsCount ?? 0} Events',
                                   ),
-                                  _SummaryCard(
-                                    color: const Color(0xFFEFF6FF),
-                                    icon: Icons.trending_up,
-                                    iconColor: const Color(0xFF2563EB),
-                                    title: 'Last Giving',
-                                    value: hp?.lastContributionDate ?? '-',
-                                  ),
-                                  _SummaryCard(
-                                    color: const Color(0xFFF5F3FF),
-                                    icon: Icons.location_on,
-                                    iconColor: const Color(0xFF7C3AED),
-                                    title: 'My Branch',
-                                    value: hp?.branchName ?? '-',
-                                  ),
-                                  InkWell(
-                                    onTap: () => navCtrl.changeIndex(3),
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: _SummaryCard(
-                                      color: const Color(0xFFFFF7ED),
-                                      icon: Icons.event,
-                                      iconColor: const Color(0xFFF97316),
-                                      title: 'Upcoming',
-                                      value:
-                                          '${hp?.upcomingEventsCount ?? 0} Events',
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
+                          ),
 
-                            const SizedBox(height: 18),
+                          const SizedBox(height: 18),
 
-                            // Recent activity header
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      'Recent Activity',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium
-                                          ?.copyWith(
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                    ),
+                          // Recent activity header
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'Recent Activity',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(fontWeight: FontWeight.w700),
                                   ),
-                                  TextButton(
-                                    onPressed: () {},
-                                    child: const Text(
-                                      'View all >',
-                                      style: TextStyle(
-                                        color: Color(0xFF4B5563),
+                                ),
+                                TextButton(
+                                  onPressed: () {},
+                                  child: const Text(
+                                    'View all >',
+                                    style: TextStyle(color: Color(0xFF4B5563)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          // Recent activity list
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Column(
+                              children: (hp?.recentActivity ?? []).map<Widget>((
+                                act,
+                              ) {
+                                final icon = act.type == 'announcement'
+                                    ? Icons.campaign_outlined
+                                    : Icons.attach_money;
+                                final subtitle = act.description ?? '';
+                                final time = act.time != null
+                                    ? _formatRelative(act.time!)
+                                    : '';
+
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 10.0),
+                                  child: Card(
+                                    color: Colors.white,
+                                    elevation: 6,
+                                    shadowColor: const Color.fromRGBO(
+                                      0,
+                                      0,
+                                      0,
+                                      0.06,
+                                    ),
+                                    margin: EdgeInsets.zero,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      side: BorderSide(
+                                        color: Colors.grey.shade100,
+                                      ),
+                                    ),
+                                    child: ListTile(
+                                      leading: CircleAvatar(
+                                        backgroundColor: const Color(
+                                          0xFFF3F4F6,
+                                        ),
+                                        child: Icon(
+                                          icon,
+                                          color: Colors.black54,
+                                        ),
+                                      ),
+                                      title: Text(
+                                        act.title ?? '-',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      subtitle: Text(subtitle),
+                                      trailing: Text(
+                                        time,
+                                        style: const TextStyle(
+                                          color: Colors.black45,
+                                          fontSize: 12,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
+                                );
+                              }).toList(),
                             ),
+                          ),
 
-                            // Recent activity list
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                              ),
-                              child: Column(
-                                children: (hp?.recentActivity ?? [])
-                                    .map<Widget>((act) {
-                                      final icon = act.type == 'announcement'
-                                          ? Icons.campaign_outlined
-                                          : Icons.attach_money;
-                                      final subtitle = act.description ?? '';
-                                      final time = act.time != null
-                                          ? _formatRelative(act.time!)
-                                          : '';
-
-                                      return Padding(
-                                        padding: const EdgeInsets.only(
-                                          bottom: 10.0,
-                                        ),
-                                        child: Card(
-                                          color: Colors.white,
-                                          elevation: 6,
-                                          shadowColor: const Color.fromRGBO(
-                                            0,
-                                            0,
-                                            0,
-                                            0.06,
-                                          ),
-                                          margin: EdgeInsets.zero,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              12,
-                                            ),
-                                            side: BorderSide(
-                                              color: Colors.grey.shade100,
-                                            ),
-                                          ),
-                                          child: ListTile(
-                                            leading: CircleAvatar(
-                                              backgroundColor: const Color(
-                                                0xFFF3F4F6,
-                                              ),
-                                              child: Icon(
-                                                icon,
-                                                color: Colors.black54,
-                                              ),
-                                            ),
-                                            title: Text(
-                                              act.title ?? '-',
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                            subtitle: Text(subtitle),
-                                            trailing: Text(
-                                              time,
-                                              style: const TextStyle(
-                                                color: Colors.black45,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    })
-                                    .toList(),
-                              ),
-                            ),
-
-                            const SizedBox(height: 80),
-                          ],
-                        );
-                      }),
-                    ],
-                  ),
+                          const SizedBox(height: 80),
+                        ],
+                      );
+                    }),
+                  ],
                 ),
               ),
             ),
