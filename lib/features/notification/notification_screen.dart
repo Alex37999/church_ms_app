@@ -47,7 +47,10 @@ class NotificationScreen extends GetView<NotificationController> {
                             onPressed: () async {
                               await controller.markAllRead();
                               if (controller.errorMessage.value.isEmpty) {
-                                Get.snackbar('Notifications', 'All marked read');
+                                Get.snackbar(
+                                  'Notifications',
+                                  'All marked read',
+                                );
                               } else {
                                 Get.snackbar(
                                   'Error',

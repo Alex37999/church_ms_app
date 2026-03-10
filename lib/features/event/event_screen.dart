@@ -103,7 +103,9 @@ class EventScreen extends GetView<EventController> {
                                 Expanded(
                                   child: Text(
                                     e.venue,
-                                    style: const TextStyle(color: Colors.black54),
+                                    style: const TextStyle(
+                                      color: Colors.black54,
+                                    ),
                                   ),
                                 ),
                               ],
