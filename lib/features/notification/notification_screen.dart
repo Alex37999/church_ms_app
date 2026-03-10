@@ -19,7 +19,20 @@ class NotificationScreen extends GetView<NotificationController> {
             physics: const AlwaysScrollableScrollPhysics(),
             padding: EdgeInsets.zero,
             children: [
-              AppHeader(showBackButton: true, onBack: _goToDashboard),
+              // simple back button instead of AppHeader
+              Padding(
+                padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).padding.top,
+                ),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: IconButton(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: _goToDashboard,
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
