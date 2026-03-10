@@ -14,12 +14,13 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
     return Scaffold(
       backgroundColor: const Color(0xFFF7F8FA),
       body: Obx(
-        () => Column(
+        () => ListView(
+          padding: EdgeInsets.zero,
           children: [
             const AppHeader(),
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
                 children: [
                   const SizedBox(height: 20),
                   Text(
@@ -36,7 +37,10 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
                   const SizedBox(height: 20),
 
                   if (ctrl.isLoading.value)
-                    const Center(child: CircularProgressIndicator())
+                    const Padding(
+                      padding: EdgeInsets.only(top: 32),
+                      child: Center(child: CircularProgressIndicator()),
+                    )
                   else if (ctrl.errorMessage.value.isNotEmpty)
                     Center(
                       child: Text(
@@ -72,8 +76,8 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
                                   Container(
                                     width: 44,
                                     height: 44,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFFEFF6FF),
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFFEFF6FF),
                                       shape: BoxShape.circle,
                                     ),
                                     child: const Icon(
@@ -82,9 +86,7 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
                                       color: Color(0xFF3B82F6),
                                     ),
                                   ),
-
                                   const SizedBox(width: 14),
-
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
@@ -114,9 +116,7 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
                                       ],
                                     ),
                                   ),
-
                                   const SizedBox(width: 8),
-
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
@@ -150,10 +150,7 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
                                       ),
                                     ],
                                   ),
-
                                   const SizedBox(width: 8),
-
-                                  // Download button
                                   IconButton(
                                     onPressed: () => ctrl.downloadReceipt(
                                       receipt.downloadUrl ?? '',
@@ -163,9 +160,7 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
                                       color: Color(0xFF2563EB),
                                     ),
                                   ),
-
                                   const SizedBox(width: 4),
-
                                   const Icon(
                                     Icons.chevron_right,
                                     size: 22,
@@ -178,7 +173,6 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
                         ),
                       );
                     }).toList(),
-
                   const SizedBox(height: 30),
                 ],
               ),

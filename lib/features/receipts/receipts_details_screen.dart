@@ -60,12 +60,13 @@ class ContributionReceiptScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
+      body: ListView(
+        padding: EdgeInsets.zero,
         children: [
           AppHeader(showBackButton: true, onBack: () => Get.back()),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+            child: Column(
               children: [
                 Card(
                   color: Colors.white,
@@ -267,6 +268,7 @@ class ContributionReceiptScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                const SizedBox(height: 16),
               ],
             ),
           ),

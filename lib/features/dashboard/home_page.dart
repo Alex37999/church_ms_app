@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../widgets/bottom_nevigationbar.dart';
+import '../widgets/app_header.dart';
 import '../contributions/contributions_screen.dart';
 import '../receipts/receipts_screen.dart';
 import '../event/event_screen.dart';
@@ -11,7 +12,6 @@ import '../receipts/controllers/receipts_controller.dart';
 import '../event/controller/event_controller.dart';
 import '../announcements/controllers/announcements_controller.dart';
 import '../profile/controllers/profile_controller.dart';
-import '../notification/controllers/notification_controller.dart';
 import './controllers/home_controller.dart';
 
 class HomePage extends GetView<HomeController> {
@@ -50,169 +50,7 @@ class HomePage extends GetView<HomeController> {
 
                         return Column(
                           children: [
-                            // Top header with rounded bottom and content
-                            SafeArea(
-                              top: true,
-                              bottom: false,
-                              child: Container(
-                                constraints: const BoxConstraints(
-                                  minHeight: 260,
-                                ),
-                                width: double.infinity,
-                                padding: const EdgeInsets.fromLTRB(
-                                  16,
-                                  76,
-                                  16,
-                                  12,
-                                ),
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFF0B2A53),
-                                  borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(32),
-                                    bottomRight: Radius.circular(32),
-                                  ),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        // logo + app name
-                                        Container(
-                                          width: 56,
-                                          height: 56,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(
-                                              12,
-                                            ),
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Image.asset(
-                                              'assets/icon/app_icon.png',
-                                              fit: BoxFit.contain,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const Text(
-                                                'CHURCH SMARTLY',
-                                                style: TextStyle(
-                                                  color: Color(0xFF98C6FF),
-                                                  fontSize: 11,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              const SizedBox(height: 2),
-                                              Text(
-                                                hp?.churchName ??
-                                                    'Grace Community Church',
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        // notifications (functional)
-                                        IconButton(
-                                          onPressed: () async {
-                                            // If NotificationController is registered, refresh first
-                                            if (Get.isRegistered<
-                                              NotificationController
-                                            >()) {
-                                              Get.find<NotificationController>()
-                                                  .fetchNotifications();
-                                            }
-
-                                            // Navigate to notifications screen (binding will register controller if needed)
-                                            await Get.toNamed('/notifications');
-                                          },
-                                          icon: Stack(
-                                            clipBehavior: Clip.none,
-                                            children: [
-                                              const Icon(
-                                                Icons.notifications_none,
-                                                color: Colors.white,
-                                              ),
-                                              if ((hp?.unreadNotifications ??
-                                                      0) >
-                                                  0)
-                                                Positioned(
-                                                  right: -2,
-                                                  top: -6,
-                                                  child: Container(
-                                                    padding:
-                                                        const EdgeInsets.all(4),
-                                                    decoration: BoxDecoration(
-                                                      color: const Color(
-                                                        0xFF10B981,
-                                                      ),
-                                                      shape: BoxShape.circle,
-                                                      border: Border.all(
-                                                        color: const Color(
-                                                          0xFF0B2A53,
-                                                        ),
-                                                        width: 1.5,
-                                                      ),
-                                                    ),
-                                                    child: Text(
-                                                      (hp?.unreadNotifications ??
-                                                              0)
-                                                          .toString(),
-                                                      style: const TextStyle(
-                                                        fontSize: 10,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-
-                                    const SizedBox(height: 18),
-
-                                    const Text(
-                                      'Welcome back',
-                                      style: TextStyle(
-                                        color: Color(0xFFBFD8FF),
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 6),
-                                    Text(
-                                      'Member No: ${hp?.memberNumber ?? 'GCC-XXXX'}',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w800,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 6),
-                                    Text(
-                                      hp?.branchName ?? 'Branch',
-                                      style: const TextStyle(
-                                        color: Color(0xFFBFD8FF),
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                            const AppHeader(),
 
                             const SizedBox(height: 18),
 

@@ -13,15 +13,16 @@ class NotificationScreen extends GetView<NotificationController> {
     return Scaffold(
       backgroundColor: const Color(0xFFF3F4F6),
       body: Obx(
-        () => Column(
-          children: [
-            AppHeader(showBackButton: true, onBack: _goToDashboard),
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: controller.fetchNotifications,
-                child: ListView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+        () => RefreshIndicator(
+          onRefresh: controller.fetchNotifications,
+          child: ListView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: EdgeInsets.zero,
+            children: [
+              AppHeader(showBackButton: true, onBack: _goToDashboard),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
                   children: [
                     const SizedBox(height: 20),
                     Text(
@@ -46,10 +47,7 @@ class NotificationScreen extends GetView<NotificationController> {
                             onPressed: () async {
                               await controller.markAllRead();
                               if (controller.errorMessage.value.isEmpty) {
-                                Get.snackbar(
-                                  'Notifications',
-                                  'All marked read',
-                                );
+                                Get.snackbar('Notifications', 'All marked read');
                               } else {
                                 Get.snackbar(
                                   'Error',
@@ -63,7 +61,6 @@ class NotificationScreen extends GetView<NotificationController> {
                       ],
                     ),
                     const SizedBox(height: 18),
-
                     if (controller.isLoading.value)
                       const Center(child: CircularProgressIndicator())
                     else if (controller.errorMessage.value.isNotEmpty)
@@ -202,13 +199,12 @@ class NotificationScreen extends GetView<NotificationController> {
                           ),
                         );
                       }).toList(),
-
-                    const SizedBox(height: 80),
                   ],
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 80),
+            ],
+          ),
         ),
       ),
     );

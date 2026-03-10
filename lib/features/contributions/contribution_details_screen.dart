@@ -17,12 +17,13 @@ class ContributionDetailsScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
+      body: ListView(
+        padding: EdgeInsets.zero,
         children: [
           AppHeader(showBackButton: true, onBack: () => Get.back()),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(16),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
               children: [
                 const SizedBox(height: 8),
                 Center(
@@ -156,6 +157,7 @@ class ContributionDetailsScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                const SizedBox(height: 16),
               ],
             ),
           ),
