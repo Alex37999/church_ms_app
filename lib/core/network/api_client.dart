@@ -102,6 +102,20 @@ class ApiClient {
         },
         onResponse: (response, handler) {
           if (isUnauthenticatedResponse(response)) {
+            // Log details to help debug unexpected auto-logout triggers.
+            try {
+              Get.log(
+                'ApiClient: unauthenticated response detected. '
+                'status=${response.statusCode} data=${response.data}',
+              );
+            } catch (_) {
+              // fallback
+              // ignore: avoid_print
+              print(
+                'ApiClient: unauthenticated response ${response.statusCode}',
+              );
+            }
+
             // When validateStatus allows 4xx responses, Dio won't throw for 401.
             // Handle it here so the app doesn't just show empty/missing data.
             handleUnauthenticated();
@@ -113,6 +127,14 @@ class ApiClient {
           // This avoids the app looking "empty" after a cold restart.
           final status = e.response?.statusCode;
           if (status == 401) {
+            try {
+              Get.log(
+                'ApiClient: onError -> 401 received. '
+                'url=${e.requestOptions.uri} response=${e.response?.data}',
+              );
+            } catch (_) {
+              // ignore
+            }
             handleUnauthenticated();
           }
           handler.next(e);

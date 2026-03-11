@@ -142,6 +142,10 @@ class _MakeDonateScreenState extends State<MakeDonateScreen> {
 
     return Dialog(
       insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: Colors.grey.shade300),
+      ),
       child: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: modalWidth),
@@ -199,8 +203,20 @@ class _MakeDonateScreenState extends State<MakeDonateScreen> {
                         ],
                         onChanged: (v) =>
                             setState(() => _paymentMethod = v ?? 'Cash'),
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(color: Colors.grey.shade400),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
                         ),
                       ),
 
@@ -306,9 +322,21 @@ class _MakeDonateScreenState extends State<MakeDonateScreen> {
                       TextFormField(
                         controller: _amountCtrl,
                         keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           hintText: 'e.g. 1000',
-                          border: OutlineInputBorder(),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(color: Colors.grey.shade400),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
                         ),
                         validator: (v) {
                           if (v == null || v.trim().isEmpty)
@@ -357,8 +385,20 @@ class _MakeDonateScreenState extends State<MakeDonateScreen> {
                         validator: (v) => v == null || v.isEmpty
                             ? 'Choose contribution type'
                             : null,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(color: Colors.grey.shade400),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
                         ),
                       ),
 
@@ -379,9 +419,21 @@ class _MakeDonateScreenState extends State<MakeDonateScreen> {
                         controller: _dateCtrl,
                         readOnly: true,
                         onTap: _pickDate,
-                        decoration: const InputDecoration(
-                          suffixIcon: Icon(Icons.calendar_today_outlined),
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(
+                          suffixIcon: const Icon(Icons.calendar_today_outlined),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(color: Colors.grey.shade400),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
                         ),
                         validator: (v) =>
                             v == null || v.isEmpty ? 'Choose a date' : null,
@@ -404,8 +456,20 @@ class _MakeDonateScreenState extends State<MakeDonateScreen> {
                         controller: _noteCtrl,
                         minLines: 1,
                         maxLines: 3,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(color: Colors.grey.shade400),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
                         ),
                       ),
 
@@ -425,9 +489,23 @@ class _MakeDonateScreenState extends State<MakeDonateScreen> {
                         ),
                         TextFormField(
                           controller: _transactionCodeCtrl,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             hintText: 'Transaction code (required for bank)',
-                            border: OutlineInputBorder(),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade400,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
                           ),
                           validator: (v) {
                             if (_paymentMethod.toLowerCase().contains('bank')) {
@@ -495,16 +573,42 @@ class _MakeDonateScreenState extends State<MakeDonateScreen> {
                                   onPressed: _submit,
                                   icon: const Icon(Icons.send, size: 18),
                                   label: const Text('Submit Donation'),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFFE11D48),
-                                    foregroundColor: Colors.white,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 14,
-                                      vertical: 12,
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                      const Color(0xFFE11D48),
                                     ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
+                                    foregroundColor: MaterialStateProperty.all(
+                                      Colors.white,
                                     ),
+                                    padding: MaterialStateProperty.all(
+                                      const EdgeInsets.symmetric(
+                                        horizontal: 14,
+                                        vertical: 12,
+                                      ),
+                                    ),
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    side:
+                                        MaterialStateProperty.resolveWith<
+                                          BorderSide?
+                                        >((states) {
+                                          if (states.contains(
+                                            MaterialState.pressed,
+                                          )) {
+                                            return BorderSide(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary
+                                                  .withOpacity(0.85),
+                                            );
+                                          }
+                                          return BorderSide(
+                                            color: Colors.grey.shade400,
+                                          );
+                                        }),
                                   ),
                                 ),
                         ],

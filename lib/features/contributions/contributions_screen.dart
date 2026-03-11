@@ -65,8 +65,10 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                       icon: const Icon(Icons.volunteer_activism, size: 18),
                       label: const Text('Make Donate'),
                       style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: AppTheme.primaryColor),
-                        foregroundColor: AppTheme.primaryColor,
+                        side: const BorderSide(
+                          color: Color.fromARGB(255, 255, 44, 25),
+                        ),
+                        foregroundColor: const Color.fromARGB(255, 255, 44, 25),
                         padding: const EdgeInsets.symmetric(
                           horizontal: 12,
                           vertical: 10,
@@ -140,150 +142,163 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                 ),
                 const SizedBox(height: 18),
                 Obx(() {
+                  Widget child;
                   if (ctrl.isLoading.value) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (ctrl.contributions.isEmpty) {
-                    return const Center(
+                    child = const Center(child: CircularProgressIndicator());
+                  } else if (ctrl.contributions.isEmpty) {
+                    child = const Center(
                       child: Text('No contributions available'),
                     );
-                  }
+                  } else {
+                    final filtered = _filteredContributions(ctrl);
 
-                  final filtered = _filteredContributions(ctrl);
-
-                  return Column(
-                    children: filtered.map((contribution) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: Card(
-                          color: AppTheme.cardBackground,
-                          elevation: 3,
-                          margin: EdgeInsets.zero,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            side: const BorderSide(color: AppTheme.cardBorder),
-                          ),
-                          shadowColor: Colors.black26,
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(12),
-                            onTap: () => Get.to(
-                              () => ContributionDetailsScreen(
-                                contribution: contribution,
+                    child = Column(
+                      key: ValueKey('list-$_selectedFilter-${filtered.length}'),
+                      children: filtered.map((contribution) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: Card(
+                            color: AppTheme.cardBackground,
+                            elevation: 3,
+                            margin: EdgeInsets.zero,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              side: const BorderSide(
+                                color: AppTheme.cardBorder,
                               ),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 14,
-                                vertical: 14,
+                            shadowColor: Colors.black26,
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(12),
+                              onTap: () => Get.to(
+                                () => ContributionDetailsScreen(
+                                  contribution: contribution,
+                                ),
                               ),
-                              child: Row(
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 10,
-                                          vertical: 6,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: _tagColor(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                  vertical: 14,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 10,
+                                            vertical: 6,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: _tagColor(
+                                              contribution.type,
+                                            ).withOpacity(0.12),
+                                            borderRadius: BorderRadius.circular(
+                                              8,
+                                            ),
+                                          ),
+                                          child: Text(
                                             contribution.type,
-                                          ).withOpacity(0.12),
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          contribution.type,
-                                          style: TextStyle(
-                                            color: _tagColor(contribution.type),
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Row(
-                                        children: [
-                                          const Icon(
-                                            Icons.calendar_today_outlined,
-                                            size: 14,
-                                            color: AppTheme.textSecondary,
-                                          ),
-                                          const SizedBox(width: 6),
-                                          Text(
-                                            contribution.date,
-                                            style: const TextStyle(
-                                              color: AppTheme.textSecondary,
+                                            style: TextStyle(
+                                              color: _tagColor(
+                                                contribution.type,
+                                              ),
+                                              fontWeight: FontWeight.w700,
                                               fontSize: 12,
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 6),
-                                      Text(
-                                        'Receipt: ${contribution.id}',
-                                        style: const TextStyle(
-                                          color: AppTheme.textSecondary,
-                                          fontSize: 12,
                                         ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        contribution.status,
-                                        style: TextStyle(
-                                          color:
-                                              contribution.status
-                                                      .toLowerCase() ==
-                                                  'accepted'
-                                              ? AppTheme.success
-                                              : (contribution.status
-                                                            .toLowerCase() ==
-                                                        'pending'
-                                                    ? AppTheme.warning
-                                                    : AppTheme.textSecondary),
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
+                                        const SizedBox(height: 10),
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.calendar_today_outlined,
+                                              size: 14,
+                                              color: AppTheme.textSecondary,
+                                            ),
+                                            const SizedBox(width: 6),
+                                            Text(
+                                              contribution.date,
+                                              style: const TextStyle(
+                                                color: AppTheme.textSecondary,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  const Spacer(),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        _formatCurrency(contribution.amount),
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
+                                        const SizedBox(height: 6),
+                                        Text(
+                                          'Receipt: ${contribution.id}',
+                                          style: const TextStyle(
+                                            color: AppTheme.textSecondary,
+                                            fontSize: 12,
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Text(
-                                        contribution.method,
-                                        style: const TextStyle(
-                                          color: AppTheme.textSecondary,
-                                          fontSize: 12,
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          contribution.status,
+                                          style: TextStyle(
+                                            color:
+                                                contribution.status
+                                                        .toLowerCase() ==
+                                                    'accepted'
+                                                ? AppTheme.success
+                                                : (contribution.status
+                                                              .toLowerCase() ==
+                                                          'pending'
+                                                      ? AppTheme.warning
+                                                      : AppTheme.textSecondary),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(width: 8),
-                                  const Icon(
-                                    Icons.chevron_right,
-                                    size: 22,
-                                    color: AppTheme.textSecondary,
-                                  ),
-                                ],
+                                      ],
+                                    ),
+                                    const Spacer(),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          _formatCurrency(contribution.amount),
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          contribution.method,
+                                          style: const TextStyle(
+                                            color: AppTheme.textSecondary,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(width: 8),
+                                    const Icon(
+                                      Icons.chevron_right,
+                                      size: 22,
+                                      color: AppTheme.textSecondary,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    }).toList(),
+                        );
+                      }).toList(),
+                    );
+                  }
+
+                  return AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    switchInCurve: Curves.easeInOut,
+                    switchOutCurve: Curves.easeInOut,
+                    child: child,
                   );
                 }),
                 const SizedBox(height: 80),
@@ -305,27 +320,34 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
 
   Widget _interactiveChip(String label) {
     final selected = _selectedFilter == label;
-    return GestureDetector(
-      onTap: () {
-        if (_selectedFilter == label) {
-          return;
-        }
-        setState(() {
-          _selectedFilter = label;
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        decoration: BoxDecoration(
-          color: selected ? AppTheme.primaryColor : AppTheme.cardBackground,
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 220),
+      curve: Curves.easeInOut,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: selected ? AppTheme.primaryColor : AppTheme.cardBackground,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppTheme.cardBorder),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppTheme.cardBorder),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: selected ? Colors.white : AppTheme.textPrimary,
-            fontWeight: FontWeight.w600,
+          onTap: () {
+            if (_selectedFilter == label) return;
+            setState(() {
+              _selectedFilter = label;
+            });
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2.0, vertical: 2.0),
+            child: Text(
+              label,
+              style: TextStyle(
+                color: selected ? Colors.white : AppTheme.textPrimary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
         ),
       ),
