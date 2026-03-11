@@ -203,13 +203,13 @@ class _DashboardTab extends StatelessWidget {
                               ?.copyWith(fontWeight: FontWeight.w700),
                         ),
                       ),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          'View all >',
-                          style: TextStyle(color: AppTheme.textSecondary),
-                        ),
-                      ),
+                      // TextButton(
+                      //   onPressed: () {},
+                      //   child: const Text(
+                      //     'View all >',
+                      //     style: TextStyle(color: AppTheme.textSecondary),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
