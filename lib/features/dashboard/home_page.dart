@@ -66,6 +66,7 @@ class _HomePageState extends State<HomePage> {
       final idx = _navCtrl.index.value;
 
       return Scaffold(
+        // extendBody: true,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: KeyedSubtree(key: ValueKey(idx), child: _buildActivePage(idx)),
         bottomNavigationBar: AppBottomNavigationBar(

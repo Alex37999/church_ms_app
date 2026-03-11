@@ -36,8 +36,11 @@ class AppHeader extends StatelessWidget {
     final unread =
         notificationCtrl?.unreadCount.value ?? hp?.unreadNotifications ?? 0;
 
+    final headerHeight = (194 * scale) + topInset;
+
     return Container(
-      constraints: BoxConstraints(minHeight: (194 * scale) + topInset),
+      // Use a fixed height so AppHeader appears consistent across screens
+      height: headerHeight,
       width: double.infinity,
       padding: EdgeInsets.fromLTRB(
         horizontalPadding,
@@ -168,8 +171,19 @@ class AppHeader extends StatelessWidget {
             builder: (context) {
               final storedName =
                   GetStorage().read<String>('user_full_name') ?? '';
+              String toTitleCase(String s) {
+                return s
+                    .split(' ')
+                    .map((word) {
+                      if (word.isEmpty) return word;
+                      final lower = word.toLowerCase();
+                      return lower[0].toUpperCase() + lower.substring(1);
+                    })
+                    .join(' ');
+              }
+
               final displayName = storedName.trim().isNotEmpty
-                  ? storedName.trim()
+                  ? toTitleCase(storedName.trim())
                   : 'Member Name';
 
               return Column(

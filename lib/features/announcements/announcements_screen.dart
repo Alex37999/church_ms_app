@@ -14,14 +14,15 @@ class AnnouncementsScreen extends GetView<AnnouncementsController> {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F7FB),
       body: Obx(
-        () => Column(
+        () => ListView(
+          padding: EdgeInsets.zero,
           children: [
             const AppHeader(),
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 18, 16, 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 20),
                   Text(
                     'Announcements',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -33,32 +34,40 @@ class AnnouncementsScreen extends GetView<AnnouncementsController> {
                     'Stay updated with church news',
                     style: TextStyle(color: Colors.black54, fontSize: 14),
                   ),
-                  const SizedBox(height: 20),
-
-                  if (ctrl.isLoading.value)
-                    const Center(child: CircularProgressIndicator())
-                  else if (ctrl.errorMessage.value.isNotEmpty)
-                    Center(
-                      child: Text(
-                        ctrl.errorMessage.value,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(color: Colors.redAccent),
-                      ),
-                    )
-                  else if (ctrl.announcements.isEmpty)
-                    const Center(child: Text('No announcements available'))
-                  else
-                    ...ctrl.announcements.map((announcement) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: _AnnouncementCard(announcement: announcement),
-                      );
-                    }).toList(),
-
-                  const SizedBox(height: 30),
                 ],
               ),
             ),
+
+            if (ctrl.isLoading.value)
+              const Padding(
+                padding: EdgeInsets.only(top: 32),
+                child: Center(child: CircularProgressIndicator()),
+              )
+            else if (ctrl.errorMessage.value.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Center(
+                  child: Text(
+                    ctrl.errorMessage.value,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.redAccent),
+                  ),
+                ),
+              )
+            else if (ctrl.announcements.isEmpty)
+              const Padding(
+                padding: EdgeInsets.all(16),
+                child: Center(child: Text('No announcements available')),
+              )
+            else
+              ...ctrl.announcements.map((announcement) {
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                  child: _AnnouncementCard(announcement: announcement),
+                );
+              }).toList(),
+
+            const SizedBox(height: 12),
           ],
         ),
       ),
