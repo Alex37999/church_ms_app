@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../widgets/app_header.dart';
+// Replaced AppHeader with a simple SafeArea back button
 import './controllers/receipts_controller.dart';
 
 class ContributionReceiptScreen extends StatelessWidget {
@@ -63,7 +63,19 @@ class ContributionReceiptScreen extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
-          AppHeader(showBackButton: true, onBack: () => Get.back()),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () => Get.back(),
+                  tooltip: 'Back',
+                ),
+              ),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
             child: Column(
