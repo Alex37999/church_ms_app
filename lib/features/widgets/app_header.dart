@@ -199,7 +199,7 @@ class AppHeader extends StatelessWidget {
           Text(
             'Welcome back 👋',
             style: GoogleFonts.poppins(
-              color: AppTheme.textSecondary,
+              color: const Color.fromARGB(255, 151, 153, 158),
               fontSize: 14 * scale,
               fontWeight: FontWeight.w700,
             ),
@@ -233,7 +233,7 @@ class AppHeader extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.poppins(
                       color: Colors.white,
-                      fontSize: 24 * scale,
+                      fontSize: 26 * scale,
                       fontWeight: FontWeight.w900,
                       letterSpacing: 0.2,
                     ),
@@ -242,8 +242,8 @@ class AppHeader extends StatelessWidget {
                   Text(
                     '${hp?.memberNumber ?? 'GCC-XXXX'}  •  ${hp?.branchName ?? 'Branch'}',
                     style: GoogleFonts.poppins(
-                      color: AppTheme.textSecondary,
-                      fontSize: 12 * scale,
+                      color: const Color.fromARGB(255, 151, 153, 158),
+                      fontSize: 13 * scale,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

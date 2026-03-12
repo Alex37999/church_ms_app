@@ -159,10 +159,10 @@ class _DashboardTab extends StatelessWidget {
                       _SummaryCard(
                         color: AppTheme.softGreen,
                         icon: Icons.attach_money,
-                        iconColor: AppTheme.success,
+                        iconColor: Colors.teal,
                         title: 'Total Given',
                         value:
-                            '${hp?.currencySymbol ?? 'KES'} ${hp?.totalContributions ?? '0'}',
+                            '${hp?.currencySymbol ?? 'KES'} ${formatNumber(hp?.totalContributions)}',
                       ),
                       _SummaryCard(
                         color: AppTheme.softBlue,
@@ -218,13 +218,23 @@ class _DashboardTab extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     children: (hp?.recentActivity ?? []).map<Widget>((act) {
-                      final icon = act.type == 'announcement'
-                          ? Icons.campaign_outlined
-                          : Icons.attach_money;
                       final subtitle = act.description ?? '';
                       final time = act.time != null
                           ? _formatRelative(act.time!)
                           : '';
+
+                      IconData iconData;
+                      Color iconColor;
+                      if (act.type == 'announcement') {
+                        iconData = Icons.campaign_outlined;
+                        iconColor = Colors.amber; // yellow for announcements
+                      } else if (act.type == 'event') {
+                        iconData = Icons.event;
+                        iconColor = AppTheme.warning; // event color
+                      } else {
+                        iconData = Icons.attach_money;
+                        iconColor = Colors.teal; // contributions color
+                      }
 
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 10.0),
@@ -240,8 +250,8 @@ class _DashboardTab extends StatelessWidget {
                           ),
                           child: ListTile(
                             leading: CircleAvatar(
-                              backgroundColor: AppTheme.surfaceSubtle,
-                              child: Icon(icon, color: AppTheme.brandNavy),
+                              backgroundColor: iconColor.withOpacity(0.12),
+                              child: Icon(iconData, color: iconColor),
                             ),
                             title: Text(
                               act.title ?? '-',
@@ -292,14 +302,11 @@ class _SummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final titleStyle = Theme.of(context).textTheme.bodySmall?.copyWith(
       color: AppTheme.textSecondary,
-      fontSize: 11,
       height: 1.15,
     );
-    final valueStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
-      fontWeight: FontWeight.bold,
-      fontSize: 14,
-      height: 1.1,
-    );
+    final valueStyle = Theme.of(
+      context,
+    ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800, height: 1.1);
 
     return Card(
       color: AppTheme.cardBackground,
@@ -314,41 +321,45 @@ class _SummaryCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                color: color ?? AppTheme.surfaceSubtle,
-                shape: BoxShape.circle,
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color.fromRGBO(255, 255, 255, 0.4),
-                    blurRadius: 10,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              padding: const EdgeInsets.all(9),
-              child: Icon(
-                icon,
-                color: iconColor ?? AppTheme.textSecondary,
-                size: 20,
+            Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: color ?? AppTheme.surfaceSubtle,
+                  shape: BoxShape.circle,
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color.fromRGBO(255, 255, 255, 0.4),
+                      blurRadius: 10,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                padding: const EdgeInsets.all(12),
+                child: Icon(
+                  icon,
+                  color: iconColor ?? AppTheme.textSecondary,
+                  size: 22,
+                ),
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             Flexible(
               child: Text(
                 title,
+                textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: titleStyle,
               ),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 8),
             Text(
               value,
+              textAlign: TextAlign.center,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: valueStyle,
@@ -370,4 +381,11 @@ String _formatRelative(DateTime t) {
   if (diff.inHours >= 1) return '${diff.inHours} hours ago';
   if (diff.inMinutes >= 1) return '${diff.inMinutes} minutes ago';
   return 'just now';
+}
+
+String formatNumber(int? n) {
+  if (n == null) return '0';
+  final s = n.toString();
+  final reg = RegExp(r'\B(?=(\d{3})+(?!\d))');
+  return s.replaceAllMapped(reg, (match) => ',');
 }

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../app/routes/app_pages.dart';
 import '../../core/services/storage_service.dart';
+import '../dashboard/data/home_repository.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -57,7 +58,19 @@ class _SplashScreenState extends State<SplashScreen>
         final token = storage != null ? await storage.getToken() : null;
 
         if (loggedIn && token != null && token.isNotEmpty) {
-          Get.offAllNamed(Routes.HOME);
+          try {
+            final repo = HomeRepository();
+            final dashboard = await repo.fetchDashboard();
+            if (dashboard != null) {
+              Get.offAllNamed(Routes.HOME);
+            } else {
+              await storage?.clearSession();
+              Get.offAllNamed(Routes.LOGIN);
+            }
+          } catch (_) {
+            await storage?.clearSession();
+            Get.offAllNamed(Routes.LOGIN);
+          }
         } else {
           Get.offAllNamed(Routes.LOGIN);
         }

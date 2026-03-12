@@ -22,17 +22,17 @@ class ProfileScreen extends GetView<ProfileController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'My Profile',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  'View and manage your information',
-                  style: TextStyle(color: AppTheme.textSecondary, fontSize: 14),
-                ),
+                // Text(
+                //   'My Profile',
+                //   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                //     fontWeight: FontWeight.bold,
+                //   ),
+                // ),
+                // const SizedBox(height: 8),
+                // const Text(
+                //   'View and manage your information',
+                //   style: TextStyle(color: AppTheme.textSecondary, fontSize: 14),
+                // ),
                 const SizedBox(height: 32),
                 if (controller.isLoading.value)
                   const Center(child: CircularProgressIndicator())
