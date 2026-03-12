@@ -47,8 +47,8 @@ class AppHeader extends StatelessWidget {
         horizontalPadding,
         14 * scale,
       ),
-      decoration: const BoxDecoration(
-        color: Color.fromARGB(255, 5, 35, 77),
+      decoration: BoxDecoration(
+        color: AppTheme.headerBackground,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(28),
           bottomRight: Radius.circular(28),
@@ -130,28 +130,43 @@ class AppHeader extends StatelessWidget {
                         return Stack(
                           clipBehavior: Clip.none,
                           children: [
-                            const Icon(
-                              Icons.notifications_none,
-                              color: Colors.white,
+                            Container(
+                              width: 44 * scale,
+                              height: 44 * scale,
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.04),
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.12),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  Icons.notifications_none,
+                                  color: Colors.white,
+                                  size: 20 * scale,
+                                ),
+                              ),
                             ),
                             if (u > 0)
                               Positioned(
-                                right: -2,
+                                right: -6,
                                 top: -6,
                                 child: Container(
-                                  padding: const EdgeInsets.all(4),
+                                  padding: EdgeInsets.all(6 * (scale / 1.2)),
                                   decoration: BoxDecoration(
                                     color: AppTheme.success,
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: AppTheme.brandNavy,
-                                      width: 1.5,
+                                      color: Colors.white,
+                                      width: 1.2,
                                     ),
                                   ),
                                   child: Text(
                                     u.toString(),
                                     style: GoogleFonts.poppins(
-                                      fontSize: 10,
+                                      fontSize: 10 * scale,
                                       color: Colors.white,
                                     ),
                                   ),
@@ -163,28 +178,43 @@ class AppHeader extends StatelessWidget {
                     : Stack(
                         clipBehavior: Clip.none,
                         children: [
-                          const Icon(
-                            Icons.notifications_none,
-                            color: Colors.white,
+                          Container(
+                            width: 44 * scale,
+                            height: 44 * scale,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.04),
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.12),
+                                width: 1,
+                              ),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.notifications_none,
+                                color: Colors.white,
+                                size: 20 * scale,
+                              ),
+                            ),
                           ),
                           if ((hp?.unreadNotifications ?? 0) > 0)
                             Positioned(
-                              right: -2,
+                              right: -6,
                               top: -6,
                               child: Container(
-                                padding: const EdgeInsets.all(4),
+                                padding: EdgeInsets.all(6 * (scale / 1.2)),
                                 decoration: BoxDecoration(
                                   color: AppTheme.success,
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: AppTheme.brandNavy,
-                                    width: 1.5,
+                                    color: Colors.white,
+                                    width: 1.2,
                                   ),
                                 ),
                                 child: Text(
                                   (hp?.unreadNotifications ?? 0).toString(),
                                   style: GoogleFonts.poppins(
-                                    fontSize: 10,
+                                    fontSize: 10 * scale,
                                     color: Colors.white,
                                   ),
                                 ),

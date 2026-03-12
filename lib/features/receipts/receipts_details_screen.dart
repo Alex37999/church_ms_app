@@ -50,7 +50,7 @@ class ContributionReceiptScreen extends StatelessWidget {
               ],
             ),
             Text(
-              'KES ${amount.toStringAsFixed(0)}',
+              'KSh ${amount.toStringAsFixed(0)}',
               style: const TextStyle(fontWeight: FontWeight.w700),
             ),
           ],
@@ -229,7 +229,7 @@ class ContributionReceiptScreen extends StatelessWidget {
                                 style: TextStyle(fontWeight: FontWeight.w700),
                               ),
                               Text(
-                                'KES ${total.toStringAsFixed(0)}',
+                                'KSh ${total.toStringAsFixed(0)}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w800,
                                   color: Color(0xFF1E40AF),

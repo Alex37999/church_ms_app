@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../app/theme/app_theme.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../widgets/app_header.dart';
 import './controllers/contributions_controller.dart';
 import 'contribution_details_screen.dart';
@@ -26,6 +27,66 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
         padding: EdgeInsets.zero,
         children: [
           AppHeader(),
+          const SizedBox(height: 12),
+          Obx(() {
+            final total = ctrl.totalThisYear.value;
+            final txCount = ctrl.contributions.length;
+            final year = DateTime.now().year;
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Card(
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 4,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 18,
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Total Contributions',
+                              style: GoogleFonts.poppins(
+                                fontSize: 12,
+                                color: AppTheme.textSecondary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              _formatCurrency(total),
+                              style: GoogleFonts.poppins(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w900,
+                                color: AppTheme.brandNavy,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              '$txCount transactions · $year',
+                              style: GoogleFonts.poppins(
+                                fontSize: 12,
+                                color: AppTheme.textSecondary,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }),
+          const SizedBox(height: 12),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -39,18 +100,18 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'My Contributions',
+                            'Contributions',
                             style: Theme.of(context).textTheme.headlineSmall
                                 ?.copyWith(fontWeight: FontWeight.w700),
                           ),
-                          const SizedBox(height: 6),
-                          const Text(
-                            'View your giving \n history and receipts',
-                            style: TextStyle(
-                              color: AppTheme.textSecondary,
-                              fontSize: 14,
-                            ),
-                          ),
+                          //const SizedBox(height: 6),
+                          // const Text(
+                          //   'View your giving \n history and receipts',
+                          //   style: TextStyle(
+                          //     color: AppTheme.textSecondary,
+                          //     fontSize: 14,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -87,7 +148,7 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                       _MetricCard(
                         title: 'Total This Year',
                         value:
-                            'KES ${ctrl.totalThisYear.value.toStringAsFixed(0)}',
+                            'KSh ${ctrl.totalThisYear.value.toStringAsFixed(0)}',
                         subtitle:
                             '${ctrl.changeThisMonthPercent.value >= 0 ? '+' : ''}${ctrl.changeThisMonthPercent.value.toStringAsFixed(0)}%',
                         iconBg: AppTheme.softGreen,
@@ -99,7 +160,7 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                       _MetricCard(
                         title: 'This Month',
                         value:
-                            'KES ${ctrl.totalThisMonth.value.toStringAsFixed(0)}',
+                            'KSh ${ctrl.totalThisMonth.value.toStringAsFixed(0)}',
                         subtitle:
                             'vs prev ${ctrl.changeThisMonthPercent.value.toStringAsFixed(0)}%',
                         iconBg: AppTheme.softBlue,
@@ -111,7 +172,7 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
                       _MetricCard(
                         title: 'Average',
                         value:
-                            'KES ${ctrl.averageAmount.value.toStringAsFixed(0)}',
+                            'KSh ${ctrl.averageAmount.value.toStringAsFixed(0)}',
                         subtitle: 'per contribution',
                         iconBg: AppTheme.softViolet,
                         icon: Icons.pie_chart,
@@ -370,7 +431,7 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
 
 String _formatCurrency(double value) {
   final s = value.toStringAsFixed(0);
-  return 'KES ' +
+  return 'KSh ' +
       s.replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (m) => ',');
 }
 

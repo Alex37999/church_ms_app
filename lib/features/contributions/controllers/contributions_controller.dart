@@ -265,9 +265,9 @@ class ContributionsController extends GetxController {
       }).toList();
       bankAccounts.assignAll(mappedBanks);
 
+      // Use API-provided metrics (source of truth) instead of overwriting
+      // them with local recalculation which may apply different filters.
       calculateTotal();
-      // metrics are driven by API stats, but keep calculateMetrics to ensure consistency
-      calculateMetrics();
 
       errorMessage.value = '';
     } catch (e) {

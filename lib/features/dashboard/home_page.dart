@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../widgets/bottom_nevigationbar.dart';
 import '../widgets/app_header.dart';
+import '../widgets/drawer.dart';
 import '../contributions/contributions_screen.dart';
 import '../receipts/receipts_screen.dart';
 import '../event/event_screen.dart';
@@ -68,6 +70,7 @@ class _HomePageState extends State<HomePage> {
       return Scaffold(
         // extendBody: true,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        drawer: const AppDrawer(),
         body: KeyedSubtree(key: ValueKey(idx), child: _buildActivePage(idx)),
         bottomNavigationBar: AppBottomNavigationBar(
           onTap: (i) {
@@ -146,6 +149,8 @@ class _DashboardTab extends StatelessWidget {
               children: [
                 AppHeader(),
                 const SizedBox(height: 18),
+                YearToDateCard(data: hp),
+                const SizedBox(height: 12),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: GridView.count(
@@ -161,8 +166,31 @@ class _DashboardTab extends StatelessWidget {
                         icon: Icons.attach_money,
                         iconColor: Colors.teal,
                         title: 'Total Given',
-                        value:
-                            '${hp?.currencySymbol ?? 'KES'} ${formatNumber(hp?.totalContributions)}',
+                        valueWidget: Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '${hp?.currencySymbol ?? 'KSh'} ',
+                                style: GoogleFonts.poppins(
+                                  color: AppTheme.brandNavy,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                              TextSpan(
+                                text: formatNumber(hp?.totalContributions),
+                                style: GoogleFonts.poppins(
+                                  color: AppTheme.brandNavy,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                            ],
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       _SummaryCard(
                         color: AppTheme.softBlue,
@@ -288,25 +316,32 @@ class _SummaryCard extends StatelessWidget {
   final IconData icon;
   final Color? iconColor;
   final String title;
-  final String value;
+  final String? value;
+  final Widget? valueWidget;
 
   const _SummaryCard({
     this.color,
     required this.icon,
     this.iconColor,
     required this.title,
-    required this.value,
+    this.value,
+    this.valueWidget,
   });
 
   @override
   Widget build(BuildContext context) {
     final titleStyle = Theme.of(context).textTheme.bodySmall?.copyWith(
       color: AppTheme.textSecondary,
-      height: 1.15,
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      height: 1.12,
     );
-    final valueStyle = Theme.of(
-      context,
-    ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800, height: 1.1);
+    final valueStyle = GoogleFonts.poppins(
+      color: AppTheme.brandNavy,
+      fontSize: 15,
+      fontWeight: FontWeight.w900,
+      height: 1.05,
+    );
 
     return Card(
       color: AppTheme.cardBackground,
@@ -357,14 +392,123 @@ class _SummaryCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            Text(
-              value,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: valueStyle,
-            ),
+            valueWidget ??
+                Text(
+                  value ?? '-',
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: valueStyle,
+                ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// A prominent card showing year-to-date giving, goal and progress.
+class YearToDateCard extends StatelessWidget {
+  final dynamic data;
+
+  const YearToDateCard({this.data, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final total = (data?.totalContributions ?? 0) as int;
+    const int defaultGoal = 125000;
+    // The API/model doesn't currently include an `annualGoal` field.
+    // Use a sensible default until the backend provides this value.
+    final goal = defaultGoal;
+    final symbol = data?.currencySymbol ?? 'KSh';
+    double percent = 0.0;
+    if (goal > 0) {
+      percent = total / goal; // double division
+      if (percent < 0.0) percent = 0.0;
+      if (percent > 1.0) percent = 1.0;
+    }
+
+    final titleStyle = Theme.of(
+      context,
+    ).textTheme.bodySmall?.copyWith(color: Colors.white70, letterSpacing: 1.2);
+    final amountStyle = Theme.of(context).textTheme.headlineSmall?.copyWith(
+      color: Colors.white,
+      fontWeight: FontWeight.w800,
+    );
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Card(
+        color: AppTheme.headerBackground,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        elevation: 0,
+        shadowColor: Colors.transparent,
+        surfaceTintColor: AppTheme.headerBackground,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('YEAR TO DATE GIVING', style: titleStyle),
+                        const SizedBox(height: 8),
+                        Text(
+                          '$symbol ${formatNumber(total)}',
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 28, // Adjust font size as needed
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppTheme.softGreen.withOpacity(0.12),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.all(8),
+                    child: Icon(
+                      Icons.arrow_upward,
+                      color: AppTheme.accentGreen,
+                      size: 18,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Text(
+                    'Annual goal: $symbol ${formatNumber(goal)}',
+                    style: titleStyle,
+                  ),
+                  const Spacer(),
+                  Text(
+                    '${(percent * 100).round()}%',
+                    style: titleStyle?.copyWith(color: AppTheme.accentGreen),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: LinearProgressIndicator(
+                  value: percent,
+                  minHeight: 8,
+                  backgroundColor: Colors.white24,
+                  valueColor: AlwaysStoppedAnimation(AppTheme.accentGreen),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

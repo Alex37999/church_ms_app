@@ -51,7 +51,7 @@ class ContributionDetailsScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'KES ${contribution.amount.toStringAsFixed(0)}',
+                        'KSh ${contribution.amount.toStringAsFixed(0)}',
                         style: Theme.of(context).textTheme.headlineSmall
                             ?.copyWith(fontWeight: FontWeight.w800),
                       ),

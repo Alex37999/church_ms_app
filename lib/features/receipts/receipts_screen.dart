@@ -137,7 +137,7 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Text(
-                                        'KES ${receipt.totalAmount.toStringAsFixed(0)}',
+                                        'KSh ${receipt.totalAmount.toStringAsFixed(0)}',
                                         style: const TextStyle(
                                           fontWeight: FontWeight.w800,
                                           fontSize: 16,

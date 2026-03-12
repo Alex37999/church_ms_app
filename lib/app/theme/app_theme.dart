@@ -20,6 +20,7 @@ class AppTheme {
   static const Color softGreen = Color(0xFFEFFAF3);
   static const Color softViolet = Color(0xFFF5F3FF);
   static const Color softOrange = Color(0xFFFFF7ED);
+  static const Color headerBackground = Color.fromARGB(255, 5, 35, 77);
 
   static ThemeData get lightTheme {
     final base = ThemeData.light(useMaterial3: true);
