@@ -144,7 +144,7 @@ class _DashboardTab extends StatelessWidget {
 
             return Column(
               children: [
-                const AppHeader(),
+                AppHeader(),
                 const SizedBox(height: 18),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),

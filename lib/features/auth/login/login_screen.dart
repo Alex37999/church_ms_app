@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/controllers/theme_controller.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
@@ -23,7 +24,7 @@ class LoginView extends GetView<LoginController> {
               height: headerHeight,
               width: double.infinity,
               decoration: const BoxDecoration(
-                color: Color(0xFF0F2A4A),
+                color: Color.fromARGB(255, 5, 35, 77),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(32),
                   bottomRight: Radius.circular(32),
@@ -98,11 +99,12 @@ class LoginView extends GetView<LoginController> {
                           // Brand title
                           RichText(
                             text: TextSpan(
-                              style: Theme.of(context).textTheme.headlineMedium
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.w800,
-                                    color: Colors.white,
-                                  ),
+                              style: GoogleFonts.poppins(
+                                fontSize: 32,
+                                fontWeight: FontWeight.w800,
+                                color: Colors.white,
+                                letterSpacing: 0.2,
+                              ),
                               children: const <TextSpan>[
                                 TextSpan(
                                   text: 'Church',
@@ -115,11 +117,14 @@ class LoginView extends GetView<LoginController> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 6),
                           Text(
                             'Welcome back to your church community',
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(color: Colors.white70),
+                            style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              color: Colors.white70,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ],
                       ),
@@ -164,7 +169,7 @@ class LoginView extends GetView<LoginController> {
               child: Center(
                 child: Text(
                   'churchsmartly.com',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 12,
                     color: Get.find<ThemeController>().secondaryText,
                   ),
@@ -340,16 +345,20 @@ class _LoginFormState extends State<_LoginForm> {
         children: [
           Text(
             'Sign In',
-            style: TextStyle(
-              fontSize: 22,
+            style: GoogleFonts.poppins(
+              fontSize: 24,
               color: Color(0xFF0F2A4A),
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w700,
             ),
           ),
           const SizedBox(height: 6),
           Text(
             'Enter your details to continue',
-            style: TextStyle(color: t.secondaryText),
+            style: GoogleFonts.poppins(
+              fontSize: 15,
+              color: t.secondaryText,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           const SizedBox(height: 18),
 
@@ -459,11 +468,12 @@ class _LoginFormState extends State<_LoginForm> {
                           color: Colors.white,
                         ),
                       )
-                    : const Text(
+                    : Text(
                         'Sign In',
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
                           color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
               ),

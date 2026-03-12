@@ -23,12 +23,13 @@ class AppTheme {
 
   static ThemeData get lightTheme {
     final base = ThemeData.light(useMaterial3: true);
-    final interTextTheme = GoogleFonts.interTextTheme(base.textTheme);
-    final interPrimaryTextTheme = GoogleFonts.interTextTheme(
+    final poppinsTextTheme = GoogleFonts.poppinsTextTheme(base.textTheme);
+    final poppinsPrimaryTextTheme = GoogleFonts.poppinsTextTheme(
       base.primaryTextTheme,
     );
 
     return ThemeData(
+      fontFamily: GoogleFonts.poppins().fontFamily,
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(seedColor: primaryColor).copyWith(
         primary: primaryColor,
@@ -43,11 +44,11 @@ class AppTheme {
       scaffoldBackgroundColor: pageBackground,
       canvasColor: cardBackground,
       dividerColor: cardBorder,
-      textTheme: interTextTheme.apply(
+      textTheme: poppinsTextTheme.apply(
         bodyColor: textPrimary,
         displayColor: textPrimary,
       ),
-      primaryTextTheme: interPrimaryTextTheme.apply(
+      primaryTextTheme: poppinsPrimaryTextTheme.apply(
         bodyColor: textPrimary,
         displayColor: textPrimary,
       ),
@@ -110,12 +111,13 @@ class AppTheme {
 
   static ThemeData get darkTheme {
     final base = ThemeData.dark(useMaterial3: true);
-    final interTextTheme = GoogleFonts.interTextTheme(base.textTheme);
-    final interPrimaryTextTheme = GoogleFonts.interTextTheme(
+    final poppinsTextTheme = GoogleFonts.poppinsTextTheme(base.textTheme);
+    final poppinsPrimaryTextTheme = GoogleFonts.poppinsTextTheme(
       base.primaryTextTheme,
     );
 
     return ThemeData(
+      fontFamily: GoogleFonts.poppins().fontFamily,
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
         seedColor: primaryColor,
@@ -123,8 +125,8 @@ class AppTheme {
       ),
       brightness: Brightness.dark,
       scaffoldBackgroundColor: const Color(0xFF121212),
-      textTheme: interTextTheme,
-      primaryTextTheme: interPrimaryTextTheme,
+      textTheme: poppinsTextTheme,
+      primaryTextTheme: poppinsPrimaryTextTheme,
       appBarTheme: const AppBarTheme(
         backgroundColor: Color(0xFF121212),
         elevation: 0,

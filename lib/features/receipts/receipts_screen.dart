@@ -18,7 +18,7 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
         () => ListView(
           padding: EdgeInsets.zero,
           children: [
-            const AppHeader(),
+            AppHeader(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(

@@ -17,7 +17,7 @@ class AnnouncementsScreen extends GetView<AnnouncementsController> {
         () => ListView(
           padding: EdgeInsets.zero,
           children: [
-            const AppHeader(),
+            AppHeader(),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 18, 16, 8),
               child: Column(

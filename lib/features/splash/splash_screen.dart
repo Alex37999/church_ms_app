@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../app/routes/app_pages.dart';
 import '../../core/services/storage_service.dart';
 
@@ -10,13 +11,43 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _dotsController;
+  late final Animation<double> _dot1Scale;
+  late final Animation<double> _dot2Scale;
+  late final Animation<double> _dot3Scale;
+
   @override
   void initState() {
     super.initState();
+
+    _dotsController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    )..repeat();
+
+    _dot1Scale = Tween<double>(begin: 0.8, end: 1.2).animate(
+      CurvedAnimation(
+        parent: _dotsController,
+        curve: const Interval(0.0, 0.6, curve: Curves.easeInOut),
+      ),
+    );
+    _dot2Scale = Tween<double>(begin: 0.8, end: 1.2).animate(
+      CurvedAnimation(
+        parent: _dotsController,
+        curve: const Interval(0.2, 0.8, curve: Curves.easeInOut),
+      ),
+    );
+    _dot3Scale = Tween<double>(begin: 0.8, end: 1.2).animate(
+      CurvedAnimation(
+        parent: _dotsController,
+        curve: const Interval(0.4, 1.0, curve: Curves.easeInOut),
+      ),
+    );
+
     Future<void>.delayed(const Duration(seconds: 2), () async {
       if (!mounted) return;
-      // If a logged-in session exists, go to home; otherwise go to login
       try {
         final storage = Get.isRegistered<StorageService>()
             ? Get.find<StorageService>()
@@ -25,7 +56,6 @@ class _SplashScreenState extends State<SplashScreen> {
         final loggedIn = storage != null ? await storage.isLoggedIn() : false;
         final token = storage != null ? await storage.getToken() : null;
 
-        // Consider the session valid only if both flags are present.
         if (loggedIn && token != null && token.isNotEmpty) {
           Get.offAllNamed(Routes.HOME);
         } else {
@@ -35,6 +65,12 @@ class _SplashScreenState extends State<SplashScreen> {
         Get.offAllNamed(Routes.LOGIN);
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _dotsController.dispose();
+    super.dispose();
   }
 
   @override
@@ -118,13 +154,17 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                   const SizedBox(height: 22),
 
-                  // Brand title with two colors
+                  // Brand title with two colors (Poppins)
                   RichText(
                     text: TextSpan(
-                      style: Theme.of(context).textTheme.headlineMedium
-                          ?.copyWith(fontWeight: FontWeight.w800, height: 1.0),
-                      children: const <TextSpan>[
-                        TextSpan(
+                      style: GoogleFonts.poppins(
+                        fontSize: 32,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                        height: 1.0,
+                      ),
+                      children: <TextSpan>[
+                        const TextSpan(
                           text: 'Church',
                           style: TextStyle(color: Colors.white),
                         ),
@@ -139,7 +179,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
                   Text(
                     'CHURCH MANAGEMENT MADE SIMPLE',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
                       color: Colors.white70,
                       fontWeight: FontWeight.w500,
                       letterSpacing: 1.6,
@@ -147,34 +188,43 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                   const SizedBox(height: 26),
 
-                  // Page indicators
+                  // Page indicators (animated)
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Container(
-                        width: 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          color: Colors.white24,
-                          shape: BoxShape.circle,
+                      ScaleTransition(
+                        scale: _dot1Scale,
+                        child: Container(
+                          width: 8,
+                          height: 8,
+                          decoration: const BoxDecoration(
+                            color: Colors.white24,
+                            shape: BoxShape.circle,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 10),
-                      Container(
-                        width: 10,
-                        height: 10,
-                        decoration: BoxDecoration(
-                          color: accentGreen,
-                          shape: BoxShape.circle,
+                      ScaleTransition(
+                        scale: _dot2Scale,
+                        child: Container(
+                          width: 10,
+                          height: 10,
+                          decoration: BoxDecoration(
+                            color: accentGreen,
+                            shape: BoxShape.circle,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 10),
-                      Container(
-                        width: 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          color: Colors.white24,
-                          shape: BoxShape.circle,
+                      ScaleTransition(
+                        scale: _dot3Scale,
+                        child: Container(
+                          width: 8,
+                          height: 8,
+                          decoration: const BoxDecoration(
+                            color: Colors.white24,
+                            shape: BoxShape.circle,
+                          ),
                         ),
                       ),
                     ],

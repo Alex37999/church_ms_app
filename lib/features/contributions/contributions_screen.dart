@@ -25,7 +25,7 @@ class _ContributionsScreenState extends State<ContributionsScreen> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          const AppHeader(),
+          AppHeader(),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(

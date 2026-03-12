@@ -16,7 +16,7 @@ class ProfileScreen extends GetView<ProfileController> {
       () => ListView(
         padding: EdgeInsets.zero,
         children: [
-          const AppHeader(),
+          AppHeader(),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(

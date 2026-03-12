@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../app/routes/app_pages.dart';
 import '../../app/theme/app_theme.dart';
@@ -33,8 +34,6 @@ class AppHeader extends StatelessWidget {
     final topInset = MediaQuery.paddingOf(context).top;
 
     final hp = homeCtrl?.homepage.value?.data;
-    final unread =
-        notificationCtrl?.unreadCount.value ?? hp?.unreadNotifications ?? 0;
 
     final headerHeight = (194 * scale) + topInset;
 
@@ -49,7 +48,7 @@ class AppHeader extends StatelessWidget {
         14 * scale,
       ),
       decoration: const BoxDecoration(
-        color: AppTheme.brandNavy,
+        color: Color.fromARGB(255, 5, 35, 77),
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(28),
           bottomRight: Radius.circular(28),
@@ -93,7 +92,7 @@ class AppHeader extends StatelessWidget {
                   children: [
                     Text(
                       'CHURCH SMARTLY',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         color: AppTheme.accentGreen,
                         fontSize: 12 * scale,
                         fontWeight: FontWeight.w700,
@@ -105,7 +104,7 @@ class AppHeader extends StatelessWidget {
                       hp?.churchName ?? 'Grace Community Church',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         color: Colors.white,
                         fontSize: 16 * scale,
                         fontWeight: FontWeight.w800,
@@ -125,42 +124,81 @@ class AppHeader extends StatelessWidget {
                   }
                 },
                 tooltip: 'Notifications',
-                icon: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    const Icon(Icons.notifications_none, color: Colors.white),
-                    if (unread > 0)
-                      Positioned(
-                        right: -2,
-                        top: -6,
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            color: AppTheme.success,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: AppTheme.brandNavy,
-                              width: 1.5,
-                            ),
-                          ),
-                          child: Text(
-                            unread.toString(),
-                            style: const TextStyle(
-                              fontSize: 10,
+                icon: notificationCtrl != null
+                    ? Obx(() {
+                        final u = notificationCtrl.unreadCount.value;
+                        return Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            const Icon(
+                              Icons.notifications_none,
                               color: Colors.white,
                             ),
+                            if (u > 0)
+                              Positioned(
+                                right: -2,
+                                top: -6,
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.success,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: AppTheme.brandNavy,
+                                      width: 1.5,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    u.toString(),
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 10,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        );
+                      })
+                    : Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          const Icon(
+                            Icons.notifications_none,
+                            color: Colors.white,
                           ),
-                        ),
+                          if ((hp?.unreadNotifications ?? 0) > 0)
+                            Positioned(
+                              right: -2,
+                              top: -6,
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.success,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: AppTheme.brandNavy,
+                                    width: 1.5,
+                                  ),
+                                ),
+                                child: Text(
+                                  (hp?.unreadNotifications ?? 0).toString(),
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 10,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
-                  ],
-                ),
               ),
             ],
           ),
           SizedBox(height: 16 * scale),
           Text(
             'Welcome back 👋',
-            style: TextStyle(
+            style: GoogleFonts.poppins(
               color: AppTheme.textSecondary,
               fontSize: 14 * scale,
               fontWeight: FontWeight.w700,
@@ -193,7 +231,7 @@ class AppHeader extends StatelessWidget {
                     displayName,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       color: Colors.white,
                       fontSize: 24 * scale,
                       fontWeight: FontWeight.w900,
@@ -203,7 +241,7 @@ class AppHeader extends StatelessWidget {
                   SizedBox(height: 6 * scale),
                   Text(
                     '${hp?.memberNumber ?? 'GCC-XXXX'}  •  ${hp?.branchName ?? 'Branch'}',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       color: AppTheme.textSecondary,
                       fontSize: 12 * scale,
                       fontWeight: FontWeight.w600,
