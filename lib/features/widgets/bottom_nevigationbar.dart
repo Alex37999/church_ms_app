@@ -29,12 +29,19 @@ class AppBottomNavigationBar extends StatelessWidget {
     return Obx(() {
       // Custom pill-style bottom nav
       final items = <Map<String, dynamic>>[
-        {'icon': Icons.home_outlined, 'label': 'Home'},
-        {'icon': Icons.attach_money_outlined, 'label': 'Giving'},
-        {'icon': Icons.receipt_long_outlined, 'label': 'Receipts'},
-        {'icon': Icons.event_outlined, 'label': 'Events'},
-        {'icon': Icons.notifications_none, 'label': 'Updates'},
-        {'icon': Icons.person_outline, 'label': 'Profile'},
+        {'icon': Icons.home_outlined, 'label': 'Home', 'pageIndex': 0},
+        {
+          'icon': Icons.attach_money_outlined,
+          'label': 'Giving',
+          'pageIndex': 1,
+        },
+        {
+          'icon': Icons.receipt_long_outlined,
+          'label': 'Receipts',
+          'pageIndex': 2,
+        },
+        {'icon': Icons.event_outlined, 'label': 'Events', 'pageIndex': 3},
+        {'icon': Icons.person_outline, 'label': 'Profile', 'pageIndex': 5},
       ];
 
       return SafeArea(
@@ -72,13 +79,14 @@ class AppBottomNavigationBar extends StatelessWidget {
                 child: Row(
                   children: List.generate(items.length, (index) {
                     final it = items[index];
-                    final selected = ctrl.index.value == index;
+                    final pageIndex = it['pageIndex'] as int;
+                    final selected = ctrl.index.value == pageIndex;
                     return Expanded(
                       child: InkWell(
                         borderRadius: BorderRadius.circular(12),
                         onTap: () {
-                          ctrl.changeIndex(index);
-                          if (onTap != null) onTap!(index);
+                          ctrl.changeIndex(pageIndex);
+                          if (onTap != null) onTap!(pageIndex);
                         },
                         child: Column(
                           mainAxisSize: MainAxisSize.min,

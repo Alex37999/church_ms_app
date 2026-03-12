@@ -194,7 +194,7 @@ class AppDrawer extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  'Events & Updates',
+                  'Events & Announcements',
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
@@ -223,7 +223,7 @@ class AppDrawer extends StatelessWidget {
               ListTile(
                 leading: Icon(Icons.notifications_none, color: iconColor),
                 title: Text(
-                  'Updates',
+                  'Announcements',
                   style: GoogleFonts.poppins(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,

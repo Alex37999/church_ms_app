@@ -482,8 +482,10 @@ class _MetricCard extends StatelessWidget {
                   const SizedBox(height: 6),
                   Text(
                     value,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: AppTheme.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 6),
