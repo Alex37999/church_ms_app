@@ -59,6 +59,19 @@ class AppTheme {
         centerTitle: true,
         foregroundColor: textPrimary,
       ),
+      inputDecorationTheme: InputDecorationTheme(
+        labelStyle: GoogleFonts.poppins(color: textSecondary),
+        hintStyle: GoogleFonts.poppins(color: textSecondary),
+        helperStyle: GoogleFonts.poppins(color: textSecondary),
+        errorStyle: GoogleFonts.poppins(),
+      ),
+      snackBarTheme: SnackBarThemeData(
+        contentTextStyle: GoogleFonts.poppins(color: cardBackground),
+      ),
+      listTileTheme: ListTileThemeData(
+        titleTextStyle: GoogleFonts.poppins(color: textPrimary),
+        subtitleTextStyle: GoogleFonts.poppins(color: textSecondary),
+      ),
       cardTheme: CardThemeData(
         color: cardBackground,
         elevation: 6,
@@ -84,6 +97,10 @@ class AppTheme {
           backgroundColor: primaryColor,
           foregroundColor: cardBackground,
           minimumSize: const Size(0, 48),
+          textStyle: GoogleFonts.poppins(
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
@@ -94,6 +111,10 @@ class AppTheme {
           foregroundColor: textPrimary,
           side: const BorderSide(color: cardBorder),
           minimumSize: const Size(0, 48),
+          textStyle: GoogleFonts.poppins(
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
@@ -102,6 +123,10 @@ class AppTheme {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: primaryColor,
+          textStyle: GoogleFonts.poppins(
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -128,10 +153,45 @@ class AppTheme {
       scaffoldBackgroundColor: const Color(0xFF121212),
       textTheme: poppinsTextTheme,
       primaryTextTheme: poppinsPrimaryTextTheme,
+      inputDecorationTheme: InputDecorationTheme(
+        labelStyle: GoogleFonts.poppins(),
+        hintStyle: GoogleFonts.poppins(),
+        helperStyle: GoogleFonts.poppins(),
+        errorStyle: GoogleFonts.poppins(),
+      ),
+      snackBarTheme: SnackBarThemeData(contentTextStyle: GoogleFonts.poppins()),
+      listTileTheme: ListTileThemeData(
+        titleTextStyle: GoogleFonts.poppins(),
+        subtitleTextStyle: GoogleFonts.poppins(),
+      ),
       appBarTheme: const AppBarTheme(
         backgroundColor: Color(0xFF121212),
         elevation: 0,
         centerTitle: true,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          textStyle: GoogleFonts.poppins(
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+          ),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          textStyle: GoogleFonts.poppins(
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          textStyle: GoogleFonts.poppins(
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+          ),
+        ),
       ),
     );
   }

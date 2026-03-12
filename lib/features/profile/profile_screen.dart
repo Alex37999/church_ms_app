@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:churchmsapp/app/routes/app_pages.dart';
 import 'package:churchmsapp/app/theme/app_theme.dart';
 import 'package:churchmsapp/core/services/storage_service.dart';
@@ -117,17 +118,19 @@ class ProfileScreen extends GetView<ProfileController> {
                             // Name and Member No
                             Text(
                               controller.username.value,
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
+                              style: GoogleFonts.poppins(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w900,
+                                color: const Color(0xFF0F172A),
                               ),
                             ),
                             const SizedBox(height: 4),
                             Text(
                               'Member No: ${controller.memberNo.value}',
-                              style: const TextStyle(
+                              style: GoogleFonts.poppins(
                                 fontSize: 13,
-                                color: Colors.black54,
+                                fontWeight: FontWeight.w500,
+                                color: AppTheme.textSecondary,
                               ),
                             ),
                             const SizedBox(height: 20),
@@ -215,11 +218,15 @@ class ProfileScreen extends GetView<ProfileController> {
                             Get.offAllNamed(Routes.LOGIN);
                           },
                           icon: const Icon(Icons.logout, color: Colors.white),
-                          label: const Padding(
+                          label: Padding(
                             padding: EdgeInsets.symmetric(vertical: 14.0),
                             child: Text(
                               'Logout',
-                              style: TextStyle(color: Colors.white),
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15,
+                              ),
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
@@ -257,7 +264,12 @@ class _InfoItem extends StatelessWidget {
         Expanded(
           child: Text(
             label,
-            style: const TextStyle(fontSize: 14, color: Colors.black54),
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: const Color(0xFF475569),
+              height: 1.4,
+            ),
           ),
         ),
       ],
@@ -301,10 +313,10 @@ class _MenuItemTile extends StatelessWidget {
             Expanded(
               child: Text(
                 title,
-                style: const TextStyle(
+                style: GoogleFonts.poppins(
                   fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black87,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF0F172A),
                 ),
               ),
             ),

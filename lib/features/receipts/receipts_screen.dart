@@ -66,10 +66,10 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
                             const SizedBox(height: 8),
                             Text(
                               'KSh ${_formatAmount(total)}',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 28,
+                              style: GoogleFonts.poppins(
+                                fontSize: 24,
                                 fontWeight: FontWeight.w900,
+                                color: Colors.white,
                               ),
                             ),
                             const SizedBox(height: 6),
