@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../app/theme/app_theme.dart';
 import '../widgets/app_header.dart';
 import './controllers/receipts_controller.dart';
-import 'receipts_details_screen.dart';
 
 class ReceiptsScreen extends GetView<ReceiptsController> {
   const ReceiptsScreen({super.key});
@@ -24,20 +24,68 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
               child: Column(
                 children: [
                   const SizedBox(height: 20),
-                  Text(
-                    'My Receipts',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  const Text(
-                    'Download your contribution receipts',
-                    style: TextStyle(
-                      color: AppTheme.textSecondary,
-                      fontSize: 14,
-                    ),
-                  ),
+                  // Summary header with gradient background
+                  Obx(() {
+                    final total = ctrl.receipts.fold<double>(
+                      0.0,
+                      (s, r) => s + (r.totalAmount ?? 0),
+                    );
+                    final count = ctrl.receipts.length;
+                    return Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Color(0xFF0B3B8C), Color(0xFF1E66D1)],
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color.fromRGBO(14, 30, 60, 0.12),
+                            blurRadius: 16,
+                            offset: Offset(0, 8),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'TOTAL RECEIPTS',
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                    color: Colors.white70,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 1.2,
+                                  ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'KSh ${_formatAmount(total)}',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 28,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              '$count receipts available',
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                    color: Colors.white70,
+                                    fontSize: 12,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
                   const SizedBox(height: 20),
 
                   if (ctrl.isLoading.value)
@@ -59,15 +107,21 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
                     ...ctrl.receipts.map((receipt) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 16),
-                        child: Material(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          elevation: 5,
-                          shadowColor: const Color.fromRGBO(15, 23, 42, 0.08),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(20),
-                            onTap: () => Get.to(
-                              () => ContributionReceiptScreen(receipt: receipt),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(16),
+                          onTap: null,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color.fromRGBO(15, 23, 42, 0.06),
+                                  blurRadius: 12,
+                                  offset: Offset(0, 6),
+                                ),
+                              ],
+                              border: Border.all(color: AppTheme.cardBorder),
                             ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
@@ -81,25 +135,13 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
                                     width: 48,
                                     height: 48,
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFFEAF2FF),
-                                      shape: BoxShape.circle,
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          color: Color.fromRGBO(
-                                            59,
-                                            130,
-                                            246,
-                                            0.14,
-                                          ),
-                                          blurRadius: 16,
-                                          offset: Offset(0, 8),
-                                        ),
-                                      ],
+                                      color: const Color(0xFFF1F5FF),
+                                      borderRadius: BorderRadius.circular(14),
                                     ),
                                     child: const Icon(
-                                      Icons.receipt_long,
+                                      Icons.receipt_long_outlined,
                                       size: 22,
-                                      color: Color(0xFF3B82F6),
+                                      color: Color(0xFF1E3A8A),
                                     ),
                                   ),
                                   const SizedBox(width: 14),
@@ -107,85 +149,103 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                receipt.month,
-                                                style: const TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                        Text(
+                                          receipt.month,
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xFF1F2937),
+                                          ),
                                         ),
-                                        const SizedBox(height: 6),
+                                        const SizedBox(height: 4),
                                         Text(
                                           '${receipt.contributionsCount} contribution(s)',
-                                          style: const TextStyle(
+                                          style: GoogleFonts.poppins(
                                             fontSize: 13,
-                                            color: Colors.black54,
+                                            color: const Color(0xFF64748B),
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 10,
+                                            vertical: 4,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFFE7F8EC),
+                                            borderRadius: BorderRadius.circular(
+                                              999,
+                                            ),
+                                          ),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const SizedBox(
+                                                width: 6,
+                                                height: 6,
+                                                child: DecoratedBox(
+                                                  decoration: BoxDecoration(
+                                                    color: Color(0xFF22C55E),
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 6),
+                                              Text(
+                                                receipt.status,
+                                                style: GoogleFonts.poppins(
+                                                  color: const Color(
+                                                    0xFF16A34A,
+                                                  ),
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(width: 8),
+                                  const SizedBox(width: 12),
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'KSh ${receipt.totalAmount.toStringAsFixed(0)}',
-                                        style: const TextStyle(
+                                        'KSh ${_formatAmount(receipt.totalAmount)}',
+                                        style: GoogleFonts.poppins(
                                           fontWeight: FontWeight.w800,
                                           fontSize: 16,
                                           color: Color(0xFF0F172A),
                                         ),
                                       ),
-                                      const SizedBox(height: 6),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                          vertical: 4,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFFDFF7E7),
+                                      const SizedBox(height: 12),
+                                      Material(
+                                        color: const Color(0xFFF1F5F9),
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: InkWell(
                                           borderRadius: BorderRadius.circular(
-                                            8,
+                                            12,
                                           ),
-                                        ),
-                                        child: Text(
-                                          receipt.status,
-                                          style: const TextStyle(
-                                            color: Color(0xFF057A34),
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600,
+                                          onTap: () => ctrl.downloadReceipt(
+                                            receipt.downloadUrl ?? '',
+                                          ),
+                                          child: const Padding(
+                                            padding: EdgeInsets.all(10),
+                                            child: Icon(
+                                              Icons.download_outlined,
+                                              size: 20,
+                                              color: Color(0xFF64748B),
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ],
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Material(
-                                    color: const Color(0xFFEFF6FF),
-                                    shape: const CircleBorder(),
-                                    child: IconButton(
-                                      onPressed: () => ctrl.downloadReceipt(
-                                        receipt.downloadUrl ?? '',
-                                      ),
-                                      icon: const Icon(
-                                        Icons.download_outlined,
-                                        color: Color(0xFF2563EB),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 4),
-                                  const Icon(
-                                    Icons.chevron_right,
-                                    size: 22,
-                                    color: Colors.grey,
                                   ),
                                 ],
                               ),
@@ -203,4 +263,9 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
       ),
     );
   }
+}
+
+String _formatAmount(double? value) {
+  final v = (value ?? 0).toStringAsFixed(0);
+  return v.replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (m) => ',');
 }
