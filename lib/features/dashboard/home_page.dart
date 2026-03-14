@@ -416,17 +416,10 @@ class YearToDateCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final total = (data?.totalContributions ?? 0) as int;
-    const int defaultGoal = 125000;
-    // The API/model doesn't currently include an `annualGoal` field.
-    // Use a sensible default until the backend provides this value.
-    final goal = defaultGoal;
     final symbol = data?.currencySymbol ?? 'KSh';
-    double percent = 0.0;
-    if (goal > 0) {
-      percent = total / goal; // double division
-      if (percent < 0.0) percent = 0.0;
-      if (percent > 1.0) percent = 1.0;
-    }
+
+    // Keep a simple visual: show full bar when there is any total, empty otherwise.
+    double visualValue = total > 0 ? 1.0 : 0.0;
 
     final titleStyle = Theme.of(
       context,
@@ -486,14 +479,13 @@ class YearToDateCard extends StatelessWidget {
               const SizedBox(height: 8),
               Row(
                 children: [
-                  Text(
-                    'Annual goal: $symbol ${formatNumber(goal)}',
-                    style: titleStyle,
-                  ),
-                  const Spacer(),
-                  Text(
-                    '${(percent * 100).round()}%',
-                    style: titleStyle?.copyWith(color: AppTheme.accentGreen),
+                  Expanded(
+                    child: Text(
+                      'Open Contributions to view donations.',
+                      style: titleStyle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),
@@ -501,7 +493,7 @@ class YearToDateCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: LinearProgressIndicator(
-                  value: percent,
+                  value: visualValue,
                   minHeight: 8,
                   backgroundColor: Colors.white24,
                   valueColor: AlwaysStoppedAnimation(AppTheme.accentGreen),

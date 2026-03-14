@@ -70,18 +70,30 @@ class AppHeader extends StatelessWidget {
                 ),
                 SizedBox(width: 10 * scale),
               ],
-              Container(
-                width: 44 * scale,
-                height: 44 * scale,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10 * scale),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(6 * scale),
-                  child: Image.asset(
-                    'assets/icon/app_icon.png',
-                    fit: BoxFit.contain,
+              GestureDetector(
+                onTap: () {
+                  final scaffold = Scaffold.maybeOf(context);
+                  if (scaffold != null) {
+                    scaffold.openDrawer();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('No drawer found')),
+                    );
+                  }
+                },
+                child: Container(
+                  width: 44 * scale,
+                  height: 44 * scale,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10 * scale),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(6 * scale),
+                    child: Image.asset(
+                      'assets/icon/app_icon.png',
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),
