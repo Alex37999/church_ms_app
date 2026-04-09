@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../app/theme/app_theme.dart';
 import '../widgets/app_header.dart';
+import '../widgets/drawer.dart';
 import 'binding/event_binding.dart';
 import 'controller/event_controller.dart';
 
@@ -16,6 +17,7 @@ class EventScreen extends GetView<EventController> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      drawer: const AppDrawer(),
       body: Obx(
         () => RefreshIndicator(
           onRefresh: ctrl.fetchEvents,

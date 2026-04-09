@@ -264,18 +264,17 @@ import 'delete_account_service.dart';
 void showSnackBar(BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(
     const SnackBar(
-      content: Text('Hello! This is a SnackBar'),
+      content: Text('Your account has been deleted successfully.'),
       duration: Duration(seconds: 2),
     ),
   );
 }
 
-
 void showDeleteAccountDialog(
-    BuildContext context, {
-      required String baseUrl,
-      required String token,
-    }) {
+  BuildContext context, {
+  required String baseUrl,
+  required String token,
+}) {
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -374,16 +373,14 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
 
     // ✅ Replace this block
     if (result.isSuccess) {
-
-
       Navigator.of(context).pop();
 
-      await Get.find<StorageService>().clearSession(); // 👈 clears token & user data
+      await Get.find<StorageService>()
+          .clearSession(); // 👈 clears token & user data
 
       Get.offAllNamed(Routes.LOGIN); // 👈 navigates to login & clears stack
 
       showSnackBar(context);
-
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -412,8 +409,11 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
               // ── Title row ──────────────────────────────────────────────────
               Row(
                 children: [
-                  const Icon(Icons.warning_rounded,
-                      color: Color(0xFFE53935), size: 24),
+                  const Icon(
+                    Icons.warning_rounded,
+                    color: Color(0xFFE53935),
+                    size: 24,
+                  ),
                   const SizedBox(width: 8),
                   const Expanded(
                     child: Text(
@@ -452,7 +452,9 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
                     RichText(
                       text: const TextSpan(
                         style: TextStyle(
-                            fontSize: 13.5, color: Color(0xFF333333)),
+                          fontSize: 13.5,
+                          color: Color(0xFF333333),
+                        ),
                         children: [
                           TextSpan(text: 'Warning: '),
                           TextSpan(
@@ -460,25 +462,32 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
                             style: TextStyle(fontWeight: FontWeight.w700),
                           ),
                           TextSpan(
-                              text: '. The following data will be deleted:'),
+                            text: '. The following data will be deleted:',
+                          ),
                         ],
                       ),
                     ),
                     const SizedBox(height: 10),
                     ..._warningItems.map(
-                          (item) => Padding(
+                      (item) => Padding(
                         padding: const EdgeInsets.only(bottom: 4),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('• ',
-                                style: TextStyle(
-                                    color: Color(0xFF555555), fontSize: 13.5)),
+                            const Text(
+                              '• ',
+                              style: TextStyle(
+                                color: Color(0xFF555555),
+                                fontSize: 13.5,
+                              ),
+                            ),
                             Expanded(
                               child: Text(
                                 item,
                                 style: const TextStyle(
-                                    color: Color(0xFF555555), fontSize: 13.5),
+                                  color: Color(0xFF555555),
+                                  fontSize: 13.5,
+                                ),
                               ),
                             ),
                           ],
@@ -519,7 +528,9 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
                   hintText: 'Type DELETE here',
                   hintStyle: const TextStyle(color: Color(0xFFAAAAAA)),
                   contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 14, vertical: 12),
+                    horizontal: 14,
+                    vertical: 12,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6),
                     borderSide: const BorderSide(color: Color(0xFFCCCCCC)),
@@ -543,17 +554,23 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
                 children: [
                   // Cancel
                   OutlinedButton(
-                    onPressed:
-                    _isLoading ? null : () => Navigator.of(context).pop(),
+                    onPressed: _isLoading
+                        ? null
+                        : () => Navigator.of(context).pop(),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 12),
+                        horizontal: 20,
+                        vertical: 12,
+                      ),
                       side: const BorderSide(color: Color(0xFFCCCCCC)),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6)),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
                     ),
-                    child: const Text('Cancel',
-                        style: TextStyle(color: Color(0xFF333333))),
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(color: Color(0xFF333333)),
+                    ),
                   ),
 
                   const SizedBox(width: 12),
@@ -561,17 +578,18 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
                   // Delete button
                   Expanded(
                     child: ElevatedButton.icon(
-                      onPressed:
-                      (_isConfirmed && !_isLoading) ? _onDeletePressed : null,
+                      onPressed: (_isConfirmed && !_isLoading)
+                          ? _onDeletePressed
+                          : null,
                       icon: _isLoading
                           ? const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2,
-                        ),
-                      )
+                              width: 18,
+                              height: 18,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
                           : const Icon(Icons.delete_outline, size: 28),
                       label: Padding(
                         padding: const EdgeInsets.only(left: 18.0),
@@ -585,7 +603,8 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
                         foregroundColor: Colors.white,
                         disabledForegroundColor: Colors.white70,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6)),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
                       ),
                     ),
                   ),

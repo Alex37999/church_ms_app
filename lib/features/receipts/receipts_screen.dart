@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../app/theme/app_theme.dart';
 import '../widgets/app_header.dart';
+import '../widgets/drawer.dart';
 import './controllers/receipts_controller.dart';
 
 class ReceiptsScreen extends GetView<ReceiptsController> {
@@ -14,6 +15,7 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      drawer: const AppDrawer(),
       body: Obx(
         () => ListView(
           padding: EdgeInsets.zero,
@@ -28,7 +30,7 @@ class ReceiptsScreen extends GetView<ReceiptsController> {
                   Obx(() {
                     final total = ctrl.receipts.fold<double>(
                       0.0,
-                      (s, r) => s + (r.totalAmount ?? 0),
+                      (s, r) => s + r.totalAmount,
                     );
                     final count = ctrl.receipts.length;
                     return Container(
