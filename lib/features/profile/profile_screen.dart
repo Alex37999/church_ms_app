@@ -7,9 +7,12 @@ import 'package:churchmsapp/core/services/storage_service.dart';
 import '../auth/data/auth_repository.dart';
 import '../widgets/app_header.dart';
 import './controllers/profile_controller.dart';
+import 'data/delete_dialog.dart';
 
 class ProfileScreen extends GetView<ProfileController> {
   const ProfileScreen({super.key});
+
+  //final token = Get.find<StorageService>().getToken();
 
   @override
   Widget build(BuildContext context) {
@@ -167,10 +170,54 @@ class ProfileScreen extends GetView<ProfileController> {
 
                       // Menu Items
                       _MenuItemTile(
+                        isDelete: false,
+
                         icon: Icons.edit_outlined,
                         title: 'Edit Profile',
                         onTap: () {
                           Get.toNamed(Routes.EDIT_PROFILE);
+                        },
+                      ),
+                      // const SizedBox(height: 12),
+                      // _MenuItemTile(
+                      //   icon: Icons.lock_outline,
+                      //   title: 'Change Password',
+                      //   onTap: () {
+                      //     // TODO: Navigate to change password
+                      //   },
+                      // ),
+                      // const SizedBox(height: 12),
+                      // _MenuItemTile(
+                      //   icon: Icons.notifications_outlined,
+                      //   title: 'Notification Preferences',
+                      //   onTap: () {
+                      //     // TODO: Navigate to notification preferences
+                      //   },
+                      // ),
+                      // const SizedBox(height: 12),
+                      // _MenuItemTile(
+                      //   icon: Icons.settings_outlined,
+                      //   title: 'Account Settings',
+                      //   onTap: () {
+                      //     Get.toNamed(Routes.ACCOUNT_SETTINGS);
+                      //   },
+                      // ),
+                      const SizedBox(height: 18),
+
+                      _MenuItemTile(
+                        isDelete: true,
+                        icon: Icons.delete,
+                        title: 'Delete Account',
+                        onTap: () async {
+                          //Get.toNamed(Routes.EDIT_PROFILE);
+                          //showDeleteAccountDialog(context, baseUrl: '', token: '');
+                          final token = await Get.find<StorageService>().getToken();
+
+                          showDeleteAccountDialog(
+                            context,
+                            baseUrl: 'https://your-api.com',
+                            token: token ?? ''
+                          );
                         },
                       ),
                       // const SizedBox(height: 12),
@@ -281,11 +328,13 @@ class _MenuItemTile extends StatelessWidget {
   final IconData icon;
   final String title;
   final VoidCallback onTap;
+  final bool isDelete;
 
   const _MenuItemTile({
     required this.icon,
     required this.title,
     required this.onTap,
+    required this.isDelete,
   });
 
   @override
@@ -308,7 +357,7 @@ class _MenuItemTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         child: Row(
           children: [
-            Icon(icon, size: 24, color: Colors.black54),
+            Icon(icon, size: 24, color: isDelete? Colors.red : Colors.black54),
             const SizedBox(width: 16),
             Expanded(
               child: Text(
@@ -316,7 +365,7 @@ class _MenuItemTile extends StatelessWidget {
                 style: GoogleFonts.poppins(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: const Color(0xFF0F172A),
+                  color: isDelete? Colors.red : Color(0xFF0F172A),
                 ),
               ),
             ),
