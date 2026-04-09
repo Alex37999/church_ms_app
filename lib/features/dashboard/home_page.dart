@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
       case 4:
         return const AnnouncementsScreen();
       case 5:
-        return const ProfileScreen();
+        return  ProfileScreen();
       default:
         return _DashboardTab(
           homeController: _homeController,
