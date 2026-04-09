@@ -1,4 +1,4 @@
-package com.example.churchmsapp
+package com.arobiloutsourcing.churchsmartlyapp
 
 import io.flutter.embedding.android.FlutterActivity
 
